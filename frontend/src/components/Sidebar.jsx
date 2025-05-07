@@ -166,15 +166,13 @@ const Sidebar = ({
           </div>
         </Link>
       ) : (
-        <div className="p-4 space-y-4">
+        <div className="p-4 space-y-4" onClick={handleLogin}>
           {/* <button
             onClick={handleSignUp}
             className="w-full px-4 py-2 bg-violet-400 cursor-pointer text-white rounded-lg hover:bg-violet-600 transition-colors">
             Sign Up
           </button> */}
-          <button
-            onClick={handleLogin}
-            className="w-full px-4 py-2 border-2 border-violet-400 cursor-pointer text-violet-500 rounded-lg hover:bg-violet-50 transition-colors">
+          <button className="w-full px-4 py-2 border-2 border-violet-400 cursor-pointer text-violet-500 rounded-lg hover:bg-violet-50 transition-colors">
             Login
           </button>
         </div>
