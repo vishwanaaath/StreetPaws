@@ -199,7 +199,7 @@ const Sidebar = ({
           }
         `}</style>
         <button
-          className="w-full px-4 py-3.5 text-[15px] font-medium rounded-lg bg-white/80 backdrop-blur-md border-2 border-violet-400  hover:shadow-lg hover:bg-violet-100/40 transition-all duration-200"
+          className="w-full  sm:px-4 sm:py-3.5  px-3 py-2 text-[15px] font-medium rounded-lg bg-white/80 backdrop-blur-md border-2 border-violet-400  hover:shadow-lg hover:bg-violet-100/40 transition-all duration-200"
           onClick={() => {
             setIstypeDropdownOpen(!istypeDropdownOpen);
             if (isDistanceDropdownOpen) {
@@ -349,7 +349,7 @@ const Sidebar = ({
           {/* Users Button - Improved semantics */}
           <Link
             to="/users"
-            className="flex items-center justify-center gap-2 w-full px-4 py-3 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 shadow-md focus:ring-2 focus:ring-violet-400 focus:outline-none"
+            className="flex items-center justify-center gap-2 w-full  sm:px-4 sm:py-3  px-3 py-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 shadow-md focus:ring-2 focus:ring-violet-400 focus:outline-none"
             role="button"
             aria-label="View community members">
             <svg
@@ -370,7 +370,7 @@ const Sidebar = ({
           {/* Logout Button - Enhanced accessibility */}
           <button
             onClick={handleLogout}
-            className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-violet-500 text-white rounded-lg hover:bg-red-500 transition-colors duration-300 shadow-md focus:ring-2 focus:ring-red-300 focus:outline-none"
+            className="flex items-center justify-center gap-2 w-full sm:px-4 sm:py-3  px-3 py-2 bg-violet-500 text-white rounded-lg hover:bg-red-500 transition-colors duration-300 shadow-md focus:ring-2 focus:ring-red-300 focus:outline-none"
             aria-label="Logout">
             <svg
               xmlns="http://www.w3.org/2000/svg"
