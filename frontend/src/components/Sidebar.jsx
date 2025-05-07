@@ -385,7 +385,7 @@ const Sidebar = ({
                 clipRule="evenodd"
               />
             </svg>
-            <span className="font-medium">Logout</span>
+            <span className="font-medium text-[16px]">Logout</span>
           </button>
         </div>
       )}
