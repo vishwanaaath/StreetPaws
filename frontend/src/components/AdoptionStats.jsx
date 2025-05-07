@@ -78,21 +78,21 @@ const AdoptionStats = () => {
   const petData = [
     {
       id: 1,
-      img: "./images/white.jpg",
+      img: "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745406393596-white.jpg",
       distance: "650m away",
       type: "White",
       age: "0-6 months",
     },
     {
       id: 2,
-      img: "./images/Brown.jpg",
+      img: "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/Brown.jpg",
       distance: "1.2km away",
       type: "Brown",
       age: "6-12 months",
     },
     {
       id: 3,
-      img: "./images/black.jpg",
+      img: "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745406357610-black.jpg",
       distance: "3.5km away",
       type: "Black",
       age: "1-2 years",
@@ -106,7 +106,7 @@ const AdoptionStats = () => {
     },
     {
       id: 5,
-      img: "./images/black-white.jpg",
+      img: "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1746614134432-black-white.jpg",
       distance: "2km away",
       type: "Black-White",
       age: "2-3 years",
