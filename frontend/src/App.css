@@ -1,0 +1,8 @@
+ body{
+font-family: gotham;
+ }
+
+ @font-face {
+  font-family: gotham;
+  src: url('circular-std-medium-500.ttf');
+ }
