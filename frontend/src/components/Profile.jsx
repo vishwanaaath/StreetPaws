@@ -135,7 +135,7 @@ const Profile = () => {
 
   return (
     <div
-      className={`${showProfilePic ? "p-0" : "p-2 sm:p-5"}`}
+      className={`${showProfilePic ? "p-0" : "p-5"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
@@ -166,16 +166,15 @@ const Profile = () => {
       {/* Background Animation */}
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 -z-1 pointer-events-none" />
 
-      {/* Fullscreen DP */}
       {showProfilePic && currentUser.dp_url && (
-        <div className="absolute z-10 backdrop-blur-2xl backdrop-brightness-80 overflow-hidden w-full flex justify-center items-center min-h-screen">
+        <div className="absolute z-10 backdrop-blur-2xl backdrop-brightness-80 overflow-hidden w-full flex justify-center items-center min-h-screen min-w-screen">
           <div className="relative">
             <img
               src={
                 currentUser.dp_url ||
                 "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
               }
-              className="sm:w-88 sm:h-88 w-64 h-64 object-cover rounded-full cursor-pointer special-shadow"
+              className="sm:w-88 sm:h-88 cursor-pointer object-cover special-shadow w-58 h-58 rounded-full"
               alt="Profile"
               onClick={() => setShowProfilePic(false)}
             />
@@ -183,21 +182,24 @@ const Profile = () => {
               onClick={() => setShowUploadModal(true)}
               src="./images/new-dp.svg"
               alt="edit"
-              className="absolute bottom-6 right-6 bg-white p-2 rounded-full w-10 h-10 sm:w-11 sm:h-11 sm:bottom-12 sm:right-12 transform translate-x-1/4 translate-y-1/4 cursor-pointer"
+              className={`absolute bottom-6 right-6 bg-white p-2 rounded-full 
+               w-10 h-10 sm:w-11 sm:h-11 sm:bottom-12 sm:right-12
+               transform translate-x-1/4 translate-y-1/4 cursor-pointer`}
             />
           </div>
         </div>
       )}
 
       <div className="max-w-4xl mx-auto">
+        {" "}
         <Link
           to="/map"
           className="inline-flex items-center mb-4 text-violet-500 hover:text-violet-700">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="currentColor"
-            viewBox="0 0 20 20">
+            className="h-5 w-5 "
+            viewBox="0 0 20 20"
+            fill="currentColor">
             <path
               fillRule="evenodd"
               d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
@@ -205,32 +207,33 @@ const Profile = () => {
             />
           </svg>
         </Link>
-
-        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-4">
-          {/* Header Section */}
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-6">
-            <div className="w-24 h-24 sm:w-24 sm:h-24 rounded-full bg-gray-200 overflow-hidden">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-4 ">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
+            <div
+              className={`w-24 h-24 card rounded-full  bg-gray-200 overflow-hidden
+              }`}>
               <img
                 src={
                   currentUser.dp_url ||
                   "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                 }
                 alt="Profile"
-                className="w-full h-full object-cover cursor-pointer"
+                className="w-full h-full cursor-pointer object-cover"
                 onClick={() => setShowProfilePic(true)}
               />
             </div>
+
+            {/* ////////////// */}
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <h1 className="text-xl sm:text-2xl font-bold text-gray-800 max-w-[250px] sm:max-w-none truncate">
+              <div className="flex items-center mb-2 gap-2">
+                <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
                   {currentUser.username}
                 </h1>
                 {isDeveloper && (
                   <div className="group relative">
                     <img
                       src="./images/developer-badge.svg"
-                      className="w-6 h-6 sm:w-7 sm:h-7 animate-pulse cursor-help"
-                      alt="Dev Badge"
+                      className="w-7 h-7 flex-shrink-0 animate-pulse cursor-help"
                     />
                     <div className="absolute hidden group-hover:block -top-8 right-0 bg-violet-600 text-white px-2 py-1 rounded text-xs">
                       Site Creator
@@ -239,19 +242,18 @@ const Profile = () => {
                 )}
               </div>
               {isDeveloper ? (
-                <a
-                  href="https://streetpaws.onrender.com/"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  <p className="text-sm text-gray-600">
-                    Creator & Caretaker of{" "}
-                    <span className="font-bold text-violet-600 text-[14px] tracking-wide">
+                <a href="http://localhost:5173">
+                  <p className="text-gray-600">
+                    Creator & Caretaker of{"    "}
+                    <span className="font-bold text-[18px] text-violet-500">
+                      {" "}
                       StreetPaws
                     </span>
                   </p>
                 </a>
               ) : (
-                <p className="text-sm text-gray-600 mt-1">
+                // In your Profile component's JSX, add this where you want the member since date
+                <p className="text-gray-600 mt-2">
                   Member Since{" "}
                   {new Date(currentUser.createdAt).toLocaleDateString("en-US", {
                     month: "long",
@@ -262,123 +264,177 @@ const Profile = () => {
             </div>
           </div>
 
-          {/* Stats & Info */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6">
-            <div className="p-3 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="text-sm sm:text-base font-medium text-gray-700 mb-1">
-                Dogs Listed
+          {/* {isDeveloper && (
+            <div className="mt-6 mb-6 p-4 bg-violet-50 rounded-lg border border-violet-200">
+              <h3 className="font-medium text-violet-700 mb-2">
+                Developer Dashboard
               </h3>
-              <p className="text-2xl sm:text-3xl font-bold text-violet-500">
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div>
+                  <span className="text-violet-600">Total Users:</span>
+                  <span className="ml-2">{currentUser.username}</span>
+                </div>
+                <div>
+                  <span className="text-violet-600">Total Listings:</span>
+                  <span className="ml-2">{currentUser.username}</span>
+                </div>
+                <div>
+                  <span className="text-violet-600">System Health:</span>
+                  <span className="ml-2">🟢 Optimal</span>
+                </div>
+              </div>
+            </div>
+          )} */}
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className=" p-4 bg-violet-50 rounded-lg border border-violet-200">
+              <h3 className="font-medium text-gray-700 mb-2">Dogs Listed</h3>
+              <p className="text-3xl font-bold text-violet-500">
                 {currentUser.dogsListed.length}
               </p>
             </div>
 
-            <div className="p-3 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="text-sm sm:text-base font-medium text-gray-700 mb-1">
-                Contact Info
-              </h3>
+            <div className=" p-4 bg-violet-50 rounded-lg border border-violet-200">
+              <h3 className="font-medium text-gray-700 mb-2">Contact Info</h3>
 
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex relative items-center gap-2 group mb-2">
                 {showCopiedNotification && (
-                  <div className="absolute bottom-20 right-0 bg-violet-500 text-white px-3 py-1 rounded-lg shadow-md text-sm animate-slide-up">
-                    Copied {copiedText}!
+                  <div className=" absolute bottom-20 right-0 bg-violet-500 text-white px-4 py-2 rounded-lg shadow-lg animate-slide-up">
+                    Copied {copiedText} <br /> to clipboard!
                   </div>
                 )}
-                <p
-                  className="text-sm text-gray-900 truncate max-w-[200px]"
-                  title={currentUser.email}>
-                  {currentUser.email}
-                </p>
+                <div className="flex-1 min-w-0">
+                  <p
+                    className="text-gray-900 truncate hover:text-clip   hover:min-w-fit"
+                    title={currentUser.email}
+                    style={{
+                      maxWidth: "200px",
+                      transition: "max-width 0.2s ease-in-out",
+                    }}>
+                    {currentUser.email}
+                  </p>
+                </div>
                 <button
                   onClick={() => handleCopy(currentUser.email)}
-                  className="text-violet-500 hover:text-violet-700">
-                  📋
+                  className="text-violet-500 cursor-pointer hover:text-violet-700 transition-colors"
+                  aria-label="Copy email">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    />
+                  </svg>
                 </button>
               </div>
 
-              <div className="flex items-center gap-2">
-                <p
-                  className="text-sm text-gray-900 truncate max-w-[200px]"
-                  title={currentUser.phoneNumber}>
-                  {currentUser.phoneNumber}
-                </p>
+              {/* Phone Number */}
+              <div className="flex items-center gap-2 group">
+                <div className="flex-1 min-w-0">
+                  <p
+                    className="text-gray-900 truncate hover:text-clip hover:min-w-fit"
+                    title={currentUser.phoneNumber}
+                    style={{
+                      maxWidth: "200px",
+                      transition: "max-width 0.2s ease-in-out",
+                    }}>
+                    {currentUser.phoneNumber}
+                  </p>
+                </div>
                 <button
                   onClick={() => handleCopy(currentUser.phoneNumber)}
-                  className="text-violet-500 hover:text-violet-700">
-                  📋
+                  className="text-violet-500 cursor-pointer hover:text-violet-700 transition-colors"
+                  aria-label="Copy phone number">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    />
+                  </svg>
                 </button>
               </div>
             </div>
 
-            <div
-              className="flex items-center gap-3 p-3 bg-violet-50 rounded-lg border border-violet-200 cursor-pointer"
-              onClick={() => navigate("/map")}>
-              <img
-                src="./images/map.svg"
-                className="w-6 h-6 sm:w-8 sm:h-8"
-                alt="Map Icon"
-              />
-              <h3 className="text-sm sm:text-base font-medium text-gray-700">
+            <div className="flex items-center gap-4 p-4 cursor-pointer bg-violet-50 rounded-lg border border-violet-200">
+              <img src="./images/map.svg" className="w-8 h-8" alt="Map Icon" />
+              <h3 className="font-medium text-gray-700 text-base">
                 See all dogs listed, on map.
               </h3>
             </div>
           </div>
-
-          {/* Listings */}
-          <div className="mt-6 sm:mt-8">
-            <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4">
+          <div className="mt-8">
+            <h2 className="sm:text-xl text-lg font-bold text-gray-800 mb-4">
               Recent Listings
             </h2>
 
             {loading ? (
-              <div className="text-center text-sm text-gray-500">
-                Loading listings...
-              </div>
+              <div className="text-center p-4">Loading listings...</div>
             ) : fetchError ? (
-              <div className="text-center text-sm text-gray-500">
-                {fetchError}
+              <div className=" p-4 text-center">
+                No dogs posted so far. Hopefully, it's because there aren’t any
+                strays near them. Hopefully.
               </div>
             ) : dogsData.length === 0 ? (
-              <div className="text-center text-sm text-gray-500">
+              <div className="text-gray-500 p-4 text-center">
                 No dogs posted so far. Hopefully, it's because there aren’t any
                 strays near them. Hopefully.
               </div>
             ) : (
-              <div className="columns-1 sm:columns-2 lg:columns-3 gap-2 sm:gap-4 space-y-2 sm:space-y-2">
+              <div className="columns-1  sm:columns-2 lg:columns-3 sm:gap-4 gap-3 sm:space-y-4">
                 {dogsData.map((dog) => (
                   <div
                     key={dog._id}
-                    className="break-inside-avoid mb-4"
                     onClick={() =>
                       navigate("/map", {
                         state: {
                           selectedDog: {
                             id: dog._id,
-                            lat: dog.location.coordinates[1],
+                            lat: dog.location.coordinates[1], // Correct here
                             lng: dog.location.coordinates[0],
                           },
                         },
                       })
-                    }>
-                    <div className="relative rounded-xl overflow-hidden special-shadow-1 group">
+                    }
+                    className="break-inside-avoid mb-4">
+                    <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
                       <img
                         src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                         alt={dog.type}
                         className="w-full h-auto object-cover"
                       />
+
                       <img
+                        className="absolute top-2 right-2 z-5 sm:w-7 sm:h-7 w-6 h-6 p-1 hover:bg-white/40 bg-white/20 rounded-full opacity-60 hover:opacity-100 hover:scale-110 transition-transform cursor-pointer"
                         src="./images/delete.svg"
                         alt="Delete"
-                        className="absolute top-2 right-2 w-6 h-6 sm:w-7 sm:h-7 p-1 rounded-full bg-white/20 hover:bg-white/40 opacity-60 hover:opacity-100 hover:scale-110 transition-transform cursor-pointer"
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedDog(dog);
                           setShowDeleteModal(true);
                         }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60" />
-                      <div className="absolute bottom-0 left-0 p-2 text-white text-sm sm:text-base font-medium">
-                        {dog.type}
+
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60"></div>
+                      <div className="absolute bottom-0 left-0 sm:p-4 p-2 text-white">
+                        <h3 className="font-bold text-[22px] sm:text-lg">
+                          {dog.type}
+                        </h3>
+                        <p className="sm:text-sm text-[12px]">
+                          {dog.createdAt
+                            ? timeSinceListed(dog.createdAt)
+                            : "New listing"}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -386,10 +442,11 @@ const Profile = () => {
               </div>
             )}
           </div>
-        </div>
+          {/* /////// */}
+        </div>{" "}
       </div>
     </div>
   );
-}
+};
 
 export default Profile;
