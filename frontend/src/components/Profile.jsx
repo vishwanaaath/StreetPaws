@@ -245,7 +245,7 @@ const Profile = () => {
                   rel="noopener noreferrer">
                   <p className="text-sm text-gray-600">
                     Creator & Caretaker of{" "}
-                    <span className="font-bold text-violet-600 tracking-wide">
+                    <span className="font-bold text-violet-600 text-[14px] tracking-wide">
                       StreetPaws
                     </span>
                   </p>
