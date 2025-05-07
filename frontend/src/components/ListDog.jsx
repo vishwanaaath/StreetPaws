@@ -300,11 +300,11 @@ const ListDog = () => {
         duration={5000}
       />
 
-      {currentUser && (
+      {/* {currentUser && (
         <div className=" p-4 bg-violet-50 rounded-lg">
           <p className="text-xs text-gray-600">{currentUser.email}</p>
         </div>
-      )}
+      )} */}
 
       {/* Background Animation */}
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl  opacity-30 -z-10 pointer-events-none" />
