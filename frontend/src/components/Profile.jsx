@@ -23,6 +23,8 @@ const Profile = () => {
   const [selectedDog, setSelectedDog] = useState(null);
   const [showCopiedNotification, setShowCopiedNotification] = useState(false);
   const [copiedText, setCopiedText] = useState("");
+  const [isGridView, setIsGridView] = useState(false);
+
 
   const navigate = useNavigate(); // Add navigate function
   const isDeveloper = currentUser?.email == "vishwanathgowda951@gmail.com";
@@ -133,320 +135,189 @@ const Profile = () => {
     );
   }
 
-  return (
-    <div
-      className={`${showProfilePic ? "p-0" : "p-5"}`}
-      style={{
-        maxHeight: showProfilePic ? "100vh" : "auto",
-        overflow: showProfilePic ? "hidden" : "auto",
-      }}>
-      {showDeleteModal && (
-        <DeleteConfirmationModal
-          dogName={selectedDog?.type}
-          isDeleting={isDeleting}
-          onConfirm={handleDeleteDog}
-          onCancel={() => {
-            setShowDeleteModal(false);
-            setSelectedDog(null);
-          }}
+return (
+  <div className={`${showProfilePic ? "p-0" : "px-2 py-4"}`}>
+    {/* Fullscreen Profile Picture Modal */}
+    {showProfilePic && currentUser.dp_url && (
+      <div className="fixed inset-0 z-50 backdrop-blur-xl bg-black/80 flex items-start justify-start p-4">
+        <div className="relative">
+          <img
+            src={currentUser.dp_url}
+            className="w-72 h-72 rounded-full object-cover cursor-pointer"
+            alt="Profile"
+            onClick={() => setShowProfilePic(false)}
+          />
+          <button
+            onClick={() => setShowUploadModal(true)}
+            className="absolute bottom-4 right-4 bg-white/90 p-2 rounded-full shadow-sm"
+          >
+            <img src="./images/edit.svg" className="w-5 h-5" alt="Edit" />
+          </button>
+        </div>
+      </div>
+    )}
+
+    {/* Fullscreen Dog Image Modal */}
+    {selectedDog && (
+      <div className="fixed inset-0 z-50 backdrop-blur-xl bg-black/80 flex items-center justify-center">
+        <img
+          src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${selectedDog.imageUrl}`}
+          className="max-h-[90vh] max-w-[90vw] object-contain rounded-lg cursor-pointer"
+          alt="Dog"
+          onClick={() => setSelectedDog(null)}
         />
-      )}
+      </div>
+    )}
 
-      {showUploadModal && (
-        <UploadDPModal
-          currentUser={currentUser}
-          onClose={() => setShowUploadModal(false)}
-          onUpdate={(updatedUser) => {
-            setCurrentUser(updatedUser);
-            setShowUploadModal(false);
-          }}
-        />
-      )}
+    <div className="max-w-4xl mx-auto">
+      <Link
+        to="/map"
+        className="inline-flex items-center mb-3 ml-1 text-violet-600 hover:text-violet-800"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fillRule="evenodd"
+            d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </Link>
 
-      {/* Background Animation */}
-      <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 -z-1 pointer-events-none" />
-
-      {showProfilePic && currentUser.dp_url && (
-        <div className="absolute z-10 backdrop-blur-2xl backdrop-brightness-80 overflow-hidden w-full flex justify-center items-center min-h-screen min-w-screen">
+      <div className="bg-white rounded-xl shadow-sm">
+        {/* Profile Header */}
+        <div className="flex items-start p-3">
           <div className="relative">
             <img
-              src={
-                currentUser.dp_url ||
-                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-              }
-              className="sm:w-88 sm:h-88 cursor-pointer object-cover special-shadow w-58 h-58 rounded-full"
+              src={currentUser.dp_url || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
+              className="w-20 h-20 rounded-full cursor-pointer object-cover border-2 border-white shadow-sm"
               alt="Profile"
-              onClick={() => setShowProfilePic(false)}
+              onClick={() => setShowProfilePic(true)}
             />
-            <img
+            <button
               onClick={() => setShowUploadModal(true)}
-              src="./images/new-dp.svg"
-              alt="edit"
-              className={`absolute bottom-6 right-6 bg-white p-2 rounded-full 
-               w-10 h-10 sm:w-11 sm:h-11 sm:bottom-12 sm:right-12
-               transform translate-x-1/4 translate-y-1/4 cursor-pointer`}
-            />
+              className="absolute bottom-0 right-0 bg-white p-1 rounded-full shadow-sm border"
+            >
+              <img src="./images/camera.svg" className="w-4 h-4" alt="Camera" />
+            </button>
           </div>
-        </div>
-      )}
 
-      <div className="max-w-4xl mx-auto">
-        {" "}
-        <Link
-          to="/map"
-          className="inline-flex items-center mb-4 text-violet-500 hover:text-violet-700">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 "
-            viewBox="0 0 20 20"
-            fill="currentColor">
-            <path
-              fillRule="evenodd"
-              d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </Link>
-        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-4 ">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
-            <div
-              className={`w-24 h-24 card rounded-full  bg-gray-200 overflow-hidden
-              }`}>
-              <img
-                src={
-                  currentUser.dp_url ||
-                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                }
-                alt="Profile"
-                className="w-full h-full cursor-pointer object-cover"
-                onClick={() => setShowProfilePic(true)}
-              />
-            </div>
-
-            {/* ////////////// */}
-            <div>
-              <div className="flex items-center mb-2 gap-2">
-                <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
-                  {currentUser.username}
-                </h1>
-                {isDeveloper && (
-                  <div className="group relative">
-                    <img
-                      src="./images/developer-badge.svg"
-                      className="w-7 h-7 flex-shrink-0 animate-pulse cursor-help"
-                    />
-                    <div className="absolute hidden group-hover:block -top-8 right-0 bg-violet-600 text-white px-2 py-1 rounded text-xs">
-                      Site Creator
-                    </div>
-                  </div>
-                )}
-              </div>
-              {isDeveloper ? (
-                <a href="http://localhost:5173">
-                  <p className="text-gray-600">
-                    Creator & Caretaker of{"    "}
-                    <span className="font-bold text-[18px] text-violet-500">
-                      {" "}
-                      StreetPaws
-                    </span>
-                  </p>
-                </a>
-              ) : (
-                // In your Profile component's JSX, add this where you want the member since date
-                <p className="text-gray-600 mt-2">
-                  Member Since{" "}
-                  {new Date(currentUser.createdAt).toLocaleDateString("en-US", {
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </p>
+          <div className="ml-4 flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <h1 className="text-xl font-semibold">{currentUser.username}</h1>
+              {isDeveloper && (
+                <img src="./images/verified.svg" className="w-5 h-5" alt="Verified" />
               )}
             </div>
-          </div>
-
-          {/* {isDeveloper && (
-            <div className="mt-6 mb-6 p-4 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="font-medium text-violet-700 mb-2">
-                Developer Dashboard
-              </h3>
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                <div>
-                  <span className="text-violet-600">Total Users:</span>
-                  <span className="ml-2">{currentUser.username}</span>
-                </div>
-                <div>
-                  <span className="text-violet-600">Total Listings:</span>
-                  <span className="ml-2">{currentUser.username}</span>
-                </div>
-                <div>
-                  <span className="text-violet-600">System Health:</span>
-                  <span className="ml-2">🟢 Optimal</span>
-                </div>
+            
+            <div className="flex gap-4 mb-2">
+              <div>
+                <span className="font-medium">{currentUser.dogsListed.length}</span>
+                <span className="text-gray-600 ml-1">posts</span>
+              </div>
+              <div>
+                <span className="font-medium">1.2k</span>
+                <span className="text-gray-600 ml-1">followers</span>
               </div>
             </div>
-          )} */}
+            
+            <p className="text-sm text-gray-800">
+              {currentUser.bio || "Street animal caretaker 🐾"}
+            </p>
+          </div>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className=" p-4 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="font-medium text-gray-700 mb-2">Dogs Listed</h3>
-              <p className="text-3xl font-bold text-violet-500">
-                {currentUser.dogsListed.length}
-              </p>
+        {/* Contact Info */}
+        <div className="p-3 border-t">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium">Contact Information</span>
+            <button className="text-violet-600 text-sm">Edit</button>
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm">{currentUser.email}</span>
+              <button 
+                onClick={() => handleCopy(currentUser.email)}
+                className="text-violet-600 hover:text-violet-800"
+              >
+                <CopyIcon className="w-4 h-4" />
+              </button>
             </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">{currentUser.phoneNumber}</span>
+              <button 
+                onClick={() => handleCopy(currentUser.phoneNumber)}
+                className="text-violet-600 hover:text-violet-800"
+              >
+                <CopyIcon className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
 
-            <div className=" p-4 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="font-medium text-gray-700 mb-2">Contact Info</h3>
+        {/* Recent Listings */}
+        <div className="p-3">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-lg font-semibold">Recent Listings</h2>
+            <button
+              onClick={() => setIsGridView(!isGridView)}
+              className="p-1 hover:bg-gray-100 rounded-full"
+            >
+              {isGridView ? (
+                <GridIcon className="w-6 h-6 text-gray-800" />
+              ) : (
+                <ListIcon className="w-6 h-6 text-gray-800" />
+              )}
+            </button>
+          </div>
 
-              <div className="flex relative items-center gap-2 group mb-2">
-                {showCopiedNotification && (
-                  <div className=" absolute bottom-20 right-0 bg-violet-500 text-white px-4 py-2 rounded-lg shadow-lg animate-slide-up">
-                    Copied {copiedText} <br /> to clipboard!
-                  </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <p
-                    className="text-gray-900 truncate hover:text-clip   hover:min-w-fit"
-                    title={currentUser.email}
-                    style={{
-                      maxWidth: "200px",
-                      transition: "max-width 0.2s ease-in-out",
-                    }}>
-                    {currentUser.email}
-                  </p>
+          <div className={`grid gap-2 ${isGridView ? 'grid-cols-2' : 'grid-cols-1'}`}>
+            {dogsData.map((dog) => (
+              <div key={dog._id} className="relative group">
+                {/* Clickable Image Area */}
+                <div 
+                  className="w-full aspect-square cursor-pointer"
+                  onClick={() => setSelectedDog(dog)}
+                >
+                  <img
+                    src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
+                    className="w-full h-full object-cover rounded-lg"
+                    alt={dog.type}
+                  />
                 </div>
+
+                {/* Map Navigation Button */}
                 <button
-                  onClick={() => handleCopy(currentUser.email)}
-                  className="text-violet-500 cursor-pointer hover:text-violet-700 transition-colors"
-                  aria-label="Copy email">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                    />
-                  </svg>
+                  onClick={() => navigate("/map", { state: { selectedDog: dog } })}
+                  className="absolute bottom-2 right-2 bg-white/90 p-1.5 rounded-full shadow-sm"
+                >
+                  <MapPinIcon className="w-5 h-5 text-gray-800" />
                 </button>
-              </div>
 
-              {/* Phone Number */}
-              <div className="flex items-center gap-2 group">
-                <div className="flex-1 min-w-0">
-                  <p
-                    className="text-gray-900 truncate hover:text-clip hover:min-w-fit"
-                    title={currentUser.phoneNumber}
-                    style={{
-                      maxWidth: "200px",
-                      transition: "max-width 0.2s ease-in-out",
-                    }}>
-                    {currentUser.phoneNumber}
-                  </p>
+                {/* Image Info Overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 text-white">
+                  <p className="text-sm font-medium">{dog.type}</p>
+                  <p className="text-xs">{timeSinceListed(dog.createdAt)}</p>
                 </div>
-                <button
-                  onClick={() => handleCopy(currentUser.phoneNumber)}
-                  className="text-violet-500 cursor-pointer hover:text-violet-700 transition-colors"
-                  aria-label="Copy phone number">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                    />
-                  </svg>
-                </button>
               </div>
-            </div>
-
-            <div className="flex items-center gap-4 p-4 cursor-pointer bg-violet-50 rounded-lg border border-violet-200">
-              <img src="./images/map.svg" className="w-8 h-8" alt="Map Icon" />
-              <h3 className="font-medium text-gray-700 text-base">
-                See all dogs listed, on map.
-              </h3>
-            </div>
+            ))}
           </div>
-          <div className="mt-8">
-            <h2 className="sm:text-xl text-lg font-bold text-gray-800 mb-4">
-              Recent Listings
-            </h2>
-
-            {loading ? (
-              <div className="text-center p-4">Loading listings...</div>
-            ) : fetchError ? (
-              <div className=" p-4 text-center">
-                No dogs posted so far. Hopefully, it's because there aren’t any
-                strays near them. Hopefully.
-              </div>
-            ) : dogsData.length === 0 ? (
-              <div className="text-gray-500 p-4 text-center">
-                No dogs posted so far. Hopefully, it's because there aren’t any
-                strays near them. Hopefully.
-              </div>
-            ) : (
-              <div className="columns-1  sm:columns-2 lg:columns-3 sm:gap-4 gap-3 sm:space-y-4">
-                {dogsData.map((dog) => (
-                  <div
-                    key={dog._id}
-                    onClick={() =>
-                      navigate("/map", {
-                        state: {
-                          selectedDog: {
-                            id: dog._id,
-                            lat: dog.location.coordinates[1], // Correct here
-                            lng: dog.location.coordinates[0],
-                          },
-                        },
-                      })
-                    }
-                    className="break-inside-avoid mb-4">
-                    <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
-                      <img
-                        src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
-                        alt={dog.type}
-                        className="w-full h-auto object-cover"
-                      />
-
-                      <img
-                        className="absolute top-2 right-2 z-5 sm:w-7 sm:h-7 w-6 h-6 p-1 hover:bg-white/40 bg-white/20 rounded-full opacity-60 hover:opacity-100 hover:scale-110 transition-transform cursor-pointer"
-                        src="./images/delete.svg"
-                        alt="Delete"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedDog(dog);
-                          setShowDeleteModal(true);
-                        }}
-                      />
-
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60"></div>
-                      <div className="absolute bottom-0 left-0 sm:p-4 p-2 text-white">
-                        <h3 className="font-bold text-[22px] sm:text-lg">
-                          {dog.type}
-                        </h3>
-                        <p className="sm:text-sm text-[12px]">
-                          {dog.createdAt
-                            ? timeSinceListed(dog.createdAt)
-                            : "New listing"}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          {/* /////// */}
-        </div>{" "}
+        </div>
       </div>
     </div>
-  );
-};
+
+    {/* Copied Notification */}
+    {showCopiedNotification && (
+      <div className="fixed bottom-20 right-4 bg-violet-600 text-white px-4 py-2 rounded-lg text-sm shadow-lg animate-slide-up">
+        Copied {copiedText} to clipboard!
+      </div>
+    )}
+  </div>
+);
+}
 
 export default Profile;
