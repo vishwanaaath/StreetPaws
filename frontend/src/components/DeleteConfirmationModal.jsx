@@ -6,8 +6,8 @@ const DeleteConfirmationModal = ({
   isDeleting, 
 }) => {
   return (
-    <div className="fixed inset-0 bg-black sm:scale-100 scale-75 bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md px-8 py-6 text-gray-800">
+    <div className="fixed inset-0 bg-black  bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl sm:scale-100 scale-75 shadow-2xl w-full max-w-md px-8 py-6 text-gray-800">
         <div className="flex items-center mb-4">
           <img src="./images/danger.svg" className="w-8 mr-2 h-8" alt="" />
           <h3 className="text-2xl font-semibold text-violet-500">
@@ -30,9 +30,11 @@ const DeleteConfirmationModal = ({
             onClick={onConfirm}
             disabled={isDeleting}
             className={`flex items-center justify-center gap-2 w-full px-4 py-3 
-    ${isDeleting 
-      ? "bg-red-500 text-white font-bold uppercase cursor-not-allowed" 
-      : "bg-red-600 hover:bg-red-600 text-white font-bold uppercase shadow-lg   transition-all duration-300 hover:shake"}
+    ${
+      isDeleting
+        ? "bg-red-500 text-white font-bold uppercase cursor-not-allowed"
+        : "bg-red-600 hover:bg-red-600 text-white font-bold uppercase shadow-lg   transition-all duration-300 hover:shake"
+    }
     rounded-lg focus:ring-2  focus:outline-none`}>
             {isDeleting ? "Deleting..." : "Yes, Delete"}
           </button>
