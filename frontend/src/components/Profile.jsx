@@ -430,7 +430,7 @@ const Profile = () => {
                         <h3 className="font-bold text-[22px] sm:text-lg">
                           {dog.type}
                         </h3>
-                        <p className="sm:text-sm text-[20px]">
+                        <p className="sm:text-sm text-[12px]">
                           {dog.createdAt
                             ? timeSinceListed(dog.createdAt)
                             : "New listing"}
