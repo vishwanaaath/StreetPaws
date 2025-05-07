@@ -99,7 +99,7 @@ const AdoptionStats = () => {
     },
     {
       id: 4,
-      img: "./images/brown-white.jpg",
+      img: "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745405559806-brown-white.jpg",
       distance: "500m away",
       type: "Brown-white",
       age: "1 year",
