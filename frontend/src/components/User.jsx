@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import ProfileLoader from "./ProfileLoader"; 
+import ProfileLoader from "./ProfileLoader";
 import "./Profile.css"; 
 
 const User = () => {
@@ -13,12 +13,14 @@ const User = () => {
   const [currentUser, setCurrentUser] = useState(location.state?.user || null);
   const [dogsData, setDogsData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [fetchError, setFetchError] = useState(null);
-  const { user } = useAuth0();
+  const [fetchError, setFetchError] = useState(null); 
   const [selectedDog, setSelectedDog] = useState(null);
   const [showCopiedNotification, setShowCopiedNotification] = useState(false);
   const [copiedText, setCopiedText] = useState("");
-  const navigate = useNavigate(); 
+  const [isSingleColumn, setIsSingleColumn] = useState(false);
+  const [selectedDogImage, setSelectedDogImage] = useState(null);
+
+  const navigate = useNavigate(); // Add navigate function
   const isDeveloper = currentUser?.email == "vishwanathgowda951@gmail.com";
 
   // Add error logging to handleDeleteDog
@@ -30,8 +32,7 @@ const User = () => {
     setShowCopiedNotification(true);
     setTimeout(() => setShowCopiedNotification(false), 1000);
   };
-
-
+ 
   // Update the dogsData sorting in your useEffect
   useEffect(() => {
     const fetchUserDogs = async () => {
@@ -52,6 +53,8 @@ const User = () => {
         );
 
         setDogsData(sortedDogs);
+        console.log(sortedDogs);
+
         setFetchError(null);
       } catch (err) {
         setFetchError(err.response?.data?.message || "Error fetching dogs");
@@ -106,11 +109,15 @@ const User = () => {
 
   return (
     <div
-      className={`${showProfilePic ? "p-0" : "p-5"}`}
+      className={`  ${showProfilePic ? "sm:p-0" : "sm:pt-6"} 
+      ${showProfilePic ? "p-0" : "p-1"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
       }}>
+     
+   
+
       {/* Background Animation */}
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 -z-1 pointer-events-none" />
 
@@ -126,31 +133,29 @@ const User = () => {
               alt="Profile"
               onClick={() => setShowProfilePic(false)}
             />
+          
+          </div>
+        </div>
+      )}
+
+      {selectedDogImage && (
+        <div className="fixed inset-0 z-50 backdrop-blur-2xl backdrop-brightness-50 flex items-center justify-center p-4">
+          <div className="relative w-full h-full flex items-center justify-center">
+            <img
+              src={selectedDogImage}
+              className="cursor-pointer object-contain rounded-lg max-w-[90vw] max-h-[90vh] m-auto"
+              alt="Dog fullscreen"
+              onClick={() => setSelectedDogImage(null)}
+            /> 
           </div>
         </div>
       )}
 
       <div className="max-w-4xl mx-auto">
-        {" "}
-        <Link
-          to="/map"
-          className="inline-flex items-center mb-4 text-violet-500 hover:text-violet-700">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 "
-            viewBox="0 0 20 20"
-            fill="currentColor">
-            <path
-              fillRule="evenodd"
-              d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </Link>
-        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2 ">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
+          <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
             <div
-              className={`w-24 h-24 card rounded-full  bg-gray-200 overflow-hidden
+              className={`w-26 h-26 ml-0.5 mt-2 sm:mb-0 mb-2 sm:mt-0 card rounded-full  bg-gray-200 overflow-hidden
               }`}>
               <img
                 src={
@@ -165,7 +170,7 @@ const User = () => {
 
             {/* ////////////// */}
             <div>
-              <div className="flex items-center mb-2 gap-2">
+              <div className="flex items-center sm:mb-2 mb-0 gap-2">
                 <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
                   {currentUser.username}
                 </h1>
@@ -174,18 +179,17 @@ const User = () => {
                     <img
                       src="./images/developer-badge.svg"
                       className="w-7 h-7 flex-shrink-0 animate-pulse cursor-help"
-                      alt="Developer Badge"
-                      title="Site Creator"
                     />
                     <div className="absolute hidden group-hover:block -top-8 right-0 bg-violet-600 text-white px-2 py-1 rounded text-xs">
-                      🛠️ Site Architect
+                      Site Creator
                     </div>
                   </div>
                 )}
               </div>
+
               {isDeveloper ? (
-                <a href="http://localhost:5173">
-                  <p className="text-gray-600">
+                <a href="https://streetpaws.onrender.com">
+                  <p className="text-gray-600 sm:mt-2 mt-0">
                     Creator & Caretaker of{"    "}
                     <span className="font-bold text-[18px] text-violet-500">
                       {" "}
@@ -195,7 +199,7 @@ const User = () => {
                 </a>
               ) : (
                 // In your Profile component's JSX, add this where you want the member since date
-                <p className="text-gray-600 mt-2">
+                <p className="text-gray-600 sm:mt-2 mt-0">
                   Member Since{" "}
                   {new Date(currentUser.createdAt).toLocaleDateString("en-US", {
                     month: "long",
@@ -206,48 +210,30 @@ const User = () => {
             </div>
           </div>
 
-          {/* {isDeveloper && (
-            <div className="mt-6 mb-6 p-4 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="font-medium text-violet-700 mb-2">
-                Developer Dashboard
+          <div className="grid grid-cols-1 md:grid-cols-3 sm:gap-6 gap-2">
+            <div className=" sm:p-4 p-2 bg-violet-50 rounded-lg border border-violet-200">
+              <h3 className="font-medium text-gray-700 text-base">
+                Dogs Listed
               </h3>
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                <div>
-                  <span className="text-violet-600">Total Users:</span>
-                  <span className="ml-2">{currentUser.username}</span>
-                </div>
-                <div>
-                  <span className="text-violet-600">Total Listings:</span>
-                  <span className="ml-2">{currentUser.username}</span>
-                </div>
-                <div>
-                  <span className="text-violet-600">System Health:</span>
-                  <span className="ml-2">🟢 Optimal</span>
-                </div>
-              </div>
-            </div>
-          )} */}
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className=" p-4 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="font-medium text-gray-700 mb-2">Dogs Listed</h3>
               <p className="text-3xl font-bold text-violet-500">
                 {currentUser.dogsListed.length}
               </p>
             </div>
 
-            <div className=" p-4 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="font-medium text-gray-700 mb-2">Contact Info</h3>
+            <div className=" sm:p-4 p-2 bg-violet-50 rounded-lg border border-violet-200">
+              <h3 className="font-medium text-gray-700 text-base">
+                Contact Info
+              </h3>
 
-              <div className="flex relative items-center gap-2 group mb-2">
+              <div className="flex relative items-center gap-2 group mb-1 sm:mb-2">
                 {showCopiedNotification && (
                   <div className=" absolute bottom-20 right-0 bg-violet-500 text-white px-4 py-2 rounded-lg shadow-lg animate-slide-up">
                     Copied {copiedText} <br /> to clipboard!
                   </div>
                 )}
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 sm:mt-1">
                   <p
-                    className="text-gray-900 truncate hover:text-clip   hover:min-w-fit"
+                    className="text-gray-600 truncate hover:text-clip text-[14px]  hover:min-w-fit"
                     title={currentUser.email}
                     style={{
                       maxWidth: "200px",
@@ -279,7 +265,7 @@ const User = () => {
               <div className="flex items-center gap-2 group">
                 <div className="flex-1 min-w-0">
                   <p
-                    className="text-gray-900 truncate hover:text-clip hover:min-w-fit"
+                    className="text-gray-600 truncate text-[14px] hover:text-clip hover:min-w-fit"
                     title={currentUser.phoneNumber}
                     style={{
                       maxWidth: "200px",
@@ -308,20 +294,110 @@ const User = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 p-4 cursor-pointer bg-violet-50 rounded-lg border border-violet-200">
-              <img src="./images/map.svg" className="w-8 h-8" alt="Map Icon" />
+            {/* <div className="flex items-center gap-3 sm:gap-4 sm:p-4 p-2 cursor-pointer bg-violet-50 rounded-lg border border-violet-200">
+              <img src="./images/map.svg" className="w-5 h-5" alt="Map Icon" />
               <h3 className="font-medium text-gray-700 text-base">
                 See all dogs listed, on map.
               </h3>
-            </div>
+            </div> */}
           </div>
-          <div className="mt-8">
-            <h2 className="sm:text-xl text-lg font-bold text-gray-800 mb-4">
-              Recent Listings
-            </h2>
+          <div className="sm:mt-8 mt-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="sm:text-xl text-lg font-bold text-gray-800">
+                Recent Listings
+              </h2>
+              <div
+                className="sm:hidden cursor-pointer p-2"
+                onClick={() => setIsSingleColumn(!isSingleColumn)}>
+                <svg
+                  className={`w-6 h-6 ${
+                    isSingleColumn ? "text-gray-400" : "text-violet-500"
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <rect
+                    x="3"
+                    y="3"
+                    width="8"
+                    height="5"
+                    rx="1"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <rect
+                    x="13"
+                    y="3"
+                    width="8"
+                    height="8"
+                    rx="1"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <rect
+                    x="3"
+                    y="11"
+                    width="8"
+                    height="10"
+                    rx="1"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <rect
+                    x="13"
+                    y="13"
+                    width="8"
+                    height="6"
+                    rx="1"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
 
             {loading ? (
-              <div className="text-center p-4">Loading listings...</div>
+              <div
+                className={`columns-${
+                  isSingleColumn ? "1" : "2"
+                } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
+                {[...Array(6)].map((_, index) => {
+                  // Create different aspect ratios: 1:1, 3:4, and 9:6 (3:2)
+                  const ratios = [
+                    { class: "aspect-square" }, // 1:1
+                    { class: "aspect-[3/4]" }, // 3:4
+                    { class: "aspect-[3/2]" }, // 9:6
+                    { class: "aspect-square" }, // Repeat pattern
+                    { class: "aspect-[3/4]" },
+                    { class: "aspect-[3/2]" },
+                  ];
+
+                  return (
+                    <div key={index} className="break-inside-avoid mb-2">
+                      <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse">
+                        {/* Image placeholder with variable ratio */}
+                        <div
+                          className={`w-full bg-gray-200 rounded-xl ${ratios[index].class}`}
+                        />
+
+                        {/* Bottom content placeholder */}
+                        <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
+                          <div className="flex justify-between items-end">
+                            <div className="space-y-2">
+                              <div className="h-3 w-16 bg-gray-300 rounded" />
+                            </div>
+                            <div className="h-6 w-6 bg-gray-300 rounded-full" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             ) : fetchError ? (
               <div className=" p-4 text-center">
                 No dogs posted so far. Hopefully, it's because there aren’t any
@@ -333,22 +409,12 @@ const User = () => {
                 strays near them. Hopefully.
               </div>
             ) : (
-              <div className="columns-2  sm:columns-2 lg:columns-3 sm:gap-4 gap-1 space-y-1 sm:space-y-4">
+              <div
+                className={`columns-${
+                  isSingleColumn ? "1" : "2"
+                } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
                 {dogsData.map((dog) => (
-                  <div
-                    key={dog._id}
-                    onClick={() =>
-                      navigate("/map", {
-                        state: {
-                          selectedDog: {
-                            id: dog._id,
-                            lat: dog.location.coordinates[1], // Correct here
-                            lng: dog.location.coordinates[0],
-                          },
-                        },
-                      })
-                    }
-                    className="break-inside-avoid mb-4">
+                  <div key={dog._id} className="break-inside-avoid mb-2">
                     <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
                       <img
                         src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
@@ -356,16 +422,52 @@ const User = () => {
                         className="w-full h-auto object-cover"
                       />
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60"></div>
-                      <div className="absolute bottom-0 left-0 sm:p-4 p-2 text-white">
-                        <h3 className="font-bold text-[12px] sm:text-lg">
-                          {dog.type}
-                        </h3>
-                        <p className="sm:text-sm text-[10px]">
-                          {dog.createdAt
-                            ? timeSinceListed(dog.createdAt)
-                            : "New listing"}
-                        </p>
+                      <div
+                        onClick={() =>
+                          setSelectedDogImage(
+                            `https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`
+                          )
+                        }
+                        className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70"></div>
+                      <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
+                        <div className="flex justify-between items-end">
+                          <div>
+                            <p className="sm:text-sm text-white text-[10px]">
+                              {dog.createdAt
+                                ? timeSinceListed(dog.createdAt)
+                                : "New listing"}
+                            </p>
+                          </div>
+                          <svg
+                            className="w-5 h-5 z-5 text-white cursor-pointer mb-1 mr-1"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            onClick={() =>
+                              navigate("/map", {
+                                state: {
+                                  selectedDog: {
+                                    id: dog._id,
+                                    lat: dog.location.coordinates[1], // Correct order
+                                    lng: dog.location.coordinates[0],
+                                  },
+                                },
+                              })
+                            }>
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </div>
