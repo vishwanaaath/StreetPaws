@@ -59,8 +59,8 @@ const UsersList = () => {
               <div
                 key={user._id}
                 onClick={() => handleListerProfileClick(user._id)}
-                className="group relative cursor-pointer flex items-center p-3 sm:p-4  
-                  bg-white shadow-sm hover:shadow-md transition-all duration-200
+                className="group relative cursor-pointer flex items-center p-2 sm:p-4  
+                  bg-white transition-all duration-200
                   active:scale-[0.98] active:shadow-sm">
                 {/* Touch feedback animation */}
                 <div className="absolute inset-0 bg-violet-500 opacity-0 group-active:opacity-10 transition-opacity rounded-xl" />
