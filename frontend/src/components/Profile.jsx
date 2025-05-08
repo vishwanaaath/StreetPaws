@@ -270,7 +270,7 @@ const Profile = () => {
             </div>
           )} */}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 sm:gap-6 gap-2">
             <div className=" sm:p-4 p-3 bg-violet-50 rounded-lg border border-violet-200">
               <h3 className="font-medium text-gray-700 text-base">
                 Dogs Listed
@@ -415,10 +415,10 @@ const Profile = () => {
 
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60"></div>
                       <div className="absolute bottom-0 left-0 sm:p-4 p-2 text-white">
-                        <h3 className="font-bold text-[17px] sm:text-lg">
+                        <h3 className="font-bold text-[18px] sm:text-lg">
                           {dog.type}
                         </h3>
-                        <p className="sm:text-sm text-[8px]">
+                        <p className="sm:text-sm text-[10px]">
                           {dog.createdAt
                             ? timeSinceListed(dog.createdAt)
                             : "New listing"}
