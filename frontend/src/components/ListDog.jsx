@@ -261,17 +261,15 @@ const ListDog = () => {
       setNotificationMessage("Dog listed successfully!");
       setIsSubmitting(false);
       console.log("Dog Data:", JSON.stringify(dogData, null, 2));
-      resetForm();
-      setTimeout(() => {
+      resetForm(); 
         navigate("/map", {
           state: {
             selectedDog: {
-              lat: Lat, // Correct here
+              lat: Lat, 
               lng: Lon,
             },
           },
-        });
-      }, 2000);
+        }); 
     } catch (error) {
       setIsSubmitting(false);
       console.error("Submission error:", error);
@@ -829,7 +827,7 @@ const ListDog = () => {
                   Listing Dog...
                 </>
               ) : (
-                "List Dog"
+                "List and View"
               )}
             </button>
           </div>

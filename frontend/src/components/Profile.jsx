@@ -358,7 +358,7 @@ const Profile = () => {
               </h3>
             </div>
           </div>
-          <div className="sm:mt-8 mt-2">
+          <div className="sm:mt-8 mt-4">
             <h2 className="sm:text-xl text-lg font-bold text-gray-800 mb-4">
               Recent Listings
             </h2>
@@ -376,7 +376,7 @@ const Profile = () => {
                 strays near them. Hopefully.
               </div>
             ) : (
-              <div className="columns-1  sm:columns-2 lg:columns-3 sm:gap-4 gap-1 space-y-3 sm:space-y-4">
+              <div className="columns-1  sm:columns-2 lg:columns-3 sm:gap-4 gap-1 space-y-1 sm:space-y-4">
                 {dogsData.map((dog) => (
                   <div
                     key={dog._id}
