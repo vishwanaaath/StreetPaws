@@ -147,7 +147,7 @@ const User = () => {
             />
           </svg>
         </Link>
-        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-4 ">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2 ">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
             <div
               className={`w-24 h-24 card rounded-full  bg-gray-200 overflow-hidden
