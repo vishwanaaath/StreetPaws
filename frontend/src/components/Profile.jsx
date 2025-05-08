@@ -195,7 +195,7 @@ const Profile = () => {
         <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
             <div
-              className={`w-26 h-26 ml-0.5 mt-2 sm:mt-0 card rounded-full  bg-gray-200 overflow-hidden
+              className={`w-26 h-26 ml-0.5 mt-2 sm:mb-0 mb-2 sm:mt-0 card rounded-full  bg-gray-200 overflow-hidden
               }`}>
               <img
                 src={
@@ -478,9 +478,7 @@ const Profile = () => {
                       <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
                         <div className="flex justify-between items-end">
                           <div>
-                            <h3 className="font-bold text-[18px] text-white sm:text-lg">
-                              {dog.type}
-                            </h3>
+                            
                             <p className="sm:text-sm text-white text-[10px]">
                               {dog.createdAt
                                 ? timeSinceListed(dog.createdAt)
