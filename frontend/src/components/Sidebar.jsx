@@ -7,10 +7,11 @@ const Sidebar = ({
   sidebarVisible,
   setSidebarVisible,
   setNotificationMessage,
-  setNotificationImage, 
+  setNotificationImage,
 }) => {
   const {
     isAuthenticated,
+    isLoading,
     user: auth0User,
     loginWithRedirect,
     logout,
@@ -88,18 +89,6 @@ const Sidebar = ({
     fetchUserData();
   }, [isAuthenticated, auth0User?.sub, navigate, getAccessTokenSilently]);
 
-  const handleSignUp = async () => {
-    if (!isAuthenticated) {
-      await loginWithRedirect({
-        appState: { returnTo: window.location.pathname },
-        authorizationParams: {
-          screen_hint: "signup",
-          redirect_uri: window.location.origin,
-        },
-      });
-    }
-  };
-
   const handleLogin = async () => {
     if (!isAuthenticated) {
       await loginWithRedirect({
@@ -115,7 +104,7 @@ const Sidebar = ({
         returnTo: "https://streetpaws.onrender.com/",
       },
     });
-    setNotificationMessage("Successfully logged out"); 
+    setNotificationMessage("Successfully logged out");
   };
 
   const handleSidebarLeave = (e) => {
@@ -137,11 +126,24 @@ const Sidebar = ({
       }`}
       onMouseEnter={() => setSidebarVisible(true)}
       onMouseLeave={handleSidebarLeave}>
-      {isAuthenticated && userData ? (
+      {isLoading || !userData ? (
+        // Skeleton Loader
+        <div className="flex w-full p-3 animate-pulse">
+          <div className="flex w-full items-start gap-4">
+            <div className="flex-shrink-0">
+              <div className="w-15 h-15 rounded-full bg-gray-200" />
+            </div>
+            <div className="flex flex-col mt-2.5 justify-center flex-1 space-y-2">
+              <div className="h-4 bg-gray-200 rounded w-3/4" />
+              <div className="h-3 bg-gray-200 rounded w-1/2" />
+            </div>
+          </div>
+        </div>
+      ) : isAuthenticated ? (
         <Link
           to="/profile"
           state={{ user: userData }}
-          className="flex w-full p-3 transition-colors  ">
+          className="flex w-full p-3 transition-colors">
           <div className="flex w-full items-start gap-4">
             <div className="flex-shrink-0">
               <div className="w-15 h-15 rounded-full overflow-hidden    ">
@@ -167,16 +169,14 @@ const Sidebar = ({
         </Link>
       ) : (
         <div className="p-4 space-y-4" onClick={handleLogin}>
-          {/* <button
-            onClick={handleSignUp}
-            className="w-full px-4 py-2 bg-violet-400 cursor-pointer text-white rounded-lg hover:bg-violet-600 transition-colors">
-            Sign Up
-          </button> */}
           <button className="w-full px-4 py-2 border-2 border-violet-400 cursor-pointer text-violet-500 rounded-lg hover:bg-violet-50 transition-colors">
             Login
           </button>
         </div>
       )}
+
+      
+              
 
       <div className="relative mt-5 w-full px-4">
         {/* Add custom scrollbar styles */}
@@ -264,84 +264,6 @@ const Sidebar = ({
           </div>
         )}
       </div>
-
-      {/* <div className="relative mt-5 w-full px-4">
-        <style jsx>{`
-          .custom-scroll::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-          }
-          .custom-scroll::-webkit-scrollbar-track {
-            background: #f5f3ff;
-            border-radius: 4px;
-          }
-          .custom-scroll::-webkit-scrollbar-thumb {
-            background: #a78bfa;
-            border-radius: 4px;
-          }
-          .custom-scroll {
-            scrollbar-width: thin;
-            scrollbar-color: #a78bfa #f5f3ff;
-          }
-        `}</style>
-
-        <button
-          className="w-full px-1 py-2 text-[15px] font-medium rounded-lg border-2 border-violet-400 bg-white hover:bg-violet-50 transition-colors duration-200"
-          onClick={() => {
-            setIsDistanceDropdownOpen(!isDistanceDropdownOpen);
-            if (istypeDropdownOpen) {
-              setIstypeDropdownOpen(false);
-            }
-          }}>
-          <div className="flex items-center  cursor-pointer justify-around">
-            <span>{distance ? `within ${distance} ` : "no limit"}</span>
-
-            <svg
-              className={`w-4 h-4 ml-2 transform transition-transform ${
-                isDistanceDropdownOpen ? "rotate-180" : ""
-              }`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </div>
-        </button>
-
-        {isDistanceDropdownOpen && (
-          <div className="bg-white rounded-lg max-h-[300px] overflow-y-auto">
-            <div className="flex px-3 py-2 gap-2 overflow-x-auto snap-x snap-mandatory touch-pan-x custom-scroll">
-              {["1km", "5km", "10km", , "No limit"].map((distanceOption) => (
-                <div
-                  key={distanceOption}
-                  className="flex-shrink-0 w-32 snap-center">
-                  <div
-                    className={`p-4 text-center  rounded-lg border-2 transition-all duration-200 cursor-pointer ${
-                      distance === distanceOption
-                        ? "border-violet-400 shadow-md bg-violet-50"
-                        : "border-gray-200 hover:border-violet-300 bg-white"
-                    }`}
-                    onClick={() => {
-                      setDistance(distanceOption);
-                      setIsDistanceDropdownOpen(false);
-                    }}>
-                    <span className="text-sm font-medium text-gray-700">
-                      {distanceOption === "No limit"
-                        ? "No limit"
-                        : `${distanceOption}`}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div> */}
 
       {/* Updated buttons section */}
       {isAuthenticated && (
