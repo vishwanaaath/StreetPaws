@@ -24,6 +24,7 @@ const Profile = () => {
   const [showCopiedNotification, setShowCopiedNotification] = useState(false);
   const [copiedText, setCopiedText] = useState("");
   const [isSingleColumn, setIsSingleColumn] = useState(false);
+const [selectedDogImage, setSelectedDogImage] = useState(null);
 
   const navigate = useNavigate(); // Add navigate function
   const isDeveloper = currentUser?.email == "vishwanathgowda951@gmail.com";
@@ -189,6 +190,17 @@ const Profile = () => {
                transform translate-x-1/4 translate-y-1/4 cursor-pointer`}
             />
           </div>
+        </div>
+      )}
+
+      {selectedDogImage && (
+        <div className="fixed inset-0 z-50 backdrop-blur-2xl backdrop-brightness-80 flex items-center justify-center p-4">
+          <img
+            src={selectedDogImage}
+            className="max-w-full max-h-full cursor-pointer object-contain rounded-lg"
+            alt="Dog fullscreen"
+            onClick={() => setSelectedDogImage(null)}
+          />
         </div>
       )}
 
@@ -474,7 +486,13 @@ const Profile = () => {
                         }}
                       />
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70"></div>
+                      <div
+                        onClick={() =>
+                          setSelectedDogImage(
+                            `https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`
+                          )
+                        }
+                        className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70"></div>
                       <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
                         <div className="flex justify-between items-end">
                           <div>
