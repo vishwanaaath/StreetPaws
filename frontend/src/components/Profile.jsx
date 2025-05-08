@@ -194,7 +194,7 @@ const Profile = () => {
         <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-2 sm:mb-8 mb-2">
             <div
-              className={`w-25 h-25 ml-1 mt-2 sm:mt-0 card rounded-full  bg-gray-200 overflow-hidden
+              className={`w-25 h-25 ml-0.5 mt-2 sm:mt-0 card rounded-full  bg-gray-200 overflow-hidden
               }`}>
               <img
                 src={
@@ -272,7 +272,7 @@ const Profile = () => {
                 )}
                 <div className="flex-1 min-w-0">
                   <p
-                    className="text-gray-600 truncate hover:text-clip text-[15px]  hover:min-w-fit"
+                    className="text-gray-600 truncate hover:text-clip text-[14px]  hover:min-w-fit"
                     title={currentUser.email}
                     style={{
                       maxWidth: "200px",
@@ -304,7 +304,7 @@ const Profile = () => {
               <div className="flex items-center gap-2 group">
                 <div className="flex-1 min-w-0">
                   <p
-                    className="text-gray-600 truncate text-[15px] hover:text-clip hover:min-w-fit"
+                    className="text-gray-600 truncate text-[14px] hover:text-clip hover:min-w-fit"
                     title={currentUser.phoneNumber}
                     style={{
                       maxWidth: "200px",
@@ -333,12 +333,12 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-3 sm:gap-4 sm:p-4 p-2 cursor-pointer bg-violet-50 rounded-lg border border-violet-200">
+            {/* <div className="flex items-center gap-3 sm:gap-4 sm:p-4 p-2 cursor-pointer bg-violet-50 rounded-lg border border-violet-200">
               <img src="./images/map.svg" className="w-5 h-5" alt="Map Icon" />
               <h3 className="font-medium text-gray-700 text-base">
                 See all dogs listed, on map.
               </h3>
-            </div>
+            </div> */}
           </div>
           <div className="sm:mt-8 mt-6">
             <h2 className="sm:text-xl text-lg font-bold text-gray-800 mb-4">
