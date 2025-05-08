@@ -192,9 +192,9 @@ const Profile = () => {
 
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-6 sm:mb-8 mb-2">
+          <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-2 sm:mb-8 mb-2">
             <div
-              className={`w-25 h-25 ml-1 card rounded-full  bg-gray-200 overflow-hidden
+              className={`w-25 h-25 ml-1 mt-2 sm:mt-0 card rounded-full  bg-gray-200 overflow-hidden
               }`}>
               <img
                 src={
@@ -209,7 +209,7 @@ const Profile = () => {
 
             {/* ////////////// */}
             <div>
-              <div className="flex items-center sm:mb-2 gap-2">
+              <div className="flex items-center sm:mb-2 mb-0 gap-2">
                 <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
                   {currentUser.username}
                 </h1>
