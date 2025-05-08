@@ -195,14 +195,14 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
 
       {selectedDogImage && (
         <div className="fixed inset-0 z-50 backdrop-blur-2xl backdrop-brightness-80 flex items-center justify-center p-4">
-          <div className="relative max-w-full max-h-full">
+          <div className="relative w-full h-full flex items-center justify-center">
             <img
               src={selectedDogImage}
-              className="cursor-pointer object-contain rounded-lg"
+              className="cursor-pointer object-contain rounded-lg max-w-[90vw] max-h-[90vh] m-auto"
               alt="Dog fullscreen"
               onClick={() => setSelectedDogImage(null)}
             />
-            {/* Add delete button to fullscreen view */}
+            {/* Delete button */}
             <img
               className="absolute top-4 right-4 z-50 sm:w-9 sm:h-9 w-7 h-7 p-1.5 bg-white/80 hover:bg-white rounded-full opacity-90 hover:opacity-100 hover:scale-110 transition-transform cursor-pointer"
               src="./images/delete-dog.svg"
@@ -216,8 +216,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                       selectedDogImage
                   )
                 );
-                
-               setSelectedDogImage(null)
+                setSelectedDogImage(null);
                 setShowDeleteModal(true);
               }}
             />
@@ -495,8 +494,6 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                         alt={dog.type}
                         className="w-full h-auto object-cover"
                       />
-
-            
 
                       <div
                         onClick={() =>
