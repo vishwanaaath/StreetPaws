@@ -216,6 +216,8 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                       selectedDogImage
                   )
                 );
+                
+               setSelectedDogImage(null)
                 setShowDeleteModal(true);
               }}
             />
