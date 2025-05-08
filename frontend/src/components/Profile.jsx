@@ -401,7 +401,24 @@ const Profile = () => {
             </div>
 
             {loading ? (
-              <div className="text-center p-4">Loading listings...</div>
+              <div
+                className={`grid ${
+                  isSingleColumn
+                    ? "grid-cols-1"
+                    : "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+                } gap-4`}>
+                {[...Array(6)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="rounded-xl overflow-hidden bg-gray-200 animate-pulse">
+                    <div className="h-48 bg-gray-300 w-full" />
+                    <div className="p-4 space-y-2">
+                      <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                      <div className="h-3 bg-gray-300 rounded w-1/2"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : fetchError ? (
               <div className=" p-4 text-center">
                 No dogs posted so far. Hopefully, it's because there aren’t any
