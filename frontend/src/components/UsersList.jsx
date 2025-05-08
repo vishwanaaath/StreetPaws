@@ -50,7 +50,7 @@ const UsersList = () => {
 
       <div className="relative z-10 max-w-4xl mx-auto">
         <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-1 p-0.5">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4 pl-4">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4 mt-4 pl-4">
             Community
           </h1>
 
@@ -71,7 +71,7 @@ const UsersList = () => {
                     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                   }
                   alt={user.username}
-                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover shadow-sm"
+                  className="w-14 h-14 sm:w-14 sm:h-14 rounded-full object-cover"
                 />
 
                 <div className="ml-4 flex-1 min-w-0">
@@ -79,33 +79,13 @@ const UsersList = () => {
                     <h2 className="text-base sm:text-lg font-semibold text-gray-800 truncate">
                       {user.username}
                     </h2>
-                    {user.isDeveloper && (
-                      <span className="px-2 py-1 bg-violet-100 text-violet-600 text-xs ">
-                        Creator
-                      </span>
-                    )}
                   </div>
                   <p className="text-sm text-gray-500 mt-1">
                     {user.dogsListed?.length || 0}{" "}
-                    {user.dogsListed?.length === 1 ? "Rescue" : "Rescues"}
+                    {user.dogsListed?.length === 1
+                      ? "dog listed"
+                      : "dogs listed"}
                   </p>
-                </div>
-
-                {/* Premium chevron */}
-                <div className="ml-auto pl-2 transform group-hover:translate-x-1 transition-transform">
-                  <div className="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-violet-400 to-violet-500 rounded-full shadow-sm">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-white"
-                      viewBox="0 0 20 20"
-                      fill="currentColor">
-                      <path
-                        fillRule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
                 </div>
               </div>
             ))}
