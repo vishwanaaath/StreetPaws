@@ -135,7 +135,7 @@ const Profile = () => {
 
   return (
     <div
-      className={`${showProfilePic ? "p-0" : "p-5"}`}
+      className={`${showProfilePic ? "p-0" : "p-2"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
