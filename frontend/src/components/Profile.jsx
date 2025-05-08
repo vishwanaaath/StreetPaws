@@ -450,21 +450,21 @@ const Profile = () => {
                         }}
                       />
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70"></div>
                       <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
                         <div className="flex justify-between items-end">
                           <div>
-                            <h3 className="font-bold text-[18px] sm:text-lg">
+                            <h3 className="font-bold text-[18px] text-white sm:text-lg">
                               {dog.type}
                             </h3>
-                            <p className="sm:text-sm text-[10px]">
+                            <p className="sm:text-sm text-white text-[10px]">
                               {dog.createdAt
                                 ? timeSinceListed(dog.createdAt)
                                 : "New listing"}
                             </p>
                           </div>
                           <svg
-                            className="w-5 h-5 text-violet-600 mb-1 mr-1"
+                            className="w-5 h-5 text-white mb-1 mr-1"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24">
