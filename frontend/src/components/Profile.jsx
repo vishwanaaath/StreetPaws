@@ -248,30 +248,10 @@ const Profile = () => {
             </div>
           </div>
 
-          {/* {isDeveloper && (
-            <div className="mt-6 mb-6 p-4 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="font-medium text-violet-700 mb-2">
-                Developer Dashboard
-              </h3>
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                <div>
-                  <span className="text-violet-600">Total Users:</span>
-                  <span className="ml-2">{currentUser.username}</span>
-                </div>
-                <div>
-                  <span className="text-violet-600">Total Listings:</span>
-                  <span className="ml-2">{currentUser.username}</span>
-                </div>
-                <div>
-                  <span className="text-violet-600">System Health:</span>
-                  <span className="ml-2">🟢 Optimal</span>
-                </div>
-              </div>
-            </div>
-          )} */}
+     
 
           <div className="grid grid-cols-1 md:grid-cols-3 sm:gap-6 gap-2">
-            <div className=" sm:p-4 p-3 bg-violet-50 rounded-lg border border-violet-200">
+            <div className=" sm:p-4 p-2 bg-violet-50 rounded-lg border border-violet-200">
               <h3 className="font-medium text-gray-700 text-base">
                 Dogs Listed
               </h3>
@@ -280,7 +260,7 @@ const Profile = () => {
               </p>
             </div>
 
-            <div className=" sm:p-4 p-3 bg-violet-50 rounded-lg border border-violet-200">
+            <div className=" sm:p-4 p-2 bg-violet-50 rounded-lg border border-violet-200">
               <h3 className="font-medium text-gray-700 text-base">
                 Contact Info
               </h3>
@@ -354,7 +334,7 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-3 sm:gap-4 sm:p-4 p-3 cursor-pointer bg-violet-50 rounded-lg border border-violet-200">
+            <div className="flex items-center gap-3 sm:gap-4 sm:p-4 p-2 cursor-pointer bg-violet-50 rounded-lg border border-violet-200">
               <img src="./images/map.svg" className="w-8 h-8" alt="Map Icon" />
               <h3 className="font-medium text-gray-700 text-base">
                 See all dogs listed, on map.
