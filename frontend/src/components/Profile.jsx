@@ -192,7 +192,7 @@ const Profile = () => {
 
       <div className="max-w-4xl mx-auto">
         {" "}
-        <Link
+        {/* <Link
           to="/map"
           className="inline-flex items-center mb-4 text-violet-500 hover:text-violet-700">
           <svg
@@ -206,7 +206,7 @@ const Profile = () => {
               clipRule="evenodd"
             />
           </svg>
-        </Link>
+        </Link> */}
         <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-4 ">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
             <div
