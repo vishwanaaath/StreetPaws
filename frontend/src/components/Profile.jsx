@@ -191,10 +191,10 @@ const Profile = () => {
       )}
 
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-1 ">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
             <div
-              className={`w-24 h-24 card rounded-full  bg-gray-200 overflow-hidden
+              className={`w-25 h-25 ml-3 card rounded-full  bg-gray-200 overflow-hidden
               }`}>
               <img
                 src={
@@ -278,10 +278,10 @@ const Profile = () => {
               </p>
             </div>
 
-            <div className=" p-4 bg-violet-50 rounded-lg border border-violet-200">
+            <div className=" sm:p-4 p-2 bg-violet-50 rounded-lg border border-violet-200">
               <h3 className="font-medium text-gray-700 mb-2">Contact Info</h3>
 
-              <div className="flex relative items-center gap-2 group mb-2">
+              <div className="flex relative items-center gap-2 group mb-1 sm:mb-2">
                 {showCopiedNotification && (
                   <div className=" absolute bottom-20 right-0 bg-violet-500 text-white px-4 py-2 rounded-lg shadow-lg animate-slide-up">
                     Copied {copiedText} <br /> to clipboard!
@@ -350,14 +350,14 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 p-4 cursor-pointer bg-violet-50 rounded-lg border border-violet-200">
+            <div className="flex items-center gap-3 sm:gap-4 sm:p-4 p-3 cursor-pointer bg-violet-50 rounded-lg border border-violet-200">
               <img src="./images/map.svg" className="w-8 h-8" alt="Map Icon" />
               <h3 className="font-medium text-gray-700 text-base">
                 See all dogs listed, on map.
               </h3>
             </div>
           </div>
-          <div className="sm:mt-8 mt-4">
+          <div className="sm:mt-8 mt-6">
             <h2 className="sm:text-xl text-lg font-bold text-gray-800 mb-4">
               Recent Listings
             </h2>
@@ -411,10 +411,10 @@ const Profile = () => {
 
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60"></div>
                       <div className="absolute bottom-0 left-0 sm:p-4 p-2 text-white">
-                        <h3 className="font-bold text-[16px] sm:text-lg">
+                        <h3 className="font-bold text-[17px] sm:text-lg">
                           {dog.type}
                         </h3>
-                        <p className="sm:text-sm text-[6px]">
+                        <p className="sm:text-sm text-[8px]">
                           {dog.createdAt
                             ? timeSinceListed(dog.createdAt)
                             : "New listing"}
