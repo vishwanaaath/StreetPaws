@@ -427,8 +427,7 @@ const Profile = () => {
                         {/* Bottom content placeholder */}
                         <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
                           <div className="flex justify-between items-end">
-                            <div className="space-y-2">
-                              <div className="h-4 w-24 bg-gray-300 rounded" />
+                            <div className="space-y-2"> 
                               <div className="h-3 w-16 bg-gray-300 rounded" />
                             </div>
                             <div className="h-6 w-6 bg-gray-300 rounded-full" />
