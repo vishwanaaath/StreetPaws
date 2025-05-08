@@ -293,7 +293,7 @@ const Profile = () => {
                 )}
                 <div className="flex-1 min-w-0">
                   <p
-                    className="text-gray-900 truncate hover:text-clip   hover:min-w-fit"
+                    className="text-gray-600 truncate hover:text-clip   hover:min-w-fit"
                     title={currentUser.email}
                     style={{
                       maxWidth: "200px",
@@ -325,7 +325,7 @@ const Profile = () => {
               <div className="flex items-center gap-2 group">
                 <div className="flex-1 min-w-0">
                   <p
-                    className="text-gray-900 truncate hover:text-clip hover:min-w-fit"
+                    className="text-gray-600 truncate hover:text-clip hover:min-w-fit"
                     title={currentUser.phoneNumber}
                     style={{
                       maxWidth: "200px",
