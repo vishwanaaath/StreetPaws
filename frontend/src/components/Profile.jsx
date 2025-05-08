@@ -135,7 +135,7 @@ const Profile = () => {
 
   return (
     <div
-      className={`${showProfilePic ? "p-0" : "p-5"}`}
+      className={`${showProfilePic ? "p-0" : "px-4 py-6"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
@@ -163,18 +163,14 @@ const Profile = () => {
         />
       )}
 
-      {/* Background Animation */}
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 -z-1 pointer-events-none" />
 
       {showProfilePic && currentUser.dp_url && (
-        <div className="absolute z-10 backdrop-blur-2xl backdrop-brightness-80 overflow-hidden w-full flex justify-center items-center min-h-screen min-w-screen">
+        <div className="fixed inset-0 z-10 bg-black/90 backdrop-blur-sm flex items-center justify-center">
           <div className="relative">
             <img
-              src={
-                currentUser.dp_url ||
-                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-              }
-              className="sm:w-88 sm:h-88 cursor-pointer object-cover special-shadow w-58 h-58 rounded-full"
+              src={currentUser.dp_url}
+              className="w-64 h-64 cursor-pointer object-cover rounded-full border-4 border-white"
               alt="Profile"
               onClick={() => setShowProfilePic(false)}
             />
@@ -182,22 +178,19 @@ const Profile = () => {
               onClick={() => setShowUploadModal(true)}
               src="./images/new-dp.svg"
               alt="edit"
-              className={`absolute bottom-6 right-6 bg-white p-2 rounded-full 
-               w-10 h-10 sm:w-11 sm:h-11 sm:bottom-12 sm:right-12
-               transform translate-x-1/4 translate-y-1/4 cursor-pointer`}
+              className="absolute bottom-6 right-6 bg-white p-2 rounded-full w-10 h-10 cursor-pointer shadow-sm"
             />
           </div>
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto">
-        {" "}
+      <div className="max-w-3xl mx-auto">
         <Link
           to="/map"
-          className="inline-flex items-center mb-4 text-violet-500 hover:text-violet-700">
+          className="inline-flex items-center mb-4 text-violet-600 hover:text-violet-800">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 "
+            className="h-5 w-5"
             viewBox="0 0 20 20"
             fill="currentColor">
             <path
@@ -207,33 +200,31 @@ const Profile = () => {
             />
           </svg>
         </Link>
-        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-4 ">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
-            <div
-              className={`w-24 h-24 card rounded-full  bg-gray-200 overflow-hidden
-              }`}>
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-5">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-6">
+            <div className="relative">
               <img
                 src={
                   currentUser.dp_url ||
                   "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                 }
                 alt="Profile"
-                className="w-full h-full cursor-pointer object-cover"
+                className="w-20 h-20 cursor-pointer object-cover rounded-full border-2 border-violet-100"
                 onClick={() => setShowProfilePic(true)}
               />
             </div>
 
-            {/* ////////////// */}
             <div>
-              <div className="flex items-center mb-2 gap-2">
-                <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
+              <div className="flex items-center gap-2 mb-1">
+                <h1 className="text-xl md:text-2xl font-semibold text-gray-800 truncate max-w-[220px]">
                   {currentUser.username}
                 </h1>
                 {isDeveloper && (
                   <div className="group relative">
                     <img
                       src="./images/developer-badge.svg"
-                      className="w-7 h-7 flex-shrink-0 animate-pulse cursor-help"
+                      className="w-6 h-6 flex-shrink-0 animate-pulse cursor-help"
                     />
                     <div className="absolute hidden group-hover:block -top-8 right-0 bg-violet-600 text-white px-2 py-1 rounded text-xs">
                       Site Creator
@@ -241,157 +232,89 @@ const Profile = () => {
                   </div>
                 )}
               </div>
-              {isDeveloper ? (
-                <a href="http://localhost:5173">
-                  <p className="text-gray-600">
-                    Creator & Caretaker of{"    "}
-                    <span className="font-bold text-[18px] text-violet-500">
-                      {" "}
-                      StreetPaws
-                    </span>
-                  </p>
-                </a>
-              ) : (
-                // In your Profile component's JSX, add this where you want the member since date
-                <p className="text-gray-600 mt-2">
-                  Member Since{" "}
-                  {new Date(currentUser.createdAt).toLocaleDateString("en-US", {
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </p>
-              )}
+              <p className="text-gray-600 text-sm">
+                {isDeveloper
+                  ? "Creator of StreetPaws"
+                  : `Member since ${new Date(
+                      currentUser.createdAt
+                    ).toLocaleDateString("en-US", {
+                      month: "short",
+                      year: "numeric",
+                    })}`}
+              </p>
             </div>
           </div>
 
-          {/* {isDeveloper && (
-            <div className="mt-6 mb-6 p-4 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="font-medium text-violet-700 mb-2">
-                Developer Dashboard
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
+            <div className="p-3 bg-violet-50 rounded-lg border border-violet-100">
+              <h3 className="text-sm font-medium text-gray-600 mb-1">
+                Dogs Listed
               </h3>
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                <div>
-                  <span className="text-violet-600">Total Users:</span>
-                  <span className="ml-2">{currentUser.username}</span>
-                </div>
-                <div>
-                  <span className="text-violet-600">Total Listings:</span>
-                  <span className="ml-2">{currentUser.username}</span>
-                </div>
-                <div>
-                  <span className="text-violet-600">System Health:</span>
-                  <span className="ml-2">🟢 Optimal</span>
-                </div>
-              </div>
-            </div>
-          )} */}
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className=" p-4 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="font-medium text-gray-700 mb-2">Dogs Listed</h3>
-              <p className="text-3xl font-bold text-violet-500">
+              <p className="text-2xl font-bold text-violet-600">
                 {currentUser.dogsListed.length}
               </p>
             </div>
 
-            <div className=" p-4 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="font-medium text-gray-700 mb-2">Contact Info</h3>
-
-              <div className="flex relative items-center gap-2 group mb-2">
-                {showCopiedNotification && (
-                  <div className=" absolute bottom-20 right-0 bg-violet-500 text-white px-4 py-2 rounded-lg shadow-lg animate-slide-up">
-                    Copied {copiedText} <br /> to clipboard!
-                  </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <p
-                    className="text-gray-900 truncate hover:text-clip   hover:min-w-fit"
-                    title={currentUser.email}
-                    style={{
-                      maxWidth: "200px",
-                      transition: "max-width 0.2s ease-in-out",
-                    }}>
+            <div className="p-3 bg-violet-50 rounded-lg border border-violet-100">
+              <h3 className="text-sm font-medium text-gray-600 mb-2">
+                Contact
+              </h3>
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-gray-800 truncate">
                     {currentUser.email}
                   </p>
+                  <button
+                    onClick={() => handleCopy(currentUser.email)}
+                    className="text-violet-600 hover:text-violet-700">
+                    <CopyIcon />
+                  </button>
                 </div>
-                <button
-                  onClick={() => handleCopy(currentUser.email)}
-                  className="text-violet-500 cursor-pointer hover:text-violet-700 transition-colors"
-                  aria-label="Copy email">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                    />
-                  </svg>
-                </button>
-              </div>
-
-              {/* Phone Number */}
-              <div className="flex items-center gap-2 group">
-                <div className="flex-1 min-w-0">
-                  <p
-                    className="text-gray-900 truncate hover:text-clip hover:min-w-fit"
-                    title={currentUser.phoneNumber}
-                    style={{
-                      maxWidth: "200px",
-                      transition: "max-width 0.2s ease-in-out",
-                    }}>
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-gray-800 truncate">
                     {currentUser.phoneNumber}
                   </p>
+                  <button
+                    onClick={() => handleCopy(currentUser.phoneNumber)}
+                    className="text-violet-600 hover:text-violet-700">
+                    <CopyIcon />
+                  </button>
                 </div>
-                <button
-                  onClick={() => handleCopy(currentUser.phoneNumber)}
-                  className="text-violet-500 cursor-pointer hover:text-violet-700 transition-colors"
-                  aria-label="Copy phone number">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                    />
-                  </svg>
-                </button>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 p-4 cursor-pointer bg-violet-50 rounded-lg border border-violet-200">
-              <img src="./images/map.svg" className="w-8 h-8" alt="Map Icon" />
-              <h3 className="font-medium text-gray-700 text-base">
-                See all dogs listed, on map.
-              </h3>
+            <div
+              className="p-3 bg-violet-50 rounded-lg border border-violet-100 cursor-pointer hover:bg-violet-100 transition-colors"
+              onClick={() => navigate("/map")}>
+              <div className="flex items-center gap-2">
+                <img src="./images/map.svg" className="w-6 h-6" alt="Map" />
+                <span className="text-sm font-medium text-gray-700">
+                  View Map
+                </span>
+              </div>
             </div>
           </div>
-          <div className="mt-8">
-            <h2 className="sm:text-xl text-lg font-bold text-gray-800 mb-4">
+
+          <div>
+            <h2 className="text-lg font-semibold text-gray-800 mb-3">
               Recent Listings
             </h2>
 
             {loading ? (
-              <div className="text-center p-4">Loading listings...</div>
+              <div className="text-center py-4 text-gray-500">
+                Loading listings...
+              </div>
             ) : fetchError ? (
-              <div className=" p-4 text-center">
-                No dogs posted so far. Hopefully, it's because there aren’t any
-                strays near them. Hopefully.
+              <div className="text-center py-4 text-gray-500">
+                No dogs posted yet. Hopefully because there are no strays
+                nearby.
               </div>
             ) : dogsData.length === 0 ? (
-              <div className="text-gray-500 p-4 text-center">
-                No dogs posted so far. Hopefully, it's because there aren’t any
-                strays near them. Hopefully.
+              <div className="text-center py-4 text-gray-500">
+                No listings found. Spread some love by helping a stray!
               </div>
             ) : (
-              <div className="columns-1  sm:columns-2 lg:columns-3 sm:gap-4 gap-3 sm:space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {dogsData.map((dog) => (
                   <div
                     key={dog._id}
@@ -400,51 +323,52 @@ const Profile = () => {
                         state: {
                           selectedDog: {
                             id: dog._id,
-                            lat: dog.location.coordinates[1], // Correct here
+                            lat: dog.location.coordinates[1],
                             lng: dog.location.coordinates[0],
                           },
                         },
                       })
                     }
-                    className="break-inside-avoid mb-4">
-                    <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
+                    className="group relative cursor-pointer">
+                    <div className="aspect-square rounded-xl overflow-hidden border border-gray-100">
                       <img
                         src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                         alt={dog.type}
-                        className="w-full h-auto object-cover"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                       />
+                    </div>
 
-                      <img
-                        className="absolute top-2 right-2 z-5 sm:w-7 sm:h-7 w-6 h-6 p-1 hover:bg-white/40 bg-white/20 rounded-full opacity-60 hover:opacity-100 hover:scale-110 transition-transform cursor-pointer"
-                        src="./images/delete.svg"
-                        alt="Delete"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedDog(dog);
-                          setShowDeleteModal(true);
-                        }}
-                      />
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedDog(dog);
+                        setShowDeleteModal(true);
+                      }}
+                      className="absolute top-2 right-2 p-1.5 bg-white/80 hover:bg-white rounded-full shadow-sm">
+                      <TrashIcon className="w-4 h-4 text-red-600" />
+                    </button>
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60"></div>
-                      <div className="absolute bottom-0 left-0 sm:p-4 p-2 text-white">
-                        <h3 className="font-bold text-[22px] sm:text-lg">
-                          {dog.type}
-                        </h3>
-                        <p className="sm:text-sm text-[12px]">
-                          {dog.createdAt
-                            ? timeSinceListed(dog.createdAt)
-                            : "New listing"}
-                        </p>
-                      </div>
+                    <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/40 to-transparent">
+                      <h3 className="text-sm font-semibold text-white">
+                        {dog.type}
+                      </h3>
+                      <p className="text-xs text-white/90">
+                        {timeSinceListed(dog.createdAt)}
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
             )}
           </div>
-          {/* /////// */}
-        </div>{" "}
+        </div>
       </div>
+
+      {showCopiedNotification && (
+        <div className="fixed bottom-4 right-4 bg-violet-600 text-white px-4 py-2 rounded-lg shadow-lg animate-fade-in">
+          Copied to clipboard!
+        </div>
+      )}
     </div>
   );
 };
