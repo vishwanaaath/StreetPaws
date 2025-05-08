@@ -2,35 +2,32 @@ import React from "react";
 
 const UserLoader = () => {
   return (
-    <div className="relative min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen bg-gray-50 p-1 flex flex-col">
       {/* Background Animation */}
-      <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 z-0 pointer-events-none" />
+      <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 z-0" />
 
-      <div className="relative z-10 max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-10">
-          Community Members
-        </h1>
+      <div className="relative z-10 max-w-4xl mx-auto flex-1 w-full">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-1 p-0.5 h-full min-h-[calc(100vh-4rem)] flex flex-col">
+          <h1 className="text-2xl font-bold text-violet-600 mb-4 mt-5 pl-4">
+            Community
+          </h1>
 
-        <div className="space-y-4 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0">
-          {Array.from({ length: 6 }).map((_, index) => (
-            <div
-              key={index}
-              className="animate-pulse flex items-center justify-between bg-white shadow-sm sm:shadow-md rounded-xl px-4 py-3 sm:p-5">
-              {/* Profile Picture Placeholder */}
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gray-300" />
+          <div className="flex-1 overflow-y-auto space-y-2 pb-4">
+            {[...Array(5)].map((_, index) => (
+              <div
+                key={index}
+                className="group relative flex items-center p-2 sm:p-4 bg-white">
+                {/* Skeleton Profile Image */}
+                <div className="w-14 h-14 rounded-full bg-gray-200 animate-pulse" />
 
-              {/* Text Placeholders */}
-              <div className="ml-4 flex-1 min-w-0 space-y-2">
-                <div className="h-4 bg-gray-300 rounded w-2/3" />
-                <div className="h-3 bg-gray-200 rounded w-1/3" />
+                {/* Skeleton Text */}
+                <div className="ml-4 flex-1 min-w-0 space-y-2">
+                  <div className="h-5 bg-gray-200 rounded w-32 animate-pulse" />
+                  <div className="h-4 bg-gray-200 rounded w-24 animate-pulse" />
+                </div>
               </div>
-
-              {/* Icon Placeholder */}
-              <div className="ml-auto pl-2 sm:pl-4">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gray-300 rounded-full" />
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
