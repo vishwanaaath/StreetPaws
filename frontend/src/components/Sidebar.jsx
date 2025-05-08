@@ -126,7 +126,7 @@ const Sidebar = ({
       }`}
       onMouseEnter={() => setSidebarVisible(true)}
       onMouseLeave={handleSidebarLeave}>
-      {isLoading || !userData ? (
+      {isLoading || (isAuthenticated && !userData) ? (
         // Skeleton Loader
         <div className="flex w-full p-3 animate-pulse">
           <div className="flex w-full items-start gap-4">
