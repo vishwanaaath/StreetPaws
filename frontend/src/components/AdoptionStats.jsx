@@ -164,12 +164,12 @@ const AdoptionStats = () => {
           <div className="space-y-6">
             <button
               onClick={() => handleNavigation("/map")}
-              className="w-[450px] py-5 px-4 bg-gradient-to-r cursor-pointer from-violet-600 to-purple-500 text-white text-2xl font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
+              className="sm:w-[450px] w-full py-5 px-4 bg-gradient-to-r cursor-pointer from-violet-600 to-purple-500 text-white text-2xl font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
               Adopt a Dog
             </button>
             <button
               onClick={handleListDog}
-              className="w-[450px] py-5 px-4 bg-gradient-to-r from-purple-500 to-violet-600 text-white text-2xl font-bold cursor-pointer rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
+              className="sm:w-[450px] w-full py-5 px-4 bg-gradient-to-r from-purple-500 to-violet-600 text-white text-2xl font-bold cursor-pointer rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
               List a Dog
             </button>
           </div>
