@@ -345,7 +345,7 @@ const Profile = () => {
                         setShowDeleteModal(true);
                       }}
                       className="absolute top-2 right-2 p-1.5 bg-white/80 hover:bg-white rounded-full shadow-sm">
-                      <TrashIcon className="w-4 h-4 text-red-600" />
+                        <img src="./images/delete-dog.svg" alt="" />
                     </button>
 
                     <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/40 to-transparent">
