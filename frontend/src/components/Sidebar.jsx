@@ -112,7 +112,7 @@ const Sidebar = ({
     setSidebarVisible(false);
     logout({
       logoutParams: {
-        returnTo: "http://localhost:5173/",
+        returnTo: "https://streetpaws.onrender.com/",
       },
     });
     setNotificationMessage("Successfully logged out"); 
