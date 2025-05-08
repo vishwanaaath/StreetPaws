@@ -131,11 +131,11 @@ const Sidebar = ({
         <div className="flex w-full p-3 animate-pulse">
           <div className="flex w-full items-start gap-4">
             <div className="flex-shrink-0">
-              <div className="w-15 h-15 rounded-full bg-gray-200" />
+              <div className="w-15 h-15 rounded-full bg-violet-200" />
             </div>
             <div className="flex flex-col mt-2.5 justify-center flex-1 space-y-2">
-              <div className="h-4 bg-gray-200 rounded w-3/4" />
-              <div className="h-3 bg-gray-200 rounded w-1/2" />
+              <div className="h-4 bg-violet-200 rounded w-3/4" />
+              <div className="h-3 bg-violet-200 rounded w-1/2" />
             </div>
           </div>
         </div>
@@ -174,9 +174,6 @@ const Sidebar = ({
           </button>
         </div>
       )}
-
-      
-              
 
       <div className="relative mt-5 w-full px-4">
         {/* Add custom scrollbar styles */}

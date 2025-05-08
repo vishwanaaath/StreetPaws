@@ -454,19 +454,18 @@ const Profile = () => {
                             className="w-5 h-5 z-5 text-white cursor-pointer mb-1 mr-1"
                             fill="none"
                             stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            onClick=
-                            {() =>
+                            viewBox="0 0 24 24"
+                            onClick={() =>
                               navigate("/map", {
                                 state: {
                                   selectedDog: {
                                     id: dog._id,
-                                    lat: dog.location.coordinates[1], // Correct here
+                                    lat: dog.location.coordinates[1], // Correct order
                                     lng: dog.location.coordinates[0],
                                   },
                                 },
                               })
-                            }
+                            }>
                             <path
                               strokeLinecap="round"
                               strokeLinejoin="round"
