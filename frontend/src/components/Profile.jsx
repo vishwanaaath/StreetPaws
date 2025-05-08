@@ -451,11 +451,12 @@ const Profile = () => {
                             </p>
                           </div>
                           <svg
-                            className="w-5 h-5 text-white cursor-pointer mb-1 mr-1"
+                            className="w-5 h-5 z-5 text-white cursor-pointer mb-1 mr-1"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24">
-                            onClick={() =>
+                            onClick=
+                            {() =>
                               navigate("/map", {
                                 state: {
                                   selectedDog: {
