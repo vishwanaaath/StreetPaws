@@ -435,8 +435,8 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
 
             {loading ? (
               <div
-                className={`columns-${
-                  isSingleColumn ? "1" : "2"
+                className={`${
+                  isSingleColumn ? "columns-1" : "columns-2"
                 } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
                 {[...Array(6)].map((_, index) => {
                   // Create different aspect ratios: 1:1, 3:4, and 9:6 (3:2)
@@ -483,8 +483,8 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
               </div>
             ) : (
               <div
-                className={`columns-${
-                  isSingleColumn ? "1" : "2"
+                className={`${
+                  isSingleColumn ? "columns-1" : "columns-2"
                 } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
                 {dogsData.map((dog) => (
                   <div key={dog._id} className="break-inside-avoid mb-2">

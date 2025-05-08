@@ -115,9 +115,6 @@ const User = () => {
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
       }}>
-     
-   
-
       {/* Background Animation */}
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 -z-1 pointer-events-none" />
 
@@ -133,7 +130,6 @@ const User = () => {
               alt="Profile"
               onClick={() => setShowProfilePic(false)}
             />
-          
           </div>
         </div>
       )}
@@ -146,7 +142,7 @@ const User = () => {
               className="cursor-pointer object-contain rounded-lg max-w-[90vw] max-h-[90vh] m-auto"
               alt="Dog fullscreen"
               onClick={() => setSelectedDogImage(null)}
-            /> 
+            />
           </div>
         </div>
       )}
@@ -362,8 +358,8 @@ const User = () => {
 
             {loading ? (
               <div
-                className={`columns-${
-                  isSingleColumn ? "1" : "2"
+                className={`${
+                  isSingleColumn ? "columns-1" : "columns-2"
                 } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
                 {[...Array(6)].map((_, index) => {
                   // Create different aspect ratios: 1:1, 3:4, and 9:6 (3:2)
@@ -410,8 +406,8 @@ const User = () => {
               </div>
             ) : (
               <div
-                className={`columns-${
-                  isSingleColumn ? "1" : "2"
+                className={`${
+                  isSingleColumn ? "columns-1" : "columns-2"
                 } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
                 {dogsData.map((dog) => (
                   <div key={dog._id} className="break-inside-avoid mb-2">
