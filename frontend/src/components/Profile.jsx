@@ -496,16 +496,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                         className="w-full h-auto object-cover"
                       />
 
-                      <img
-                        className="absolute top-2 right-2 z-5 sm:w-7 sm:h-7 w-6 h-6 p-1 hover:bg-white/40 bg-white/20 rounded-full opacity-60 hover:opacity-100 hover:scale-110 transition-transform cursor-pointer"
-                        src="./images/delete.svg"
-                        alt="Delete"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedDog(dog);
-                          setShowDeleteModal(true);
-                        }}
-                      />
+            
 
                       <div
                         onClick={() =>
