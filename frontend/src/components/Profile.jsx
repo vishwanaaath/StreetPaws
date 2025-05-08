@@ -191,7 +191,7 @@ const Profile = () => {
       )}
 
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-4 ">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-1 ">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
             <div
               className={`w-24 h-24 card rounded-full  bg-gray-200 overflow-hidden
@@ -390,7 +390,7 @@ const Profile = () => {
                         },
                       })
                     }
-                    className="break-inside-avoid mb-4">
+                    className="break-inside-avoid mb-2">
                     <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
                       <img
                         src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}

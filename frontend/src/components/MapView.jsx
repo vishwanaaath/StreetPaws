@@ -295,7 +295,7 @@ const MapView = () => {
         />
       )}
 
-      {location && (
+     
         <div
           className="edge-detector fixed left-0 top-0 h-full w-4 z-[1000] transition-all duration-200"
           onMouseEnter={() => setSidebarVisible(true)}
@@ -308,8 +308,7 @@ const MapView = () => {
             }`}>
             <img src="./images/left.svg" alt="Toggle sidebar" />
           </div>
-        </div>
-      )}
+        </div> 
 
       <Sidebar
         sidebarVisible={sidebarVisible}
