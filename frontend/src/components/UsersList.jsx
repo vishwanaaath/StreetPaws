@@ -16,7 +16,7 @@ const UsersList = () => {
         const token = await getAccessTokenSilently();
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/users`,
-          { headers: { Authorization: `Bearer ${token}` }}
+          { headers: { Authorization: `Bearer ${token}` } }
         );
         setUsers(response.data);
       } catch (error) {
@@ -33,7 +33,7 @@ const UsersList = () => {
       const token = await getAccessTokenSilently();
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/users/mongo/${listerId}`,
-        { headers: { Authorization: `Bearer ${token}` }}
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       navigate("/user", { state: { user: response.data } });
     } catch (error) {
@@ -44,34 +44,36 @@ const UsersList = () => {
   if (loading) return <UserLoader />;
 
   return (
-    <div className="relative min-h-screen bg-gray-50 pt-6 px-4 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen bg-gray-50 p-1">
       {/* Background Animation */}
-      <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 -z-1 pointer-events-none" />
+      <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 z-0" />
 
       <div className="relative z-10 max-w-4xl mx-auto">
-        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5">
-          <h1 className="text-2xl font-bold text-gray-800 mb-8 pl-2 sm:pl-0">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-1 p-0.5">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4 pl-4">
             Community
           </h1>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             {users.map((user) => (
               <div
                 key={user._id}
                 onClick={() => handleListerProfileClick(user._id)}
                 className="group relative cursor-pointer flex items-center p-3 sm:p-4 rounded-xl 
                   bg-white shadow-sm hover:shadow-md transition-all duration-200
-                  active:scale-[0.98] active:shadow-sm 
-                 hover:bg-violet-50/30">
+                  active:scale-[0.98] active:shadow-sm">
                 {/* Touch feedback animation */}
                 <div className="absolute inset-0 bg-violet-500 opacity-0 group-active:opacity-10 transition-opacity rounded-xl" />
-                
+
                 <img
-                  src={user.dp_url || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
+                  src={
+                    user.dp_url ||
+                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                  }
                   alt={user.username}
-                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover  shadow-sm"
+                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover shadow-sm"
                 />
-                
+
                 <div className="ml-4 flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <h2 className="text-base sm:text-lg font-semibold text-gray-800 truncate">
@@ -84,7 +86,8 @@ const UsersList = () => {
                     )}
                   </div>
                   <p className="text-sm text-gray-500 mt-1">
-                    {user.dogsListed?.length || 0} {user.dogsListed?.length === 1 ? "Rescue" : "Rescues"}
+                    {user.dogsListed?.length || 0}{" "}
+                    {user.dogsListed?.length === 1 ? "Rescue" : "Rescues"}
                   </p>
                 </div>
 
