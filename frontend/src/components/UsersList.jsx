@@ -16,7 +16,7 @@ const UsersList = () => {
         const token = await getAccessTokenSilently();
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/users`,
-          { headers: { Authorization: `Bearer ${token}` }
+          { headers: { Authorization: `Bearer ${token}` }}
         );
         setUsers(response.data);
       } catch (error) {
@@ -33,7 +33,7 @@ const UsersList = () => {
       const token = await getAccessTokenSilently();
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/users/mongo/${listerId}`,
-        { headers: { Authorization: `Bearer ${token}` }
+        { headers: { Authorization: `Bearer ${token}` }}
       );
       navigate("/user", { state: { user: response.data } });
     } catch (error) {
