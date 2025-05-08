@@ -23,6 +23,7 @@ const Profile = () => {
   const [selectedDog, setSelectedDog] = useState(null);
   const [showCopiedNotification, setShowCopiedNotification] = useState(false);
   const [copiedText, setCopiedText] = useState("");
+  const [isSingleColumn, setIsSingleColumn] = useState(false);
 
   const navigate = useNavigate(); // Add navigate function
   const isDeveloper = currentUser?.email == "vishwanathgowda951@gmail.com";
@@ -341,9 +342,29 @@ const Profile = () => {
             </div> */}
           </div>
           <div className="sm:mt-8 mt-6">
-            <h2 className="sm:text-xl text-lg font-bold text-gray-800 mb-4">
-              Recent Listings
-            </h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="sm:text-xl text-lg font-bold text-gray-800">
+                Recent Listings
+              </h2>
+              <div
+                className="sm:hidden cursor-pointer p-2"
+                onClick={() => setIsSingleColumn(!isSingleColumn)}>
+                <svg
+                  className={`w-6 h-6 ${
+                    isSingleColumn ? "text-violet-500" : "text-gray-400"
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </div>
+            </div>
 
             {loading ? (
               <div className="text-center p-4">Loading listings...</div>
