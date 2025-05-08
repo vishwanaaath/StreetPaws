@@ -192,7 +192,7 @@ const Profile = () => {
 
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-6 sm:mb-8 mb-2">
             <div
               className={`w-25 h-25 ml-1 card rounded-full  bg-gray-200 overflow-hidden
               }`}>
@@ -227,7 +227,7 @@ const Profile = () => {
               </div>
               {isDeveloper ? (
                 <a href="https://streetpaws.onrender.com">
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 sm:mt-2 mt-0">
                     Creator & Caretaker of{"    "}
                     <span className="font-bold text-[18px] text-violet-500">
                       {" "}
@@ -237,7 +237,7 @@ const Profile = () => {
                 </a>
               ) : (
                 // In your Profile component's JSX, add this where you want the member since date
-                <p className="text-gray-600 mt-2">
+                <p className="text-gray-600 sm:mt-2 mt-0">
                   Member Since{" "}
                   {new Date(currentUser.createdAt).toLocaleDateString("en-US", {
                     month: "long",
@@ -247,8 +247,6 @@ const Profile = () => {
               )}
             </div>
           </div>
-
-     
 
           <div className="grid grid-cols-1 md:grid-cols-3 sm:gap-6 gap-2">
             <div className=" sm:p-4 p-2 bg-violet-50 rounded-lg border border-violet-200">
@@ -273,7 +271,7 @@ const Profile = () => {
                 )}
                 <div className="flex-1 min-w-0">
                   <p
-                    className="text-gray-600 truncate hover:text-clip   hover:min-w-fit"
+                    className="text-gray-600 truncate hover:text-clip text-[18px]  hover:min-w-fit"
                     title={currentUser.email}
                     style={{
                       maxWidth: "200px",
@@ -305,7 +303,7 @@ const Profile = () => {
               <div className="flex items-center gap-2 group">
                 <div className="flex-1 min-w-0">
                   <p
-                    className="text-gray-600 truncate hover:text-clip hover:min-w-fit"
+                    className="text-gray-600 truncate text-[18px] hover:text-clip hover:min-w-fit"
                     title={currentUser.phoneNumber}
                     style={{
                       maxWidth: "200px",
