@@ -271,15 +271,19 @@ const Profile = () => {
           )} */}
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className=" p-4 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="font-medium text-gray-700 mb-2">Dogs Listed</h3>
+            <div className=" sm:p-4 p-3 bg-violet-50 rounded-lg border border-violet-200">
+              <h3 className="font-medium text-gray-700 text-base">
+                Dogs Listed
+              </h3>
               <p className="text-3xl font-bold text-violet-500">
                 {currentUser.dogsListed.length}
               </p>
             </div>
 
-            <div className=" sm:p-4 p-2 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="font-medium text-gray-700 mb-2">Contact Info</h3>
+            <div className=" sm:p-4 p-3 bg-violet-50 rounded-lg border border-violet-200">
+              <h3 className="font-medium text-gray-700 text-base">
+                Contact Info
+              </h3>
 
               <div className="flex relative items-center gap-2 group mb-1 sm:mb-2">
                 {showCopiedNotification && (
