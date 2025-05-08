@@ -411,10 +411,10 @@ const Profile = () => {
 
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-60"></div>
                       <div className="absolute bottom-0 left-0 sm:p-4 p-2 text-white">
-                        <h3 className="font-bold text-[22px] sm:text-lg">
+                        <h3 className="font-bold text-[18px] sm:text-lg">
                           {dog.type}
                         </h3>
-                        <p className="sm:text-sm text-[12px]">
+                        <p className="sm:text-sm text-[8px]">
                           {dog.createdAt
                             ? timeSinceListed(dog.createdAt)
                             : "New listing"}
