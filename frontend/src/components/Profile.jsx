@@ -192,7 +192,7 @@ const Profile = () => {
 
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
-          <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-2 sm:mb-8 mb-2">
+          <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-3">
             <div
               className={`w-25 h-25 ml-0.5 mt-2 sm:mt-0 card rounded-full  bg-gray-200 overflow-hidden
               }`}>
@@ -270,7 +270,7 @@ const Profile = () => {
                     Copied {copiedText} <br /> to clipboard!
                   </div>
                 )}
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 sm:mt-1">
                   <p
                     className="text-gray-600 truncate hover:text-clip text-[14px]  hover:min-w-fit"
                     title={currentUser.email}
@@ -358,7 +358,7 @@ const Profile = () => {
                 strays near them. Hopefully.
               </div>
             ) : (
-              <div className="columns-2  sm:columns-2 lg:columns-3 sm:gap-4 gap-2 space-y-3 sm:space-y-4">
+              <div className="columns-2  sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4">
                 {dogsData.map((dog) => (
                   <div
                     key={dog._id}
