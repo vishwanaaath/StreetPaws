@@ -136,7 +136,7 @@ const Profile = () => {
 
   return (
     <div
-      className={`${showProfilePic ? "p-0" : "p-1"}`}
+      className={`sm:pt-4 ${showProfilePic ? "p-0" : "p-1"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
@@ -402,17 +402,15 @@ const Profile = () => {
 
             {loading ? (
               <div
-                className={`grid ${
-                  isSingleColumn
-                    ? "grid-cols-1"
-                    : "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
-                } gap-4`}>
-                {[...Array(6)].map((_, index) => (
+                className={`columns-${
+                  isSingleColumn ? "1" : "2"
+                } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
+                {[...Array(6)].map((_, i) => (
                   <div
-                    key={index}
-                    className="rounded-xl overflow-hidden bg-gray-200 animate-pulse">
-                    <div className="h-48 bg-gray-300 w-full" />
-                    <div className="p-4 space-y-2">
+                    key={i}
+                    className="w-full bg-gray-200 rounded-xl animate-pulse break-inside-avoid">
+                    <div className="aspect-[3/4] bg-gray-300 rounded-t-xl"></div>
+                    <div className="p-2 space-y-2">
                       <div className="h-4 bg-gray-300 rounded w-3/4"></div>
                       <div className="h-3 bg-gray-300 rounded w-1/2"></div>
                     </div>
