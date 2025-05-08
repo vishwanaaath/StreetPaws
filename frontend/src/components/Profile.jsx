@@ -136,7 +136,7 @@ const Profile = () => {
 
   return (
     <div
-      className={` sm:pt-4 ${showProfilePic ? "p-0" : "p-1"}`}
+      className={` sm:pt-6 ${showProfilePic ? "p-0" : "p-1"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
@@ -405,23 +405,39 @@ const Profile = () => {
                 className={`columns-${
                   isSingleColumn ? "1" : "2"
                 } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
-                {[...Array(6)].map((_, index) => (
-                  <div key={index} className="break-inside-avoid mb-2">
-                    <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse">
-                      <div className="w-full aspect-square bg-gray-200 rounded-xl" />
+                {[...Array(6)].map((_, index) => {
+                  // Create different aspect ratios: 1:1, 3:4, and 9:6 (3:2)
+                  const ratios = [
+                    { class: "aspect-square" }, // 1:1
+                    { class: "aspect-[3/4]" }, // 3:4
+                    { class: "aspect-[3/2]" }, // 9:6
+                    { class: "aspect-square" }, // Repeat pattern
+                    { class: "aspect-[3/4]" },
+                    { class: "aspect-[3/2]" },
+                  ];
 
-                      <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
-                        <div className="flex justify-between items-end">
-                          <div className="space-y-2">
-                            <div className="h-4 w-24 bg-gray-300 rounded" />
-                            <div className="h-3 w-16 bg-gray-300 rounded" />
+                  return (
+                    <div key={index} className="break-inside-avoid mb-2">
+                      <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse">
+                        {/* Image placeholder with variable ratio */}
+                        <div
+                          className={`w-full bg-gray-200 rounded-xl ${ratios[index].class}`}
+                        />
+
+                        {/* Bottom content placeholder */}
+                        <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
+                          <div className="flex justify-between items-end">
+                            <div className="space-y-2">
+                              <div className="h-4 w-24 bg-gray-300 rounded" />
+                              <div className="h-3 w-16 bg-gray-300 rounded" />
+                            </div>
+                            <div className="h-6 w-6 bg-gray-300 rounded-full" />
                           </div>
-                          <div className="h-6 w-6 bg-gray-300 rounded-full" />
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             ) : fetchError ? (
               <div className=" p-4 text-center">
