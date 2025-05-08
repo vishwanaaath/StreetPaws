@@ -191,22 +191,7 @@ const Profile = () => {
       )}
 
       <div className="max-w-4xl mx-auto">
-        {" "}
-        {/* <Link
-          to="/map"
-          className="inline-flex items-center mb-4 text-violet-500 hover:text-violet-700">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 "
-            viewBox="0 0 20 20"
-            fill="currentColor">
-            <path
-              fillRule="evenodd"
-              d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </Link> */}
+   
         <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-4 ">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
             <div
@@ -373,7 +358,7 @@ const Profile = () => {
               </h3>
             </div>
           </div>
-          <div className="mt-8">
+          <div className="sm:mt-8 mt-2">
             <h2 className="sm:text-xl text-lg font-bold text-gray-800 mb-4">
               Recent Listings
             </h2>
@@ -391,7 +376,7 @@ const Profile = () => {
                 strays near them. Hopefully.
               </div>
             ) : (
-              <div className="columns-1  sm:columns-2 lg:columns-3 sm:gap-4 gap-3 sm:space-y-4">
+              <div className="columns-1  sm:columns-2 lg:columns-3 sm:gap-4 gap-1 space-y-3 sm:space-y-4">
                 {dogsData.map((dog) => (
                   <div
                     key={dog._id}
