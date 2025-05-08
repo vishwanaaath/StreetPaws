@@ -7,7 +7,7 @@ const DeleteConfirmationModal = ({
 }) => {
   return (
     <div className="fixed inset-0 bg-black  bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl sm:scale-100 scale-80 shadow-2xl w-full max-w-md px-8 py-6 text-gray-800">
+      <div className="bg-white rounded-2xl sm:scale-100 scale-85 shadow-2xl w-full max-w-md px-8 py-6 text-gray-800">
         <div className="flex items-center mb-4">
           <img src="./images/danger.svg" className="w-8 mr-2 h-8" alt="" />
           <h3 className="text-2xl font-semibold text-violet-500">

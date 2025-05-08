@@ -205,7 +205,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
             {/* Add delete button to fullscreen view */}
             <img
               className="absolute top-4 right-4 z-50 sm:w-9 sm:h-9 w-7 h-7 p-1.5 bg-white/80 hover:bg-white rounded-full opacity-90 hover:opacity-100 hover:scale-110 transition-transform cursor-pointer"
-              src="./images/delete.svg"
+              src="./images/delete-dog.svg"
               alt="Delete"
               onClick={(e) => {
                 e.stopPropagation();
