@@ -375,7 +375,7 @@ const Profile = () => {
                 strays near them. Hopefully.
               </div>
             ) : (
-              <div className="columns-2  sm:columns-2 lg:columns-3 sm:gap-4 gap-1 space-y-1 sm:space-y-4">
+              <div className="columns-2  sm:columns-2 lg:columns-3 sm:gap-4 gap-2 space-y-3 sm:space-y-4">
                 {dogsData.map((dog) => (
                   <div
                     key={dog._id}
