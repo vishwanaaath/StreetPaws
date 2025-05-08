@@ -418,20 +418,7 @@ const Profile = () => {
                   isSingleColumn ? "1" : "2"
                 } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
                 {dogsData.map((dog) => (
-                  <div
-                    key={dog._id}
-                    onClick={() =>
-                      navigate("/map", {
-                        state: {
-                          selectedDog: {
-                            id: dog._id,
-                            lat: dog.location.coordinates[1], // Correct here
-                            lng: dog.location.coordinates[0],
-                          },
-                        },
-                      })
-                    }
-                    className="break-inside-avoid mb-2">
+                  <div key={dog._id} className="break-inside-avoid mb-2">
                     <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
                       <img
                         src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
@@ -468,6 +455,18 @@ const Profile = () => {
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24">
+                            onClick=
+                            {() =>
+                              navigate("/map", {
+                                state: {
+                                  selectedDog: {
+                                    id: dog._id,
+                                    lat: dog.location.coordinates[1], // Correct here
+                                    lng: dog.location.coordinates[0],
+                                  },
+                                },
+                              })
+                            }
                             <path
                               strokeLinecap="round"
                               strokeLinejoin="round"
