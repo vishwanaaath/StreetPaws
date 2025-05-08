@@ -267,7 +267,7 @@ const Profile = () => {
                   <button
                     onClick={() => handleCopy(currentUser.email)}
                     className="text-violet-600 hover:text-violet-700">
-                    <CopyIcon />
+                      a
                   </button>
                 </div>
                 <div className="flex items-center justify-between">
@@ -277,7 +277,7 @@ const Profile = () => {
                   <button
                     onClick={() => handleCopy(currentUser.phoneNumber)}
                     className="text-violet-600 hover:text-violet-700">
-                    <CopyIcon />
+                    a
                   </button>
                 </div>
               </div>
