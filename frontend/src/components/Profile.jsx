@@ -195,12 +195,31 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
 
       {selectedDogImage && (
         <div className="fixed inset-0 z-50 backdrop-blur-2xl backdrop-brightness-80 flex items-center justify-center p-4">
-          <img
-            src={selectedDogImage}
-            className="max-w-full max-h-full cursor-pointer object-contain rounded-lg"
-            alt="Dog fullscreen"
-            onClick={() => setSelectedDogImage(null)}
-          />
+          <div className="relative max-w-full max-h-full">
+            <img
+              src={selectedDogImage}
+              className="cursor-pointer object-contain rounded-lg"
+              alt="Dog fullscreen"
+              onClick={() => setSelectedDogImage(null)}
+            />
+            {/* Add delete button to fullscreen view */}
+            <img
+              className="absolute top-4 right-4 z-50 sm:w-9 sm:h-9 w-7 h-7 p-1.5 bg-white/80 hover:bg-white rounded-full opacity-90 hover:opacity-100 hover:scale-110 transition-transform cursor-pointer"
+              src="./images/delete.svg"
+              alt="Delete"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedDog(
+                  dogsData.find(
+                    (dog) =>
+                      `https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}` ===
+                      selectedDogImage
+                  )
+                );
+                setShowDeleteModal(true);
+              }}
+            />
+          </div>
         </div>
       )}
 
