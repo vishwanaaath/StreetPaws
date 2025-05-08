@@ -114,7 +114,7 @@ const AdoptionStats = () => {
   ];
 
   return (
-    <div className="relative flex flex-col sm:flex-row items-center justify-start min-h-screen overflow-hidden text-violet-400 sm:p-16 gap-8 ">
+    <div className="relative flex flex-col sm:flex-row items-center justify-start min-h-screen overflow-hidden text-violet-400 sm:p-16 gap-9">
       {/* Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-tr from-violet-500/20 via-purple-500/15 to-indigo-500/10 backdrop-blur-xl -z-10" />
 
