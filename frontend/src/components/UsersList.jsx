@@ -71,16 +71,16 @@ const UsersList = () => {
                     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                   }
                   alt={user.username}
-                  className="w-14 h-14 sm:w-14 sm:h-14 rounded-full object-cover"
+                  className="w-16 h-16 sm:w-14 sm:h-14 rounded-full object-cover"
                 />
 
                 <div className="ml-4 flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <h2 className="text-base sm:text-lg font-semibold text-gray-800 truncate">
+                    <h2 className="text-lg sm:text-lg font-semibold text-gray-800 truncate">
                       {user.username}
                     </h2>
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-base text-gray-500 mt-1">
                     {user.dogsListed?.length || 0}{" "}
                     {user.dogsListed?.length === 1
                       ? "dog listed"
