@@ -191,7 +191,7 @@ const Profile = () => {
       )}
 
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
+        <div className="bg-black rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
             <div
               className={`w-25 h-25 ml-1.5 card rounded-full  bg-gray-200 overflow-hidden
