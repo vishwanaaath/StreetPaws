@@ -54,7 +54,7 @@ const UsersList = () => {
             Community
           </h1>
 
-          <div className="space-y-2">
+          <div className="">
             {users.map((user) => (
               <div
                 key={user._id}

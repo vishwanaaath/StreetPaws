@@ -61,15 +61,15 @@ const UsersList = () => {
                 onClick={() => handleListerProfileClick(user._id)}
                 className="group relative cursor-pointer flex items-center p-3 sm:p-4 rounded-xl 
                   bg-white shadow-sm hover:shadow-md transition-all duration-200
-                  active:scale-[0.98] active:shadow-sm border border-gray-100
-                  hover:border-violet-100 hover:bg-violet-50/30">
+                  active:scale-[0.98] active:shadow-sm 
+                 hover:bg-violet-50/30">
                 {/* Touch feedback animation */}
                 <div className="absolute inset-0 bg-violet-500 opacity-0 group-active:opacity-10 transition-opacity rounded-xl" />
                 
                 <img
                   src={user.dp_url || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
                   alt={user.username}
-                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-white shadow-sm"
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover  shadow-sm"
                 />
                 
                 <div className="ml-4 flex-1 min-w-0">
