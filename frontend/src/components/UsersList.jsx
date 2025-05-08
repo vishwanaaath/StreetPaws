@@ -59,7 +59,7 @@ const UsersList = () => {
               <div
                 key={user._id}
                 onClick={() => handleListerProfileClick(user._id)}
-                className="group relative cursor-pointer flex items-center p-3 sm:p-4 rounded-xl 
+                className="group relative cursor-pointer flex items-center p-3 sm:p-4  
                   bg-white shadow-sm hover:shadow-md transition-all duration-200
                   active:scale-[0.98] active:shadow-sm">
                 {/* Touch feedback animation */}
@@ -80,7 +80,7 @@ const UsersList = () => {
                       {user.username}
                     </h2>
                     {user.isDeveloper && (
-                      <span className="px-2 py-1 bg-violet-100 text-violet-600 text-xs rounded-full">
+                      <span className="px-2 py-1 bg-violet-100 text-violet-600 text-xs ">
                         Creator
                       </span>
                     )}
