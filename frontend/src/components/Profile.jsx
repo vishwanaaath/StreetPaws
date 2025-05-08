@@ -209,7 +209,7 @@ const Profile = () => {
 
             {/* ////////////// */}
             <div>
-              <div className="flex items-center mb-2 gap-2">
+              <div className="flex items-center sm:mb-2 gap-2">
                 <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
                   {currentUser.username}
                 </h1>
@@ -225,6 +225,7 @@ const Profile = () => {
                   </div>
                 )}
               </div>
+
               {isDeveloper ? (
                 <a href="https://streetpaws.onrender.com">
                   <p className="text-gray-600 sm:mt-2 mt-0">
@@ -271,7 +272,7 @@ const Profile = () => {
                 )}
                 <div className="flex-1 min-w-0">
                   <p
-                    className="text-gray-600 truncate hover:text-clip text-[18px]  hover:min-w-fit"
+                    className="text-gray-600 truncate hover:text-clip text-[15px]  hover:min-w-fit"
                     title={currentUser.email}
                     style={{
                       maxWidth: "200px",
@@ -303,7 +304,7 @@ const Profile = () => {
               <div className="flex items-center gap-2 group">
                 <div className="flex-1 min-w-0">
                   <p
-                    className="text-gray-600 truncate text-[18px] hover:text-clip hover:min-w-fit"
+                    className="text-gray-600 truncate text-[15px] hover:text-clip hover:min-w-fit"
                     title={currentUser.phoneNumber}
                     style={{
                       maxWidth: "200px",
@@ -333,7 +334,7 @@ const Profile = () => {
             </div>
 
             <div className="flex items-center gap-3 sm:gap-4 sm:p-4 p-2 cursor-pointer bg-violet-50 rounded-lg border border-violet-200">
-              <img src="./images/map.svg" className="w-8 h-8" alt="Map Icon" />
+              <img src="./images/map.svg" className="w-5 h-5" alt="Map Icon" />
               <h3 className="font-medium text-gray-700 text-base">
                 See all dogs listed, on map.
               </h3>
