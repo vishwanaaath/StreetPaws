@@ -136,7 +136,7 @@ const Profile = () => {
 
   return (
     <div
-      className={`sm:pt-4 ${showProfilePic ? "p-0" : "p-1"}`}
+      className={` sm:pt-4 ${showProfilePic ? "p-0" : "p-1"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
@@ -405,14 +405,20 @@ const Profile = () => {
                 className={`columns-${
                   isSingleColumn ? "1" : "2"
                 } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
-                {[...Array(6)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="w-full bg-gray-200 rounded-xl animate-pulse break-inside-avoid">
-                    <div className="aspect-[3/4] bg-gray-300 rounded-t-xl"></div>
-                    <div className="p-2 space-y-2">
-                      <div className="h-4 bg-gray-300 rounded w-3/4"></div>
-                      <div className="h-3 bg-gray-300 rounded w-1/2"></div>
+                {[...Array(6)].map((_, index) => (
+                  <div key={index} className="break-inside-avoid mb-2">
+                    <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse">
+                      <div className="w-full aspect-square bg-gray-200 rounded-xl" />
+
+                      <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
+                        <div className="flex justify-between items-end">
+                          <div className="space-y-2">
+                            <div className="h-4 w-24 bg-gray-300 rounded" />
+                            <div className="h-3 w-16 bg-gray-300 rounded" />
+                          </div>
+                          <div className="h-6 w-6 bg-gray-300 rounded-full" />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
