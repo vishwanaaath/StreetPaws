@@ -351,16 +351,50 @@ const Profile = () => {
                 onClick={() => setIsSingleColumn(!isSingleColumn)}>
                 <svg
                   className={`w-6 h-6 ${
-                    isSingleColumn ? "text-violet-500" : "text-gray-400"
+                    isSingleColumn ? "text-gray-400" : "text-violet-500"
                   }`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24">
-                  <path
+                  <rect
+                    x="4"
+                    y="4"
+                    width="6"
+                    height="6"
+                    rx="1"
+                    strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                  <rect
+                    x="14"
+                    y="4"
+                    width="6"
+                    height="6"
+                    rx="1"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <rect
+                    x="4"
+                    y="14"
+                    width="6"
+                    height="6"
+                    rx="1"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <rect
+                    x="14"
+                    y="14"
+                    width="6"
+                    height="6"
+                    rx="1"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </div>
