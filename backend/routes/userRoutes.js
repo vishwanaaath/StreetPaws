@@ -6,27 +6,23 @@ import { createClient } from "@supabase/supabase-js";
 
 dotenv.config();
 
-const router = express.Router();
-// Supabase configuration
+const router = express.Router(); 
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_KEY
 );
-
-// Standardized API routes
+ 
 router.post("/users", async (req, res) => {
   try {
     const userData = req.body;
-
-    // Validate required fields
+ 
     if (!userData.auth0_id || !userData.email) {
       return res.status(400).json({ message: "Missing required fields" });
     }
-
-    // Create and save user
+ 
     const newUser = new User({
       ...userData,
-      profile_complete: true, // Set complete flag on creation
+      profile_complete: true,
     });
 
     await newUser.save();
@@ -36,7 +32,6 @@ router.post("/users", async (req, res) => {
       user: newUser.toObject({ virtuals: true }),
     });
   } catch (error) {
-    // Handle duplicate key errors
     if (error.code === 11000) {
       const field = Object.keys(error.keyPattern)[0];
       return res.status(409).json({
@@ -45,7 +40,6 @@ router.post("/users", async (req, res) => {
       });
     }
 
-    // Handle validation errors
     if (error.name === "ValidationError") {
       const messages = Object.values(error.errors).map((val) => val.message);
       return res.status(400).json({ message: messages.join(", ") });
@@ -59,25 +53,17 @@ router.post("/users", async (req, res) => {
 
 router.get("/users", async (req, res) => {
   try {
-    console.log("Handling GET /api/users"); // Log request handling
+    console.log("Handling GET /api/users");  
     const users = await User.find();
     res.json(users);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch users" });
   }
 });
-
-
-
-
-
-// Improved GET endpoint
-// Add new endpoint for numeric ID lookups
+ 
 router.get("/users/:numericId", async (req, res) => {
   try {
     const numericId = req.params.numericId;
-
-    // Find user where auth0_id ends with |numericId
     const user = await User.findOne({
       auth0_id: numericId,
     });
@@ -94,13 +80,10 @@ router.get("/users/:numericId", async (req, res) => {
   }
 });
 
-
-// MongoDB ID endpoint
+ 
 router.get("/users/mongo/:mongoId", async (req, res) => {
   try {
-    const mongoId = req.params.mongoId;
-
-    // Validate MongoDB ID format
+    const mongoId = req.params.mongoId; 
     if (!mongoose.Types.ObjectId.isValid(mongoId)) {
       return res.status(400).json({
         message: "Invalid MongoDB ID format",
@@ -123,26 +106,17 @@ router.get("/users/mongo/:mongoId", async (req, res) => {
   }
 });
 
-
-
 router.get("/list-avatars", async (req, res) => {
   const { data } = await supabase.storage.from("avatars").list("Profilepic");
   res.json(data);
 });
 
-
-
-
-// Delete avatar endpoint
-// In your backend router file
 router.delete("/delete-avatar", async (req, res) => {
   try {
-    const { fileName } = req.body;
-
-    // Verify Supabase bucket name and path structure
+    const { fileName } = req.body; 
     const { data, error } = await supabase.storage
-      .from("avatars") // Confirm this matches your actual bucket name
-      .remove([`Profilepic/${fileName}`]); // Verify the correct folder structure
+      .from("avatars") 
+      .remove([`Profilepic/${fileName}`]); 
 
     if (error) throw error;
     res.status(200).json({ message: "Avatar deleted successfully" });
@@ -151,9 +125,7 @@ router.delete("/delete-avatar", async (req, res) => {
     res.status(500).json({ message: "Error deleting avatar" });
   }
 });
-
-// Temporary test route
-// Update user endpoint
+ 
 router.patch("/users/:id", async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(
@@ -167,19 +139,5 @@ router.patch("/users/:id", async (req, res) => {
     res.status(500).json({ message: "Error updating user" });
   }
 });
-
-
-
-// user.route.js
-// router.get('/mongo/:id', async (req, res) => {
-//   try {
-//     const user = await User.findById(req.params.id);
-//     if (!user) return res.status(404).json({ message: "User not found" });
-//     res.json(user);
-//   } catch (error) {
-//     res.status(500).json({ message: "Server error" });
-//   }
-// });
-
 
 export default router;

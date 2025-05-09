@@ -1,4 +1,3 @@
-import React from "react";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
@@ -26,12 +25,9 @@ const Profile = () => {
   const [isSingleColumn, setIsSingleColumn] = useState(false);
 const [selectedDogImage, setSelectedDogImage] = useState(null);
 
-  const navigate = useNavigate(); // Add navigate function
+  const navigate = useNavigate();  
   const isDeveloper = currentUser?.email == "vishwanathgowda951@gmail.com";
 
-  // Add error logging to handleDeleteDog
-  // Frontend delete handler
-  // Add this copy handler function
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
     setCopiedText(text);
@@ -45,8 +41,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
       const response = await axios.delete(
         `${import.meta.env.VITE_API_URL}/api/dogs/${selectedDog._id}`
       );
-
-      // Update both dogsData AND currentUser
+ 
       setDogsData((prev) => prev.filter((d) => d._id !== selectedDog._id));
       setCurrentUser((prevUser) => ({
         ...prevUser,
@@ -60,8 +55,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
       alert(`Delete failed: ${err.response?.data?.message || err.message}`);
     }
   };
-
-  // Update the dogsData sorting in your useEffect
+ 
   useEffect(() => {
     const fetchUserDogs = async () => {
       try {
@@ -74,8 +68,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
             },
           }
         );
-
-        // Sort dogs by createdAt date (newest first)
+ 
         const sortedDogs = response.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
@@ -165,8 +158,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
           }}
         />
       )}
-
-      {/* Background Animation */}
+ 
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 -z-1 pointer-events-none" />
 
       {showProfilePic && currentUser.dp_url && (
@@ -201,8 +193,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
               className="cursor-pointer object-contain rounded-lg max-w-[90vw] max-h-[90vh] m-auto"
               alt="Dog fullscreen"
               onClick={() => setSelectedDogImage(null)}
-            />
-            {/* Delete button */}
+            /> 
             <img
               className="absolute top-4 right-4 z-50 sm:w-10 sm:h-10 w-8 h-8 p-2 bg-white/80 hover:bg-white rounded-full opacity-90 hover:opacity-100 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center"
               src="./images/trash.png"
@@ -240,8 +231,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                 onClick={() => setShowProfilePic(true)}
               />
             </div>
-
-            {/* ////////////// */}
+ 
             <div>
               <div className="flex items-center sm:mb-2 mb-0 gap-2">
                 <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
@@ -271,7 +261,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                   </p>
                 </a>
               ) : (
-                // In your Profile component's JSX, add this where you want the member since date
+                
                 <p className="text-gray-600 sm:mt-2 mt-0">
                   Member Since{" "}
                   {new Date(currentUser.createdAt).toLocaleDateString("en-US", {
@@ -333,8 +323,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                   </svg>
                 </button>
               </div>
-
-              {/* Phone Number */}
+ 
               <div className="flex items-center gap-2 group">
                 <div className="flex-1 min-w-0">
                   <p
@@ -367,12 +356,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
               </div>
             </div>
 
-            {/* <div className="flex items-center gap-3 sm:gap-4 sm:p-4 p-2 cursor-pointer bg-violet-50 rounded-lg border border-violet-200">
-              <img src="./images/map.svg" className="w-5 h-5" alt="Map Icon" />
-              <h3 className="font-medium text-gray-700 text-base">
-                See all dogs listed, on map.
-              </h3>
-            </div> */}
+          
           </div>
           <div className="sm:mt-8 mt-6">
             <div className="flex justify-between items-center mb-4">
@@ -438,26 +422,23 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                 className={`${
                   isSingleColumn ? "columns-1" : "columns-2"
                 } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
-                {[...Array(6)].map((_, index) => {
-                  // Create different aspect ratios: 1:1, 3:4, and 9:6 (3:2)
+                {[...Array(6)].map((_, index) => { 
                   const ratios = [
-                    { class: "aspect-square" }, // 1:1
-                    { class: "aspect-[3/4]" }, // 3:4
-                    { class: "aspect-[3/2]" }, // 9:6
-                    { class: "aspect-square" }, // Repeat pattern
+                    { class: "aspect-square" },  
+                    { class: "aspect-[3/4]" }, 
+                    { class: "aspect-[3/2]" }, 
+                    { class: "aspect-square" }, 
                     { class: "aspect-[3/4]" },
                     { class: "aspect-[3/2]" },
                   ];
 
                   return (
                     <div key={index} className="break-inside-avoid mb-2">
-                      <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse">
-                        {/* Image placeholder with variable ratio */}
+                      <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse"> 
                         <div
                           className={`w-full bg-gray-200 rounded-xl ${ratios[index].class}`}
                         />
-
-                        {/* Bottom content placeholder */}
+ 
                         <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
                           <div className="flex justify-between items-end">
                             <div className="space-y-2">
@@ -521,7 +502,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                                 state: {
                                   selectedDog: {
                                     id: dog._id,
-                                    lat: dog.location.coordinates[1], // Correct order
+                                    lat: dog.location.coordinates[1], 
                                     lng: dog.location.coordinates[0],
                                   },
                                 },
@@ -547,8 +528,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                 ))}
               </div>
             )}
-          </div>
-          {/* /////// */}
+          </div> 
         </div>{" "}
       </div>
     </div>

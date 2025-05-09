@@ -3,8 +3,7 @@ import mongoose from "mongoose";
 import multer from "multer";
 import cors from "cors";
 import { createClient } from "@supabase/supabase-js";
-import dotenv from "dotenv"; 
-// Load models before routes
+import dotenv from "dotenv";  
 import "./models/user.model.js";
 import "./models/dog.model.js";
 import userRouter from "./routes/userRoutes.js";
@@ -16,31 +15,25 @@ dotenv.config();
 const app = express();
  
 const upload = multer({ storage: multer.memoryStorage() });
-
-// Database connection
-// Updated MongoDB connection (remove deprecated options)
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB Atlas!'))
   .catch(err => console.error('MongoDB connection error:', err));
-
-  // Add this to your connection code
+ 
 mongoose.connection.on('connected', () => {
   console.log(`Connected to database: ${mongoose.connection.db.databaseName}`);
 });
 mongoose.connection.on("error", (err) => {
   console.error("MongoDB connection error:", err);
 });
-
-// Supabase configuration
+ 
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_KEY
 );
-
-// Middleware
+ 
 app.use(cors({
-  origin: '*',  // Or specify specific origins if needed
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Ensure OPTIONS is allowed
+  origin: '*',  
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], 
 }));
 app.use(express.json());
 app.use("/api", userRouter);
@@ -56,8 +49,6 @@ app.get("/test", (req, res) => {
   res.json({msg: "yo"});
 });
 
-
-// File upload endpoints
 app.post("/upload-avatar", upload.single("file"), async (req, res) => {
   try {
     if (!req.file) {
@@ -124,7 +115,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   }
 });
 
-// In your backend server.js/index.js
+
 app.listen(5000, () => {
   console.log('HTTP Server running on port 5000');
 });

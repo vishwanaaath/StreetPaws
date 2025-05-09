@@ -3,7 +3,7 @@ import React from "react";
 const UserLoader = () => {
   return (
     <div className="relative min-h-screen bg-gray-50 p-1 flex flex-col">
-      {/* Background Animation */}
+      
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 z-0" />
 
       <div className="relative z-10 max-w-4xl mx-auto flex-1 w-full">
@@ -17,10 +17,9 @@ const UserLoader = () => {
               <div
                 key={index}
                 className="group relative flex items-center p-2 sm:p-4 bg-white">
-                {/* Skeleton Profile Image */}
+                  
                 <div className="w-14 h-14 rounded-full bg-gray-200 animate-pulse" />
-
-                {/* Skeleton Text */}
+ 
                 <div className="ml-4 flex-1 min-w-0 space-y-2">
                   <div className="h-5 bg-gray-200 rounded w-32 animate-pulse" />
                   <div className="h-4 bg-gray-200 rounded w-24 animate-pulse" />

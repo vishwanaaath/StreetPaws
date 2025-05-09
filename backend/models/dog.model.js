@@ -21,22 +21,22 @@ const dogSchema = new mongoose.Schema(
     location: {
       type: {
         type: String,
-        enum: ["Point"], // Ensures only 'Point' type is allowed
+        enum: ["Point"], 
         required: true,
-        default: "Point", // Smart default for your use case
+        default: "Point", 
       },
       coordinates: {
-        type: [Number], // Correct type for GeoJSON coordinates
+        type: [Number], 
         required: true,
         validate: {
           validator: function (v) {
             return (
               v.length === 2 &&
               v[0] >= -180 &&
-              v[0] <= 180 && // Longitude check
+              v[0] <= 180 && 
               v[1] >= -90 &&
               v[1] <= 90
-            ); // Latitude check
+            ); 
           },
           message: (props) => `Invalid coordinates: ${props.value}`,
         },
@@ -78,7 +78,7 @@ const dogSchema = new mongoose.Schema(
   }
 );
 
-// Add 2dsphere index for geospatial queries
+
 dogSchema.index({ location: "2dsphere" });
 
 dogSchema.post("save", function (error, doc, next) {

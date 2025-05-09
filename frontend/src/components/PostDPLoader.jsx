@@ -4,26 +4,25 @@ const PostDPLoader = () => {
   return (
     <div className="min-h-screen h-screen-mobile bg-gray-100 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 flex flex-col animate-pulse">
       {" "}
-      {/* Background Animation */}
+      
       <div className="absolute inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 z-0" />
       <div className="max-w-md mx-auto flex-1 flex flex-col justify-center bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-8 w-full">
-        {/* Title skeleton */}
+        
         <div className="h-8 bg-gray-200 rounded-full w-3/4 mx-auto mb-8" />
 
-        {/* Main content skeleton */}
+
         <div className="flex flex-col items-center justify-center space-y-6">
-          {/* Animated profile circle */}
+          
           <div className="relative w-52 h-52 mx-auto">
             <div className="absolute inset-0 rounded-full bg-gray-200" />
             <div className="absolute inset-2 rounded-full bg-gray-100 animate-shimmer">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent" />
             </div>
           </div>
-
-          {/* Input skeleton */}
+          
           <div className="w-full h-12 bg-gray-200 rounded-lg" />
 
-          {/* Button skeleton */}
+
           <div className="w-full max-w-xs h-12 bg-gray-300 rounded-lg animate-pulse-slow" />
         </div>
       </div>

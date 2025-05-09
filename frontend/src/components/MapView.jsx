@@ -10,8 +10,7 @@ import { useLocation } from "react-router-dom";
 import Notification from "./Notification";
 import ResetViewControl from "./ResetViewControl";
 import MapViewLoader from "./MapViewLoader";
-
-// Leaflet icon configuration
+ 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -33,7 +32,7 @@ const MapView = () => {
   const [map, setMap] = useState(null);
   const markerRefs = useRef({});
 
-  const { user, getAccessTokenSilently } = useAuth0(); // Include getAccessTokenSilently
+  const { user, getAccessTokenSilently } = useAuth0();  
   const navigate = useNavigate();
   const [location, setLocation] = useState(null);
   const [viewDogLocation, setViewDogLocation] = useState(() => {
@@ -56,8 +55,7 @@ const MapView = () => {
 
   useEffect(() => {
     if (Location.state?.newlyListedDogId) {
-      setNewlyListedDogId(Location.state.newlyListedDogId);
-      // Clear state after reading
+      setNewlyListedDogId(Location.state.newlyListedDogId); 
       navigate(Location.pathname, { replace: true, state: {} });
     }
   }, [Location]);
@@ -74,28 +72,23 @@ const MapView = () => {
       }
     }
   }, [dogs, newlyListedDogId, map]);
-
-  // Add this useEffect for handling new dog location
+ 
   useEffect(() => {
     const handleNewDogNavigation = () => {
       if (newlyListedDogId && dogs.length > 0 && map) {
         const newDog = dogs.find((dog) => dog._id === newlyListedDogId);
 
-        if (newDog) {
-          // Use setTimeout to ensure map is fully initialized
-          setTimeout(() => {
-            // Fly to the new dog's location
+        if (newDog) { 
+          setTimeout(() => { 
             map.flyTo([newDog.lat, newDog.lng], 16, {
-              duration: 1, // Faster animation
+              duration: 1,  
             });
-
-            // Open the popup after movement completes
+ 
             const marker = markerRefs.current[newDog._id];
             if (marker) {
-              // Delay popup opening to ensure position is settled
               setTimeout(() => {
                 marker.openPopup();
-                // Add slight offset for better visibility
+                
                 map.panBy([0, -75], { animate: true, duration: 0.5 });
               }, 300);
             }
@@ -107,8 +100,7 @@ const MapView = () => {
     handleNewDogNavigation();
   }, [dogs, newlyListedDogId, map]);
 
-
-  // In MapView.jsx
+ 
   useEffect(() => {
     const fetchDogs = async () => {
       try {
@@ -120,8 +112,7 @@ const MapView = () => {
         if (!Array.isArray(response.data)) {
           throw new Error("Invalid response format");
         }
-
-        // Add validation for location data
+ 
         const dogsWithLocation = response.data
           .map((dog) => {
             if (!dog.location) {
@@ -131,7 +122,6 @@ const MapView = () => {
 
             let lat, lng;
 
-            // Handle GeoJSON format (coordinates array)
             if (
               dog.location.coordinates &&
               Array.isArray(dog.location.coordinates)
@@ -145,7 +135,7 @@ const MapView = () => {
               }
               [lng, lat] = dog.location.coordinates;
             }
-            // Handle legacy format (lat/lng properties)
+            
             else if (
               typeof dog.location.lat === "number" &&
               typeof dog.location.lng === "number"
@@ -153,13 +143,13 @@ const MapView = () => {
               lat = dog.location.lat;
               lng = dog.location.lng;
             }
-            // Invalid format
+            
             else {
               console.warn("Invalid location data for dog:", dog._id);
               return null;
             }
 
-            // Validate coordinate values
+            
             if (
               isNaN(lat) ||
               isNaN(lng) ||
@@ -192,8 +182,6 @@ const MapView = () => {
       }
     };
 
-    // Modified handleNavigation for List Dog
-
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const userLocation = [pos.coords.latitude, pos.coords.longitude];
@@ -209,7 +197,6 @@ const MapView = () => {
           "Could not get your location. Using default view."
         );
         setNotificationImage("/images/location-error.svg");
-        // Set default coordinates if location access fails  
         fetchDogs();
       }
     );
@@ -224,7 +211,7 @@ const MapView = () => {
     mapBounds ? mapBounds.contains([dog.lat, dog.lng]) : true
   );
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371; // Earth radius in km
+    const R = 6371;
     const dLat = (lat2 - lat1) * (Math.PI / 180);
     const dLon = (lon2 - lon1) * (Math.PI / 180);
     const a =
@@ -274,7 +261,6 @@ const MapView = () => {
     } catch (error) {
       console.error("Error fetching lister's profile:", error);
       if (error.response?.status === 404) {
-        // Handle 404 if needed
       }
     }
   };
@@ -347,23 +333,20 @@ const MapView = () => {
           </Marker>
 
           {visibleDogs.map((dog) => {
-            // Extract coordinates based on data format
             let lat, lng;
 
             if (dog.location?.coordinates) {
-              // GeoJSON format: [longitude, latitude]
               [lng, lat] = dog.location.coordinates;
-            } else {
-              // Legacy format: direct lat/lng properties
+            } else { 
               lat = dog.location?.lat;
               lng = dog.location?.lng;
             }
 
             const distance = calculateDistance(
-              location[0], // Current location latitude
-              location[1], // Current location longitude
-              lat, // Dog's latitude
-              lng // Dog's longitude
+              location[0],  
+              location[1],  
+              lat,  
+              lng
             );
 
             return (
@@ -380,7 +363,6 @@ const MapView = () => {
                 icon={dogIcon}>
                 <Popup>
                   <div className="relative max-h-[380px] duration-100 w-64 max-w-[260px] rounded-2xl overflow-hidden">
-                    {/* backdrop */}
                     <div
                       className="absolute inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 
                     animate-gradient-x blur-4xl opacity-40"
@@ -409,7 +391,6 @@ const MapView = () => {
                         </div>
 
                         <div className="flex gap-2 items-center">
-                          {/* Location Marker */}
                           <a
                             onClick={() => setIsContactAsked(!isContactAsked)}
                             href={`https://www.google.com/maps/dir/?api=1&destination=${dog.lat},${dog.lng}&travelmode=driving`}
@@ -436,7 +417,6 @@ const MapView = () => {
                             </svg>
                           </a>
 
-                          {/* Dropdown Arrow with rotation */}
                           <div
                             className="flex flex-col items-center cursor-pointer"
                             onClick={() => setIsContactAsked(!isContactAsked)}>
@@ -474,9 +454,7 @@ const MapView = () => {
                                 {dog.gender}, {dog.age}
                               </div>
                             )}
-                            {/* <div className="text-[14px] text-gray-600">
-                              {dog.gender}
-                            </div> */}
+                            
                           </div>
                           <div className="relativerounded-full  w-13 h-13  mr-2">
                             {dog.lister ? (

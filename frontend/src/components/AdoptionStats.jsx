@@ -12,8 +12,7 @@ const AdoptionStats = () => {
     getAccessTokenSilently,
   } = useAuth0();
   const navigate = useNavigate();
-
-  // Carousel state
+ 
   const [positions, setPositions] = useState([
     "far-left",
     "left",
@@ -22,8 +21,7 @@ const AdoptionStats = () => {
     "far-right",
   ]);
   const [tagline, setTagline] = useState(1);
-
-  // Auto-rotate carousel
+ 
   useEffect(() => {
     const interval = setInterval(() => {
       setPositions((prev) => {
@@ -35,8 +33,7 @@ const AdoptionStats = () => {
     }, 3000);
     return () => clearInterval(interval);
   }, []);
-
-  // Navigation handlers
+ 
   const handleNavigation = (path) => {
     navigate(path);
   };
@@ -60,8 +57,7 @@ const AdoptionStats = () => {
         : alert(`Error: ${error.message}`);
     }
   };
-
-  // Card click handler
+ 
   const handleCardClick = (index) => {
     if (positions[index] === "active") return;
     const newPositions = [...positions];
@@ -72,9 +68,7 @@ const AdoptionStats = () => {
     ];
     setPositions(newPositions);
   };
-
-  // Pet data
-  // Pet data
+ 
   const petData = [
     {
       id: 1,
@@ -115,10 +109,9 @@ const AdoptionStats = () => {
 
   return (
     <div className="relative flex flex-col sm:flex-row items-center justify-start min-h-screen overflow-hidden text-violet-400 sm:p-16 gap-9">
-      {/* Gradient Background */}
+      
       <div className="absolute inset-0 bg-gradient-to-tr from-violet-500/20 via-purple-500/15 to-indigo-500/10 backdrop-blur-xl -z-10" />
-
-      {/* Text Content - Top on Mobile */}
+ 
       <div className="w-full max-w-2xl z-10 order-1 scale-85 sm:scale-100 sm:order-none">
         <div className="min-h-[180px] sm:min-h-[400px] flex items-center justify-start sm:block">
           {tagline === 2 && (
@@ -158,8 +151,7 @@ const AdoptionStats = () => {
             </h1>
           )}
         </div>
-
-        {/* Desktop Buttons */}
+ 
         <div className="hidden sm:block mt-8">
           <div className="space-y-6">
             <button
@@ -175,8 +167,7 @@ const AdoptionStats = () => {
           </div>
         </div>
       </div>
-
-      {/* Card Carousel - Middle on Mobile */}
+ 
       <div className="relative w-full sm:h-[500px] h-[180px] mt-4 scale-75 sm:scale-120 mr-0 sm:mr-20 flex items-center justify-center order-2 sm:order-none overflow-visible">
         {petData.map((pet, index) => (
           <div
@@ -238,8 +229,7 @@ const AdoptionStats = () => {
           </div>
         ))}
       </div>
-
-      {/* Mobile Buttons - Bottom on Mobile */}
+ 
       <div className="w-full max-w-md z-10 order-3 sm:scale-100 scale-70 sm:hidden mt-8">
         <div className="space-y-6">
           <button

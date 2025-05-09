@@ -6,7 +6,7 @@ import "react-phone-number-input/style.css";
 import axios from "axios";
 import Notification from "./Notification";
 
-// Custom input component for phone number
+
 const CustomInput = React.forwardRef((props, ref) => (
   <input
     {...props}
@@ -19,7 +19,7 @@ const PostDP = () => {
   const { user: auth0User } = useAuth0();
   const navigate = useNavigate();
 
-  // State management
+  
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [notificationMessage, setNotificationMessage] = useState(null);
@@ -30,7 +30,7 @@ const PostDP = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isUploading, setIsUploading] = useState(false);
 
-  // Handlers
+  
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -52,7 +52,7 @@ const PostDP = () => {
     setIsUploading(true);
 
     try {
-      // Validate Auth0 user
+      
       if (!auth0User?.sub?.includes("|")) {
         throw new Error("Invalid user authentication");
       }
@@ -60,7 +60,7 @@ const PostDP = () => {
       const numericAuth0Id = auth0User.sub.split("|")[1];
       let dpUrl = previewImage;
 
-      // Handle file upload
+      
       if (selectedFile) {
         const formData = new FormData();
         formData.append("file", selectedFile);
@@ -73,7 +73,7 @@ const PostDP = () => {
         dpUrl = uploadResponse.data.downloadUrl;
       }
 
-      // Prepare user data
+      
       const userData = {
         username: username.trim(),
         phoneNumber,
@@ -84,20 +84,20 @@ const PostDP = () => {
         dogsListed: [],
       };
 
-      // Create user in database
+      
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/users`,
         userData
       );
 
-      // Store user in local storage
+      
       const customUser = {
         ...response.data.user,
         auth0Data: auth0User,
       };
       localStorage.setItem("currentUser", JSON.stringify(customUser));
 
-      // Navigate to map
+      
       navigate("/map", { state: { user: customUser } });
     } catch (error) {
       console.error("Submission error:", error);

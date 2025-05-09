@@ -1,7 +1,4 @@
-import mongoose from "mongoose";
-
-// Improved User Schema
-
+import mongoose from "mongoose"; 
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -31,15 +28,16 @@ const userSchema = new mongoose.Schema(
     },
     phoneNumber: {
       type: String,
+      required: [true, "Phone number is required"],
       validate: {
-        validator: (v) => /^\+?[1-9]\d{1,14}$/.test(v.replace(/[\s()-]/g, "")), // E.164 format support
+        validator: (v) => /^\+?[1-9]\d{1,14}$/.test(v.replace(/[\s()-]/g, "")),
         message: (props) =>
           `${props.value} is not a valid international phone number!`,
       },
     },
     profile_complete: {
       type: Boolean,
-      default: false, // Changed to false by default
+      default: false,
     },
     dogsListed: [
       {

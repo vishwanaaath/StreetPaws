@@ -58,8 +58,7 @@ const Sidebar = ({
         "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745406502654-spotted-dog.jpg",
     },
   ];
-
-  // Fetch user data when authenticated
+ 
   useEffect(() => {
     const fetchUserData = async () => {
       if (isAuthenticated && auth0User?.sub) {
@@ -76,7 +75,6 @@ const Sidebar = ({
           console.log(response.data);
           console.log("signed");
 
-          // navigate("/profile", { state: { user: response.data } });
         } catch (error) {
           console.error("Error fetching user data:", error);
           if (error.response?.status === 404) {
@@ -127,7 +125,6 @@ const Sidebar = ({
       onMouseEnter={() => setSidebarVisible(true)}
       onMouseLeave={handleSidebarLeave}>
       {isLoading || (isAuthenticated && !userData) ? (
-        // Skeleton Loader
         <div className="flex w-full p-3 animate-pulse">
           <div className="flex w-full items-start gap-4">
             <div className="flex-shrink-0">
@@ -176,7 +173,6 @@ const Sidebar = ({
       )}
 
       <div className="relative mt-5 w-full px-4">
-        {/* Add custom scrollbar styles */}
         <style jsx>{`
           .custom-scroll::-webkit-scrollbar {
             width: 6px;
@@ -261,11 +257,10 @@ const Sidebar = ({
           </div>
         )}
       </div>
-
-      {/* Updated buttons section */}
+      
       {isAuthenticated && (
         <div className="absolute bottom-4 left-0 right-0 px-4 space-y-3">
-          {/* Users Button - Improved semantics */}
+          
           <Link
             to="/users"
             className="flex items-center justify-center gap-2 w-full  sm:px-4 sm:py-3  px-3 py-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 shadow-md focus:ring-2 focus:ring-violet-400 focus:outline-none"
@@ -285,8 +280,7 @@ const Sidebar = ({
             </svg>
             <span>Community</span>
           </Link>
-
-          {/* Logout Button - Enhanced accessibility */}
+ 
           <button
             onClick={handleLogout}
             className="flex items-center justify-center gap-2 w-full sm:px-4 sm:py-3  px-3 py-2 bg-violet-500 text-white rounded-lg hover:bg-red-500 transition-colors duration-300 shadow-md focus:ring-2 focus:ring-red-300 focus:outline-none"

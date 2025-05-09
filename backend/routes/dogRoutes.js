@@ -1,20 +1,15 @@
-import mongoose from "mongoose"; // Add this import
+import mongoose from "mongoose"; 
 import express from "express";
 import Dog from "../models/dog.model.js"; 
 import User from "../models/user.model.js";
 const router = express.Router();  
 import { createClient } from "@supabase/supabase-js";
 
-
-
-
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_KEY
 );
 
-
-// POST Route (add to your routes)
 router.post("/", async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -25,14 +20,13 @@ router.post("/", async (req, res) => {
     !dogData.location?.coordinates ||
     !Array.isArray(dogData.location.coordinates) ||
     dogData.location.coordinates.length !== 2 ||
-    typeof dogData.location.coordinates[0] !== "number" || // longitude
-    typeof dogData.location.coordinates[1] !== "number" // latitude
+    typeof dogData.location.coordinates[0] !== "number" || 
+    typeof dogData.location.coordinates[1] !== "number"
   ) {
     return res.status(400).json({
       message: "Coordinates must be an array of [longitude, latitude] numbers",
     });
-  }
-    // Validate required fields
+  } 
     if (
       !dogData.listerId ||
       !mongoose.Types.ObjectId.isValid(dogData.listerId)
@@ -40,8 +34,7 @@ router.post("/", async (req, res) => {
       await session.abortTransaction();
       return res.status(400).json({ message: "Invalid lister ID" });
     }
-
-    // Verify user exists
+ 
     const userExists = await User.exists({ _id: dogData.listerId }).session(
       session
     );
@@ -49,12 +42,10 @@ router.post("/", async (req, res) => {
       await session.abortTransaction();
       return res.status(404).json({ message: "User not found" });
     }
-
-    // Create new dog
+ 
     const newDog = new Dog(dogData);
     const savedDog = await newDog.save({ session });
-
-    // Update user's dogsListed array
+ 
     const updatedUser = await User.findByIdAndUpdate(
       dogData.listerId,
       { $push: { dogsListed: savedDog._id } },
@@ -71,7 +62,6 @@ router.post("/", async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
 
-    // Add this specific check for CastError
     if (error.name === "CastError") {
       return res.status(400).json({
         message: `Invalid ID format: ${error.value}`,
@@ -94,18 +84,16 @@ router.post("/", async (req, res) => {
 });
 
 
-// In routes/dogRoutes.js
 router.get("/", async (req, res) => {
   try {
     const dogs = await Dog.find()
       .populate({
         path: "listerId",
         select: "username email dp_url",
-        model: "User", // Explicitly specify the model
+        model: "User", 
       })
       .lean();
-
-    // Convert MongoDB ObjectIds to strings
+ 
     const formattedDogs = dogs.map((dog) => ({
       ...dog,
       _id: dog._id.toString(),
@@ -130,9 +118,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-
-// GET dogs by IDs
-
 router.get("/by-ids", async (req, res) => {
   try {
     const { ids } = req.query;
@@ -140,8 +125,7 @@ router.get("/by-ids", async (req, res) => {
     if (!ids) {
       return res.status(400).json({ message: "Missing dog IDs" });
     }
-
-    // Convert to array and validate
+ 
     const idArray = ids.split(",");
     const invalidIds = idArray.filter(
       (id) => !mongoose.Types.ObjectId.isValid(id)
@@ -187,27 +171,23 @@ router.get("/by-ids", async (req, res) => {
 }); 
 
 router.delete("/:dogId", async (req, res) => {
-  try {
-    // Validate dog ID format
+  try { 
     if (!mongoose.Types.ObjectId.isValid(req.params.dogId)) {
       return res.status(400).json({ message: "Invalid dog ID format" });
     }
-
-    // Find and delete the dog
+ 
     const deletedDog = await Dog.findByIdAndDelete(req.params.dogId).lean();
 
     if (!deletedDog) {
       return res.status(404).json({ message: "Dog not found" });
     }
-
-    // Remove dog ID from all users' dogsListed arrays
+ 
      await User.findByIdAndUpdate(
        deletedDog.listerId,
        { $pull: { dogsListed: deletedDog._id } },
        { new: true }
      );
-
-    // Optional: Remove from Supabase storage
+ 
     try {
       await supabase.storage
         .from("bucket1")

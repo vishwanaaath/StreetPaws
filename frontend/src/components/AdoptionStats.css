@@ -17,7 +17,7 @@
   opacity: 0;
   z-index: 0;
 }
- 
+
 .cards:hover:not(.active).left {
   transform: translateX(-50%) rotate(-10deg) scale(0.9);
 }
@@ -35,29 +35,14 @@
   position: relative;
 }
 
-
-.hero-section {
-  /* background-image: url('/images/main-bg.svg'); */
-  background-size: cover;
-  /* background-color: #38B6FF; */
-  background-position: center;
-}
- 
- 
 @media (max-width: 640px) {
-  /* .hero-section {
-    
-  background-color: #38B6FF;
-    background-image: url('/images/mobile-bg.svg');
-  } */
   .custom-button {
-  background: rgba(255, 255, 255, 0.1); /* Light transparent background */
-  color: white;
-  backdrop-filter: blur(10px); /* Applies the blur */ 
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Optional: subtle border */
-  padding: 10px 20px; /* Optional: padding */
-  border-radius: 8px; /* Optional: rounded corners */
-  cursor: pointer;
-}
-
+    background: rgba(255, 255, 255, 0.1); /* Light transparent background */
+    color: white;
+    backdrop-filter: blur(10px); /* Applies the blur */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Optional: subtle border */
+    padding: 10px 20px; /* Optional: padding */
+    border-radius: 8px; /* Optional: rounded corners */
+    cursor: pointer;
+  }
 }

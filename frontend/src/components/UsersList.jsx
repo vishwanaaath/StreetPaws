@@ -44,8 +44,7 @@ const UsersList = () => {
   if (loading) return <UserLoader />;
 
   return (
-    <div className="relative min-h-screen bg-gray-50 p-1 flex flex-col">
-      {/* Background Animation */}
+    <div className="relative min-h-screen bg-gray-50 p-1 flex flex-col"> 
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 z-0" />
 
       <div className="relative z-10 max-w-4xl mx-auto flex-1 w-full">
@@ -61,8 +60,7 @@ const UsersList = () => {
                 onClick={() => handleListerProfileClick(user._id)}
                 className="group relative cursor-pointer flex items-center p-2 sm:p-4  
                   bg-white transition-all duration-200
-                  active:scale-[0.98] active:shadow-sm">
-                {/* Touch feedback animation */}
+                  active:scale-[0.98] active:shadow-sm"> 
                 <div className="absolute inset-0 bg-violet-500 opacity-0 group-active:opacity-10 transition-opacity rounded-xl" />
 
                 <img

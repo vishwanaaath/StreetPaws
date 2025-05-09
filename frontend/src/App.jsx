@@ -17,10 +17,8 @@ function App() {
         <Route path="/" element={<AdoptionStats />} />
         <Route
           path="/map"
-          element={
-            // <ProtectedRoute>
-            <MapView />
-            // </ProtectedRoute>
+          element={ 
+            <MapView /> 
           }
         />
         <Route

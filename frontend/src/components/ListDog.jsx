@@ -40,11 +40,8 @@ const ListDog = () => {
   const [istypeDropdownOpen, setIstypeDropdownOpen] = useState(false);
   const [isAgeDropdownOpen, setIsAgeDropdownOpen] = useState(false);
 
-  const [errors, setErrors] = useState({});
-  // Add gender options
-  const genders = ["Male", "Female", "Unknown"];
-
-  // Dog type data with your specified images
+  const [errors, setErrors] = useState({}); 
+  const genders = ["Male", "Female", "Unknown"]; 
 
   const dogType = [
     {
@@ -78,8 +75,7 @@ const ListDog = () => {
         "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745406502654-spotted-dog.jpg",
     },
   ];
-
-  // Check user existence on mount
+ 
   useEffect(() => {
     document.body.classList.remove("cursor-wait");
     const checkUserExists = async () => {
@@ -88,8 +84,7 @@ const ListDog = () => {
         return;
       }
 
-      try {
-        // Use passed user data if available
+      try { 
         if (location.state?.user) {
           setCurrentUser(location.state.user);
           console.log(currentUser);
@@ -97,8 +92,7 @@ const ListDog = () => {
           setIsCheckingUser(false);
           return;
         }
-
-        // Fetch user from your API
+ 
         const token = await getAccessTokenSilently();
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/users/${auth0User.sub}`,
@@ -122,8 +116,7 @@ const ListDog = () => {
       checkUserExists();
     }
   }, [isAuthenticated, auth0User?.sub]);
-
-  // Show loading state
+ 
   if (isCheckingUser) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -141,20 +134,9 @@ const ListDog = () => {
     "3-5 years",
     "More than 5 years",
   ];
+ 
 
-  // Validate email format
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
-
-  // Validate phone number format
-  const validatePhone = (phone) => {
-    const re = /^[0-9]{10,15}$/;
-    return re.test(phone);
-  };
-
-  // Handle image upload
+ 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -163,8 +145,7 @@ const ListDog = () => {
       setPreviewImage(URL.createObjectURL(file));
     }
   };
-
-  // Handle location capture
+ 
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -186,17 +167,14 @@ const ListDog = () => {
       alert("Geolocation is not supported by this browser.");
     }
   };
-
-  // Handle form submission
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    try {
-      // Get Auth0 token
+    try { 
       const token = await getAccessTokenSilently();
-
-      // Upload image to Supabase
+ 
       const formData = new FormData();
       formData.append("file", dogImage);
 
@@ -205,16 +183,15 @@ const ListDog = () => {
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-
-      // Create final dog data
+ 
       const dogData = {
         imageUrl: uploadResponse.data.downloadUrl.split("uploads/")[1],
         type,
         location: {
-          type: "Point", // Required by schema
+          type: "Point",  
           coordinates: [
-            geoLocation.lng, // Latitude second
-            geoLocation.lat, // Longitude first
+            geoLocation.lng,  
+            geoLocation.lat, 
           ],
         },
         age,
@@ -249,7 +226,7 @@ const ListDog = () => {
         }
       );
 
-      // Update local state with new dog
+      
       setCurrentUser((prev) => ({
         ...prev,
         dogsListed: [...prev.dogsListed, response.data.dog._id],
@@ -279,7 +256,7 @@ const ListDog = () => {
     }
   };
 
-  // Add reset form function
+  
   const resetForm = () => {
     setStep(1);
     setDogImage(null);
@@ -298,13 +275,7 @@ const ListDog = () => {
         duration={5000}
       />
 
-      {/* {currentUser && (
-        <div className=" p-4 bg-violet-50 rounded-lg">
-          <p className="text-xs text-gray-600">{currentUser.email}</p>
-        </div>
-      )} */}
-
-      {/* Background Animation */}
+    
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl  opacity-30 -z-10 pointer-events-none" />
 
       <Link
@@ -361,8 +332,7 @@ const ListDog = () => {
               style={{ width: `${((step - 1) / 4) * 100}%` }}></div>
           </div>
         </div>
-
-        {/* Step 1: Upload photo */}
+ 
         {step === 1 && (
           <div className="text-center">
             <label className="cursor-pointer">
@@ -412,8 +382,7 @@ const ListDog = () => {
             )}
           </div>
         )}
-
-        {/* Step 2: Select dog type */}
+ 
         {step === 2 && (
           <div className="mb-6">
             <label className="block  text-sm font-medium text-gray-700 mb-2">
@@ -465,8 +434,7 @@ const ListDog = () => {
                   </div>
                 </div>
               )}
-            </div>
-            {/* //////////// */}
+            </div> 
           </div>
         )}
 
@@ -531,7 +499,7 @@ const ListDog = () => {
                       type="number"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                       step="any"
-                      value={manualLat} // Changed from manualLng
+                      value={manualLat} 
                       onChange={(e) => {
                         setlat(e.target.value);
                         setManualLat(e.target.value);
@@ -544,7 +512,7 @@ const ListDog = () => {
                       type="number"
                       step="any"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                      value={manualLng} // Changed from manualLat
+                      value={manualLng}  
                       onChange={(e) => {
                         setManualLng(e.target.value);
                         setlon(e.target.value);
@@ -597,8 +565,7 @@ const ListDog = () => {
             </div>
           </div>
         )}
-
-        {/* Step 4: Select age */}
+ 
         {step === 4 && (
           <div className="space-y-6">
             <div
@@ -606,9 +573,9 @@ const ListDog = () => {
               style={{
                 height: isAgeDropdownOpen ? "200px" : "auto",
                 transition: "height 0.3s ease",
-                position: "relative", // Ensure positioning context
-                zIndex: 20, // Bring age dropdown above other elements if needed
-                marginBottom: isAgeDropdownOpen ? "120px" : "1.5rem", // Add space below when open
+                position: "relative",  
+                zIndex: 20, 
+                marginBottom: isAgeDropdownOpen ? "120px" : "1.5rem", 
               }}>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Estimated Age
@@ -644,9 +611,9 @@ const ListDog = () => {
               style={{
                 height: isGenderDropdownOpen ? "200px" : "auto",
                 transition: "height 0.3s ease",
-                position: "relative", // Ensure positioning context
-                zIndex: 20, // Bring age dropdown above other elements if needed
-                marginBottom: isGenderDropdownOpen ? "30px" : "1.5rem", // Add space below when open
+                position: "relative",
+                zIndex: 20, 
+                marginBottom: isGenderDropdownOpen ? "30px" : "1.5rem", 
               }}>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Gender
@@ -682,69 +649,13 @@ const ListDog = () => {
           </div>
         )}
 
-        {/* Step 5: Contact information */}
-        {/* {step === 5 && (
-          <div className="mb-6">
-            <h2 className="text-lg font-medium text-gray-800 mb-4">
-              Contact Information
-            </h2>
-
-            {errors.contact && (
-              <div className="text-red-500 text-sm mb-4">{errors.contact}</div>
-            )}
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email Address
-              </label>
-              <input
-                type="email"
-                value={email} // Changed from user?.email to email
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                placeholder="your@email.com"
-              />
-              {errors.email && (
-                <div className="text-red-500 text-sm mt-1">{errors.email}</div>
-              )}
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                value={phone} // Changed from currentUser.phoneNumber
-                onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                placeholder="1234567890"
-              />
-              {errors.phone && (
-                <div className="text-red-500 text-sm mt-1">{errors.phone}</div>
-              )}
-            </div>
-
-            <button
-              type="button"
-              onClick={() => {
-                if (validateContactInfo()) {
-                  setStep(6);
-                }
-              }}
-              className="w-full px-4 py-2 bg-violet-500 cursor-pointer font-bold text-white rounded-lg hover:bg-violet-600 transition-colors">
-              Next
-            </button>
-          </div>
-        )} */}
-
-        {/* Step 6: Review and submit */}
+       
+ 
         {step === 5 && (
           <div>
             <h2 className="text-2xl w-full font-bold text-center text-gray-800 mb-4">
               Review Your Listing
-            </h2>
-            {/* ///////////// */}
+            </h2> 
             <div className="flex  flex-wrap md:flex-nowrap p-4  mb-4 justify-between">
               <div className="sm:mb-0  flex justify-center items-center  w-full rounded-lg mb-4 sm:mr-8">
                 {previewImage && (
@@ -798,8 +709,7 @@ const ListDog = () => {
                   </p>
                 )}
               </div>
-            </div>
-            {/* ///////////// */}
+            </div> 
             <button
               type="button"
               onClick={handleSubmit}
@@ -832,8 +742,7 @@ const ListDog = () => {
             </button>
           </div>
         )}
-
-        {/* Navigation buttons */}
+ 
         {step > 1 && step <= 5 && (
           <div className="flex justify-between mt-8">
             <button
@@ -842,7 +751,7 @@ const ListDog = () => {
               className="px-4 py-2 text-gray-500 font-bold cursor-pointer hover:text-gray-900">
               {step !== 6 ? "Back" : "Edit"}
             </button>
-            {step < 5 && ( // Skip next button for location and contact steps
+            {step < 5 && ( 
               <button
                 type="button"
                 onClick={() => {
