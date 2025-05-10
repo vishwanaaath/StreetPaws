@@ -238,14 +238,12 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                   {currentUser.username}
                 </h1>
                 {isDeveloper && (
-                  <div className="group relative">
+                  <div className=" relative">
                     <img
                       src="./images/developer-badge.svg"
-                      className="w-7 h-7 flex-shrink-0 animate-pulse cursor-help"
+                      className="w-7 h-7 flex-shrink-0 "
                     />
-                    <div className="absolute hidden group-hover:block -top-8 right-0 bg-violet-600 text-white px-2 py-1 rounded text-xs">
-                      Site Creator
-                    </div>
+                    
                   </div>
                 )}
               </div>
