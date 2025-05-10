@@ -100,7 +100,7 @@ const AdoptionStats = () => {
     },
     {
       id: 5,
-      img: "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1746614134432-black-white.jpg",
+      img: "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745405701747-black-white.jpg",
       distance: "2km away",
       type: "Black-White",
       age: "2-3 years",
