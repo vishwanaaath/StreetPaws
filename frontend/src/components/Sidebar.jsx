@@ -22,100 +22,51 @@ const Sidebar = ({
 
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
-  const [type, settype] = useState("");
-  const [isLoaded, setIsLoaded] = useState(false);
   const [istypeDropdownOpen, setIstypeDropdownOpen] = useState(false);
-  const [distance, setDistance] = useState(null);
-  const [isDistanceDropdownOpen, setIsDistanceDropdownOpen] = useState(false);
 
-  const dogType = [
-    {
-      name: "Brown",
-      imageUrl:
-        "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/Brown.jpg",
-    },
-    {
-      name: "Black",
-      imageUrl:
-        "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745406357610-black.jpg",
-    },
-    {
-      name: "White",
-      imageUrl:
-        "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745406393596-white.jpg",
-    },
-    {
-      name: "Brown and White",
-      imageUrl:
-        "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745405559806-brown-white.jpg",
-    },
-    {
-      name: "Black and White",
-      imageUrl:
-        "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745405701747-black-white.jpg",
-    },
-    {
-      name: "Unique",
-      imageUrl:
-        "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745406502654-spotted-dog.jpg",
-    },
+  const dogTypeOptions = [
+    { name: "Brown", imageUrl: "brown-image-url" },
+    { name: "Black", imageUrl: "black-image-url" },
+    { name: "White", imageUrl: "white-image-url" },
+    { name: "Brown and White", imageUrl: "brown-white-image-url" },
+    { name: "Black and White", imageUrl: "black-white-image-url" },
+    { name: "Unique", imageUrl: "unique-image-url" },
   ];
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (isAuthenticated && auth0User?.sub) {
-        try {
-          const numericId = auth0User.sub.split("|")[1];
-          const token = await getAccessTokenSilently();
+      if (!isAuthenticated || !auth0User?.sub) return;
 
-          const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/users/${numericId}`,
-            { headers: { Authorization: `Bearer ${token}` } }
-          );
-
-          setUserData(response.data);
-          console.log(response.data);
-          console.log("signed");
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          if (error.response?.status === 404) {
-            navigate("/PostDP");
-          }
-        }
+      try {
+        const numericId = auth0User.sub.split("|")[1];
+        const token = await getAccessTokenSilently();
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/users/${numericId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        error.response?.status === 404 && navigate("/PostDP");
       }
     };
 
     fetchUserData();
   }, [isAuthenticated, auth0User?.sub, navigate, getAccessTokenSilently]);
 
-  const handleLogin = async () => {
-    if (!isAuthenticated) {
-      await loginWithRedirect({
-        appState: { returnTo: window.location.pathname },
-      });
-    }
-  };
+  const handleLogin = () => !isAuthenticated && loginWithRedirect();
 
   const handleLogout = () => {
     setSidebarVisible(false);
-    logout({
-      logoutParams: {
-        returnTo: "https://streetpaws.onrender.com/",
-      },
-    });
+    logout({ logoutParams: { returnTo: window.location.origin } });
     setNotificationMessage("Successfully logged out");
   };
 
-  const handleSidebarLeave = (e) => {
-    const relatedTarget = e.relatedTarget;
-    if (
-      relatedTarget?.closest &&
-      !relatedTarget.closest(".sidebar-container")
-    ) {
-      setSidebarVisible(false);
-    } else {
-      setSidebarVisible(false);
-    }
+  const handleFilterSelect = (typeName, imageUrl) => {
+    handleColorSelect(typeName);
+    setNotificationImage(imageUrl);
+    setNotificationMessage(`${typeName} filter added`);
+    setIstypeDropdownOpen(false);
   };
 
   return (
@@ -124,13 +75,12 @@ const Sidebar = ({
         sidebarVisible ? "translate-x-0" : "-translate-x-full"
       }`}
       onMouseEnter={() => setSidebarVisible(true)}
-      onMouseLeave={handleSidebarLeave}>
+      onMouseLeave={() => setSidebarVisible(false)}>
+      {/* User Profile Section */}
       {isLoading || (isAuthenticated && !userData) ? (
         <div className="flex w-full p-3 animate-pulse">
           <div className="flex w-full items-start gap-4">
-            <div className="flex-shrink-0">
-              <div className="w-15 h-15 rounded-full bg-violet-200" />
-            </div>
+            <div className="w-15 h-15 rounded-full bg-violet-200" />
             <div className="flex flex-col mt-2.5 justify-center flex-1 space-y-2">
               <div className="h-4 bg-violet-200 rounded w-3/4" />
               <div className="h-3 bg-violet-200 rounded w-1/2" />
@@ -141,117 +91,87 @@ const Sidebar = ({
         <Link
           to="/profile"
           state={{ user: userData }}
-          className="flex w-full p-3 transition-colors">
-          <div className="flex w-full items-start gap-4">
-            <div className="flex-shrink-0">
-              <div className="w-15 h-15 rounded-full overflow-hidden    ">
-                <img
-                  src={userData.dp_url || auth0User.picture}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-            <div className="flex flex-col  mt-2.5 justify-center flex-1">
+          className="flex w-full p-3 transition-colors hover:bg-violet-50">
+          <div className="flex items-start gap-4 w-full">
+            <img
+              src={userData.dp_url || auth0User.picture}
+              alt="Profile"
+              className="w-15 h-15 rounded-full object-cover"
+            />
+            <div className="flex flex-col justify-center flex-1">
               <p className="text-[16px] font-bold text-gray-800">
                 {userData.username}
               </p>
               <p className="text-[13px] text-gray-900 mt-1">
-                {userData.dogsListed?.length || 0}{" "}
-                {userData.dogsListed?.length === 1
-                  ? "dog listed"
-                  : "dogs listed"}
+                {userData.dogsListed?.length || 0} dogs listed
               </p>
             </div>
           </div>
         </Link>
       ) : (
-        <div className="p-4 space-y-4" onClick={handleLogin}>
-          <button className="w-full px-4 py-2 border-2 border-violet-400 cursor-pointer text-violet-500 rounded-lg hover:bg-violet-50 transition-colors">
+        <div className="p-4">
+          <button
+            onClick={handleLogin}
+            className="w-full px-4 py-2 border-2 border-violet-400 text-violet-500 rounded-lg hover:bg-violet-50 transition-colors">
             Login
           </button>
         </div>
       )}
 
-      <div className="relative mt-5 w-full px-4">
-        <style jsx>{`
-          .custom-scroll::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-          }
-          .custom-scroll::-webkit-scrollbar-track {
-            background: rgba(245, 243, 255, 0.5);
-            border-radius: 10px;
-          }
-          .custom-scroll::-webkit-scrollbar-thumb {
-            background: rgba(167, 139, 250, 0.8);
-            border-radius: 10px;
-            border: 1px solid rgba(245, 243, 255, 0.5);
-          }
-          .custom-scroll::-webkit-scrollbar-thumb:hover {
-            background: rgba(139, 92, 246, 0.8);
-          }
-        `}</style>
-        <button
-          className="w-full  sm:px-4 sm:py-3.5  px-3 py-2 text-[15px] font-medium rounded-lg bg-white/80 backdrop-blur-md border-2 border-violet-400  hover:shadow-lg hover:bg-violet-100/40 transition-all duration-200"
-          onClick={() => {
-            setIstypeDropdownOpen(!istypeDropdownOpen);
-            if (isDistanceDropdownOpen) {
-              setIsDistanceDropdownOpen(false);
-            }
-          }}>
-          <div className="flex items-center cursor-pointer justify-around">
-            <span>{type || "Filter dog type"}</span>
-            <svg
-              className={`w-4 h-4 ml-2 transform transition-transform ${
-                istypeDropdownOpen ? "rotate-180" : ""
-              }`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </div>
-        </button>
-        {type && (
+      {/* Filter Section */}
+      <div className="relative mt-5 px-4">
+        <div className="space-y-2">
           <button
-            onClick={() => settype("")}
-            className="text-xs text-violet-600 hover:text-violet-700">
-            Clear Filters
+            className="w-full px-4 py-3.5 text-sm font-medium rounded-lg bg-white/80 border-2 border-violet-400 hover:bg-violet-100/40 transition-all"
+            onClick={() => setIstypeDropdownOpen(!istypeDropdownOpen)}>
+            <div className="flex items-center justify-between">
+              <span>{selectedColor || "Filter dog type"}</span>
+              <svg
+                className={`w-4 h-4 transform transition-transform ${
+                  istypeDropdownOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
           </button>
-        )}
+
+          {selectedColor && (
+            <button
+              onClick={() => handleColorSelect(null)}
+              className="text-xs text-violet-600 hover:text-violet-700">
+              Clear Filters
+            </button>
+          )}
+        </div>
+
         {istypeDropdownOpen && (
-          <div className=" bg-white rounded-lg max-h-[300px] overflow-y-auto ">
-            <div className="flex px-3 py-2 gap-2 overflow-x-auto snap-x snap-mandatory touch-pan-x custom-scroll">
-              {dogType.map((typeItem) => (
+          <div className="mt-2 bg-white rounded-lg shadow-lg max-h-[300px] overflow-y-auto">
+            <div className="grid grid-cols-2 gap-3 p-3">
+              {dogTypeOptions.map((type) => (
                 <div
-                  key={typeItem.name}
-                  className="flex-shrink-0 w-32 snap-center">
-                  <div className="relative cursor-pointer group">
-                    <img
-                      src={typeItem.imageUrl}
-                      alt={typeItem.name}
-                      className={`w-35 h-35 object-cover rounded-lg border-2 transition-all duration-200 ${
-                        type === typeItem.name
-                          ? "border-violet-400 shadow-md"
-                          : "border-gray-200 group-hover:border-violet-300"
-                      }`}
-                      onClick={() => {
-                        settype(typeItem.name);
-                        setNotificationImage(typeItem.imageUrl);
-                        setNotificationMessage(`${typeItem.name} filter added`);
-                        setIstypeDropdownOpen(false);
-                      }}
-                    />
-                    <span className="block mt-2 text-sm font-medium text-gray-700 text-center">
-                      {typeItem.name}
-                    </span>
-                  </div>
+                  key={type.name}
+                  className="cursor-pointer group"
+                  onClick={() => handleFilterSelect(type.name, type.imageUrl)}>
+                  <img
+                    src={type.imageUrl}
+                    alt={type.name}
+                    className={`w-full h-32 object-cover rounded-lg border-2 transition-all ${
+                      selectedColor === type.name
+                        ? "border-violet-400 shadow-md"
+                        : "border-gray-200 group-hover:border-violet-300"
+                    }`}
+                  />
+                  <span className="block mt-2 text-sm font-medium text-gray-700 text-center">
+                    {type.name}
+                  </span>
                 </div>
               ))}
             </div>
@@ -259,13 +179,12 @@ const Sidebar = ({
         )}
       </div>
 
+      {/* Bottom Buttons */}
       {isAuthenticated && (
         <div className="absolute bottom-4 left-0 right-0 px-4 space-y-3">
           <Link
             to="/users"
-            className="flex items-center justify-center gap-2 w-full  sm:px-4 sm:py-3  px-3 py-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 shadow-md focus:ring-2 focus:ring-violet-400 focus:outline-none"
-            role="button"
-            aria-label="View community members">
+            className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors">
             <svg
               className="w-5 h-5"
               fill="none"
@@ -278,25 +197,20 @@ const Sidebar = ({
                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
               />
             </svg>
-            <span>Community</span>
+            Community
           </Link>
 
           <button
             onClick={handleLogout}
-            className="flex items-center justify-center gap-2 w-full sm:px-4 sm:py-3  px-3 py-2 bg-violet-500 text-white rounded-lg hover:bg-red-500 transition-colors duration-300 shadow-md focus:ring-2 focus:ring-red-300 focus:outline-none"
-            aria-label="Logout">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor">
+            className="flex items-center justify-center gap-2 w-full py-3 bg-violet-500 text-white rounded-lg hover:bg-violet-600 transition-colors">
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path
                 fillRule="evenodd"
                 d="M3 4a1 1 0 011-1h6a1 1 0 110 2H5v10h5a1 1 0 110 2H4a1 1 0 01-1-1V4zm9.293 1.293a1 1 0 011.414 0L17 8.586a1 1 0 010 1.414l-3.293 3.293a1 1 0 01-1.414-1.414L13.586 10H9a1 1 0 110-2h4.586l-1.293-1.293a1 1 0 010-1.414z"
                 clipRule="evenodd"
               />
             </svg>
-            <span className="font-medium text-[16px]">Logout</span>
+            Logout
           </button>
         </div>
       )}
