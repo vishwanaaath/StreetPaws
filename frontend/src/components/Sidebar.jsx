@@ -8,6 +8,8 @@ const Sidebar = ({
   setSidebarVisible,
   setNotificationMessage,
   setNotificationImage,
+  selectedColor,
+  handleColorSelect,
 }) => {
   const {
     isAuthenticated,
@@ -58,7 +60,7 @@ const Sidebar = ({
         "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745406502654-spotted-dog.jpg",
     },
   ];
- 
+
   useEffect(() => {
     const fetchUserData = async () => {
       if (isAuthenticated && auth0User?.sub) {
@@ -74,7 +76,6 @@ const Sidebar = ({
           setUserData(response.data);
           console.log(response.data);
           console.log("signed");
-
         } catch (error) {
           console.error("Error fetching user data:", error);
           if (error.response?.status === 404) {
@@ -257,10 +258,9 @@ const Sidebar = ({
           </div>
         )}
       </div>
-      
+
       {isAuthenticated && (
         <div className="absolute bottom-4 left-0 right-0 px-4 space-y-3">
-          
           <Link
             to="/users"
             className="flex items-center justify-center gap-2 w-full  sm:px-4 sm:py-3  px-3 py-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 shadow-md focus:ring-2 focus:ring-violet-400 focus:outline-none"
@@ -280,7 +280,7 @@ const Sidebar = ({
             </svg>
             <span>Community</span>
           </Link>
- 
+
           <button
             onClick={handleLogout}
             className="flex items-center justify-center gap-2 w-full sm:px-4 sm:py-3  px-3 py-2 bg-violet-500 text-white rounded-lg hover:bg-red-500 transition-colors duration-300 shadow-md focus:ring-2 focus:ring-red-300 focus:outline-none"

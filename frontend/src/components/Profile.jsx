@@ -177,7 +177,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
               onClick={() => setShowUploadModal(true)}
               src="./images/new-dp.svg"
               alt="edit"
-              className={`absolute bottom-6 right-6 bg-white p-2 rounded-full 
+              className={`absolute bottom-6 right-6 backdrop-blur-2xl p-2 rounded-full 
                w-10 h-10 sm:w-11 sm:h-11 sm:bottom-12 sm:right-12
                transform translate-x-1/4 translate-y-1/4 cursor-pointer`}
             />

@@ -32,13 +32,13 @@ const MapView = () => {
   const [map, setMap] = useState(null);
   const markerRefs = useRef({});
 
-  const { user, getAccessTokenSilently } = useAuth0();  
+  const { user, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
   const [location, setLocation] = useState(null);
   const [viewDogLocation, setViewDogLocation] = useState(() => {
-    const selectedDog = Location.state?.selectedDog; 
-    
-    return selectedDog ? { lat: selectedDog.lat, lng: selectedDog.lng } : null;  
+    const selectedDog = Location.state?.selectedDog;
+
+    return selectedDog ? { lat: selectedDog.lat, lng: selectedDog.lng } : null;
   });
 
   const [dogs, setDogs] = useState([]);
@@ -52,10 +52,9 @@ const MapView = () => {
   const [initialPosition, setInitialPosition] = useState(null);
   const [initialZoom, setInitialZoom] = useState(16);
 
-
   useEffect(() => {
     if (Location.state?.newlyListedDogId) {
-      setNewlyListedDogId(Location.state.newlyListedDogId); 
+      setNewlyListedDogId(Location.state.newlyListedDogId);
       navigate(Location.pathname, { replace: true, state: {} });
     }
   }, [Location]);
@@ -72,23 +71,23 @@ const MapView = () => {
       }
     }
   }, [dogs, newlyListedDogId, map]);
- 
+
   useEffect(() => {
     const handleNewDogNavigation = () => {
       if (newlyListedDogId && dogs.length > 0 && map) {
         const newDog = dogs.find((dog) => dog._id === newlyListedDogId);
 
-        if (newDog) { 
-          setTimeout(() => { 
+        if (newDog) {
+          setTimeout(() => {
             map.flyTo([newDog.lat, newDog.lng], 16, {
-              duration: 1,  
+              duration: 1,
             });
- 
+
             const marker = markerRefs.current[newDog._id];
             if (marker) {
               setTimeout(() => {
                 marker.openPopup();
-                
+
                 map.panBy([0, -75], { animate: true, duration: 0.5 });
               }, 300);
             }
@@ -100,7 +99,6 @@ const MapView = () => {
     handleNewDogNavigation();
   }, [dogs, newlyListedDogId, map]);
 
- 
   useEffect(() => {
     const fetchDogs = async () => {
       try {
@@ -112,7 +110,7 @@ const MapView = () => {
         if (!Array.isArray(response.data)) {
           throw new Error("Invalid response format");
         }
- 
+
         const dogsWithLocation = response.data
           .map((dog) => {
             if (!dog.location) {
@@ -134,22 +132,17 @@ const MapView = () => {
                 return null;
               }
               [lng, lat] = dog.location.coordinates;
-            }
-            
-            else if (
+            } else if (
               typeof dog.location.lat === "number" &&
               typeof dog.location.lng === "number"
             ) {
               lat = dog.location.lat;
               lng = dog.location.lng;
-            }
-            
-            else {
+            } else {
               console.warn("Invalid location data for dog:", dog._id);
               return null;
             }
 
-            
             if (
               isNaN(lat) ||
               isNaN(lng) ||
@@ -207,9 +200,15 @@ const MapView = () => {
     setMapBounds(map.getBounds());
   };
 
-  const visibleDogs = dogs.filter((dog) =>
+  // MapView.js
+  const filteredByType = selectedColor
+    ? dogs.filter((dog) => dog.type === selectedColor)
+    : dogs;
+
+  const visibleDogs = filteredByType.filter((dog) =>
     mapBounds ? mapBounds.contains([dog.lat, dog.lng]) : true
   );
+
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
     const dLat = (lat2 - lat1) * (Math.PI / 180);
@@ -232,10 +231,14 @@ const MapView = () => {
   };
 
   const handleColorSelect = (colorName) => {
-    setSelectedColor(colorName.name);
+    setSelectedColor(colorName ? colorName : null);
     setSidebarVisible(false);
-    setNotificationMessage(`${colorName.name} filter applied`);
-    setNotificationImage(colorName.imageUrl);
+    if (colorName) {
+      setNotificationMessage(`${colorName} filter applied`);
+    } else {
+      setNotificationMessage("Filters cleared");
+      setNotificationImage(null);
+    }
   };
 
   const handleSidebarLeave = (e) => {
@@ -281,20 +284,19 @@ const MapView = () => {
         />
       )}
 
-     
+      <div
+        className="edge-detector fixed left-0 top-0 h-full w-4 z-[1000] transition-all duration-200"
+        onMouseEnter={() => setSidebarVisible(true)}
+        onMouseLeave={handleSidebarLeave}>
         <div
-          className="edge-detector fixed left-0 top-0 h-full w-4 z-[1000] transition-all duration-200"
-          onMouseEnter={() => setSidebarVisible(true)}
-          onMouseLeave={handleSidebarLeave}>
-          <div
-            className={`absolute top-1/2 -translate-y-1/2 left-1 w-8 h-8 invert-50 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300 ${
-              sidebarVisible
-                ? "opacity-0 -translate-x-8"
-                : "opacity-100 translate-x-2 hover:translate-x-3"
-            }`}>
-            <img src="./images/left.svg" alt="Toggle sidebar" />
-          </div>
-        </div> 
+          className={`absolute top-1/2 -translate-y-1/2 left-1 w-8 h-8 invert-50 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300 ${
+            sidebarVisible
+              ? "opacity-0 -translate-x-8"
+              : "opacity-100 translate-x-2 hover:translate-x-3"
+          }`}>
+          <img src="./images/left.svg" alt="Toggle sidebar" />
+        </div>
+      </div>
 
       <Sidebar
         sidebarVisible={sidebarVisible}
@@ -337,15 +339,15 @@ const MapView = () => {
 
             if (dog.location?.coordinates) {
               [lng, lat] = dog.location.coordinates;
-            } else { 
+            } else {
               lat = dog.location?.lat;
               lng = dog.location?.lng;
             }
 
             const distance = calculateDistance(
-              location[0],  
-              location[1],  
-              lat,  
+              location[0],
+              location[1],
+              lat,
               lng
             );
 
@@ -454,7 +456,6 @@ const MapView = () => {
                                 {dog.gender}, {dog.age}
                               </div>
                             )}
-                            
                           </div>
                           <div className="relativerounded-full  w-13 h-13  mr-2">
                             {dog.lister ? (
