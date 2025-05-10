@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import axios from "axios";
+import './Profile.css'
 
 const UploadDPModal = ({ currentUser, onClose, onUpdate }) => {
   const fileInputRef = useRef(null);
@@ -73,14 +74,23 @@ const UploadDPModal = ({ currentUser, onClose, onUpdate }) => {
         <h2 className="text-xl font-bold mb-4">Update Profile Picture</h2>
 
         <div
-          className="w-32 h-32 rounded-full mx-auto bg-gray-100 flex items-center justify-center overflow-hidden mb-4 cursor-pointer hover:ring-2 ring-violet-500"
-          onClick={handleClickToPick}
-          title="Click to choose image">
-          {previewImage ? (
+          className={`w-32 h-32 rounded-full mx-auto flex items-center justify-center mb-4 relative 
+            ${
+              isUploading
+                ? "border-4 border-dashed border-violet-400 animate-pulse"
+                : "bg-gray-100 cursor-pointer hover:ring-2 ring-violet-500"
+            }`}
+          onClick={!isUploading ? handleClickToPick : undefined}>
+          {isUploading ? (
+            <>
+              <div className="absolute w-full h-full border-4 border-dashed border-violet-300 rounded-full animate-spin-slow" />
+              <div className="absolute w-full h-full border-4 border-dashed border-violet-500 rounded-full animate-spin-reverse" />
+            </>
+          ) : previewImage ? (
             <img
               src={previewImage}
               alt="Preview"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded-full"
             />
           ) : (
             <span className="text-gray-500 text-sm">Click to choose</span>
@@ -93,26 +103,34 @@ const UploadDPModal = ({ currentUser, onClose, onUpdate }) => {
           ref={fileInputRef}
           onChange={handleFileChange}
           className="hidden"
+          disabled={isUploading}
         />
 
         {error && (
           <p className="text-red-500 text-sm text-center mb-2">{error}</p>
         )}
 
-        <div className="flex gap-4 justify-end mt-4">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
-            disabled={isUploading}>
-            Cancel
-          </button>
-          <button
-            onClick={handleUpload}
-            disabled={isUploading || !selectedFile}
-            className="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 disabled:opacity-50">
-            {isUploading ? "Uploading..." : "Upload"}
-          </button>
-        </div>
+        {!isUploading && (
+          <div className="flex gap-4 justify-end mt-4">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+              Cancel
+            </button>
+            <button
+              onClick={handleUpload}
+              disabled={!selectedFile}
+              className="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 disabled:opacity-50">
+              Upload
+            </button>
+          </div>
+        )}
+
+        {isUploading && (
+          <p className="text-center text-violet-600 mt-4 animate-pulse">
+            Uploading...
+          </p>
+        )}
       </div>
     </div>
   );
