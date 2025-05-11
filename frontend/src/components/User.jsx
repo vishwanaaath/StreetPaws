@@ -104,7 +104,7 @@ const User = () => {
 
   return (
     <div
-      className={`  ${showProfilePic ? "sm:p-0" : "sm:pt-6"} 
+      className={` h-full  ${showProfilePic ? "sm:p-0" : "sm:pt-6"} 
       ${showProfilePic ? "p-0" : "p-1"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
@@ -142,7 +142,7 @@ const User = () => {
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto bg-pink-700  h-full">
+      <div className="max-w-4xl mx-auto   h-full">
         <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
             <div
