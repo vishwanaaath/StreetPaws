@@ -104,13 +104,12 @@ const User = () => {
 
   return (
     <div
-      className={`min-h-screen flex flex-col ${
-        showProfilePic ? "sm:p-0" : "sm:pt-6"
-      } ${showProfilePic ? "p-0" : "p-1"}`}
+      className={`  ${showProfilePic ? "sm:p-0" : "sm:pt-6"} 
+      ${showProfilePic ? "p-0" : "p-1"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
-      }}>
+      }}> 
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 -z-1 pointer-events-none" />
 
       {showProfilePic && currentUser.dp_url && (
@@ -142,8 +141,8 @@ const User = () => {
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto flex-grow">
-        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 h-full flex flex-col">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
             <div
               className={`w-26 h-26 ml-0.5 mt-2 sm:mb-0 mb-2 sm:mt-0 card rounded-full  bg-gray-200 overflow-hidden
@@ -158,6 +157,7 @@ const User = () => {
                 onClick={() => setShowProfilePic(true)}
               />
             </div>
+
 
             <div>
               <div className="flex items-center sm:mb-2 mb-0 gap-2">
@@ -188,6 +188,7 @@ const User = () => {
                   </p>
                 </a>
               ) : (
+                
                 <p className="text-gray-600 sm:mt-2 mt-0">
                   Member Since{" "}
                   {new Date(currentUser.createdAt).toLocaleDateString("en-US", {
@@ -249,7 +250,7 @@ const User = () => {
                   </svg>
                 </button>
               </div>
-
+ 
               <div className="flex items-center gap-2 group">
                 <div className="flex-1 min-w-0">
                   <p
@@ -281,6 +282,8 @@ const User = () => {
                 </button>
               </div>
             </div>
+
+          
           </div>
           <div className="sm:mt-8 mt-6">
             <div className="flex justify-between items-center mb-4">
@@ -346,23 +349,23 @@ const User = () => {
                 className={`${
                   isSingleColumn ? "columns-1" : "columns-2"
                 } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
-                {[...Array(6)].map((_, index) => {
+                {[...Array(6)].map((_, index) => { 
                   const ratios = [
-                    { class: "aspect-square" },
-                    { class: "aspect-[3/4]" },
-                    { class: "aspect-[3/2]" },
-                    { class: "aspect-square" },
+                    { class: "aspect-square" }, 
+                    { class: "aspect-[3/4]" }, 
+                    { class: "aspect-[3/2]" }, 
+                    { class: "aspect-square" }, 
                     { class: "aspect-[3/4]" },
                     { class: "aspect-[3/2]" },
                   ];
 
                   return (
                     <div key={index} className="break-inside-avoid mb-2">
-                      <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse">
+                      <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse"> 
                         <div
                           className={`w-full bg-gray-200 rounded-xl ${ratios[index].class}`}
                         />
-
+ 
                         <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
                           <div className="flex justify-between items-end">
                             <div className="space-y-2">
@@ -377,7 +380,9 @@ const User = () => {
                 })}
               </div>
             ) : fetchError ? (
-              <div className=" p-4 text-center">No dogs posted so far.</div>
+              <div className=" p-4 text-center">
+                No dogs posted so far.  
+              </div>
             ) : dogsData.length === 0 ? (
               <div className="text-gray-500 p-4 text-center">
                 No dogs posted so far.
@@ -422,7 +427,7 @@ const User = () => {
                                 state: {
                                   selectedDog: {
                                     id: dog._id,
-                                    lat: dog.location.coordinates[1],
+                                    lat: dog.location.coordinates[1],  
                                     lng: dog.location.coordinates[0],
                                   },
                                 },
@@ -448,7 +453,7 @@ const User = () => {
                 ))}
               </div>
             )}
-          </div>
+          </div> 
         </div>{" "}
       </div>
     </div>
