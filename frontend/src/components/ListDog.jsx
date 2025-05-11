@@ -235,7 +235,7 @@ const ListDog = () => {
       console.log(uploadResponse);
 
       setNotificationImage(uploadResponse.data.downloadUrl);
-      setNotificationMessage("Dog listed successfully!");
+      setNotificationMessage("Dog posted successfully!");
       setIsSubmitting(false);
       console.log("Dog Data:", JSON.stringify(dogData, null, 2));
       resetForm(); 
@@ -296,7 +296,7 @@ const ListDog = () => {
 
       <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl   p-8">
         <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-6">
-          List a Dog
+          Post a Dog
         </h1>
 
         {/* Progress indicator */}
@@ -737,7 +737,7 @@ const ListDog = () => {
                   Listing Dog...
                 </>
               ) : (
-                "List and View"
+                "Post and View"
               )}
             </button>
           </div>

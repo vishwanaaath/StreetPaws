@@ -381,13 +381,11 @@ const User = () => {
               </div>
             ) : fetchError ? (
               <div className=" p-4 text-center">
-                No dogs posted so far. Hopefully, it's because there aren’t any
-                strays near them. Hopefully.
+                No dogs posted so far.  
               </div>
             ) : dogsData.length === 0 ? (
               <div className="text-gray-500 p-4 text-center">
-                No dogs posted so far. Hopefully, it's because there aren’t any
-                strays near them. Hopefully.
+                No dogs posted so far. 
               </div>
             ) : (
               <div

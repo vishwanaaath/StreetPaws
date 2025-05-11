@@ -81,8 +81,8 @@ const UsersList = () => {
                   <p className="text-sm text-gray-500 mt-1">
                     {user.dogsListed?.length || 0}{" "}
                     {user.dogsListed?.length === 1
-                      ? "dog listed"
-                      : "dogs listed"}
+                      ? "dog posted"
+                      : "dogs posted"}
                   </p>
                 </div>
               </div>

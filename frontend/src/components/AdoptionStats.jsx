@@ -162,7 +162,7 @@ const AdoptionStats = () => {
             <button
               onClick={handleListDog}
               className="sm:w-[450px] w-full py-5 px-4 bg-gradient-to-r from-purple-500 to-violet-600 text-white text-2xl font-bold cursor-pointer rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
-              List a Dog
+              Post a Dog
             </button>
           </div>
         </div>
@@ -240,7 +240,7 @@ const AdoptionStats = () => {
           <button
             onClick={handleListDog}
             className="w-full py-5 px-8 bg-gradient-to-r from-purple-500 to-violet-600 text-white text-3xl font-bold cursor-pointer rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
-            List a Dog
+            Post a Dog
           </button>
         </div>
       </div>
