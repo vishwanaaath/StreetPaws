@@ -104,10 +104,9 @@ const User = () => {
 
   return (
     <div
-      className={` min-h-screen flex flex-col  ${
+      className={`min-h-screen flex flex-col ${
         showProfilePic ? "sm:p-0" : "sm:pt-6"
-      } 
- ${showProfilePic ? "p-0" : "pb-1 px-1"}`}
+      } ${showProfilePic ? "p-0" : "p-1"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
@@ -143,8 +142,8 @@ const User = () => {
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto flex-grow w-full flex flex-col">
-        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
+      <div className="max-w-4xl mx-auto flex-grow">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 h-full flex flex-col">
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
             <div
               className={`w-26 h-26 ml-0.5 mt-2 sm:mb-0 mb-2 sm:mt-0 card rounded-full  bg-gray-200 overflow-hidden
