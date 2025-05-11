@@ -104,13 +104,14 @@ const User = () => {
 
   return (
     <div
-      className={` h-full  ${showProfilePic ? "sm:p-0" : "sm:pt-6"} 
-      ${showProfilePic ? "p-0" : "p-1"}`}
+      className={` min-h-screen flex flex-col  ${
+        showProfilePic ? "sm:p-0" : "sm:pt-6"
+      } 
+ ${showProfilePic ? "p-0" : "pb-1 px-1"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
       }}>
-
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 -z-1 pointer-events-none" />
 
       {showProfilePic && currentUser.dp_url && (
@@ -142,7 +143,7 @@ const User = () => {
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto   h-full">
+      <div className="max-w-4xl mx-auto flex-grow w-full flex flex-col">
         <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
             <div
