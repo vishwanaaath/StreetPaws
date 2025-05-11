@@ -248,16 +248,14 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                 )}
               </div>
 
-              {isDeveloper ? (
-                <a href="https://streetpaws.onrender.com">
+              {isDeveloper ? ( 
                   <p className="text-gray-600 sm:mt-2 mt-0">
                     Creator & Caretaker of{"    "}
                     <span className="font-bold text-[18px] text-violet-500">
                       {" "}
                       StreetPaws
                     </span>
-                  </p>
-                </a>
+                  </p> 
               ) : (
                 
                 <p className="text-gray-600 sm:mt-2 mt-0">
