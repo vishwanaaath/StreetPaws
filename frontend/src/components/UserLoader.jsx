@@ -13,7 +13,7 @@ const UserLoader = () => {
           </h1>
 
           <div className="flex-1 overflow-y-auto space-y-2 pb-4">
-            {[...Array(5)].map((_, index) => (
+            {[...Array(7)].map((_, index) => (
               <div
                 key={index}
                 className="group relative flex items-center p-2 sm:p-4 bg-white">
