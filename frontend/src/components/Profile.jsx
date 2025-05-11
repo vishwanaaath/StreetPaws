@@ -445,7 +445,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                 })}
               </div>
             ) : fetchError ? (
-              <div className="flex flex-col flex-grow min-h-[60vh] sm:min-h-[50vh] items-center justify-center p-4">
+              <div className="flex flex-col flex-grow min-h-[30vh] sm:min-h-[50vh] items-center justify-center p-4">
                 <div className="text-center text-gray-500 bg-violet-50 rounded-xl w-full max-w-sm mx-auto p-8 shadow-inner border border-violet-100">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -469,7 +469,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                 </div>
               </div>
             ) : dogsData.length === 0 ? (
-              <div className="flex flex-col flex-grow min-h-[60vh] sm:min-h-[50vh] items-center justify-center p-4">
+              <div className="flex flex-col flex-grow min-h-[30vh] sm:min-h-[50vh] items-center justify-center p-4">
                 <div className="text-center text-gray-500 bg-violet-50 rounded-xl w-full max-w-sm mx-auto p-8 shadow-inner border border-violet-100">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
