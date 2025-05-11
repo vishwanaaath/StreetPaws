@@ -142,7 +142,7 @@ const User = () => {
       )}
 
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 h-full p-2.5 ">
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
             <div
               className={`w-26 h-26 ml-0.5 mt-2 sm:mb-0 mb-2 sm:mt-0 card rounded-full  bg-gray-200 overflow-hidden
