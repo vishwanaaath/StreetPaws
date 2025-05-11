@@ -394,9 +394,7 @@ const User = () => {
                   <p className="text-gray-600 font-medium">
                     No dogs posted yet
                   </p>
-                  <p className="text-sm mt-1 text-gray-500">
-                    Your future posts will appear here
-                  </p>
+                 
                 </div>
               </div>
             ) : dogsData.length === 0 ? (
@@ -418,9 +416,7 @@ const User = () => {
                   <p className="text-gray-600 font-medium">
                     No dogs posted yet
                   </p>
-                  <p className="text-sm mt-1 text-gray-500">
-                    Your future posts will appear here
-                  </p>
+               
                 </div>
               </div>
             ) : (

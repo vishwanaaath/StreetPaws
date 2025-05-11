@@ -158,7 +158,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
           }}
         />
       )}
- 
+
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 -z-1 pointer-events-none" />
 
       {showProfilePic && currentUser.dp_url && (
@@ -193,7 +193,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
               className="cursor-pointer object-contain rounded-lg max-w-[90vw] max-h-[90vh] m-auto"
               alt="Dog fullscreen"
               onClick={() => setSelectedDogImage(null)}
-            /> 
+            />
             <img
               className="absolute top-4 right-4 z-50 sm:w-10 sm:h-10 w-8 h-8 p-2 bg-white/80 hover:bg-white rounded-full opacity-90 hover:opacity-100 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center"
               src="./images/trash.png"
@@ -231,7 +231,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                 onClick={() => setShowProfilePic(true)}
               />
             </div>
- 
+
             <div>
               <div className="flex items-center sm:mb-2 mb-0 gap-2">
                 <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
@@ -243,21 +243,19 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                       src="./images/developer-badge.svg"
                       className="w-7 h-7 flex-shrink-0 "
                     />
-                    
                   </div>
                 )}
               </div>
 
-              {isDeveloper ? ( 
-                  <p className="text-gray-600 sm:mt-2 mt-0">
-                    Creator & Caretaker of{"    "}
-                    <span className="font-bold text-[18px] text-violet-500">
-                      {" "}
-                      StreetPaws
-                    </span>
-                  </p> 
+              {isDeveloper ? (
+                <p className="text-gray-600 sm:mt-2 mt-0">
+                  Creator & Caretaker of{"    "}
+                  <span className="font-bold text-[18px] text-violet-500">
+                    {" "}
+                    StreetPaws
+                  </span>
+                </p>
               ) : (
-                
                 <p className="text-gray-600 sm:mt-2 mt-0">
                   Member Since{" "}
                   {new Date(currentUser.createdAt).toLocaleDateString("en-US", {
@@ -319,7 +317,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                   </svg>
                 </button>
               </div>
- 
+
               <div className="flex items-center gap-2 group">
                 <div className="flex-1 min-w-0">
                   <p
@@ -351,8 +349,6 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                 </button>
               </div>
             </div>
-
-          
           </div>
           <div className="sm:mt-8 mt-6">
             <div className="flex justify-between items-center mb-4">
@@ -418,23 +414,23 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                 className={`${
                   isSingleColumn ? "columns-1" : "columns-2"
                 } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
-                {[...Array(6)].map((_, index) => { 
+                {[...Array(6)].map((_, index) => {
                   const ratios = [
-                    { class: "aspect-square" },  
-                    { class: "aspect-[3/4]" }, 
-                    { class: "aspect-[3/2]" }, 
-                    { class: "aspect-square" }, 
+                    { class: "aspect-square" },
+                    { class: "aspect-[3/4]" },
+                    { class: "aspect-[3/2]" },
+                    { class: "aspect-square" },
                     { class: "aspect-[3/4]" },
                     { class: "aspect-[3/2]" },
                   ];
 
                   return (
                     <div key={index} className="break-inside-avoid mb-2">
-                      <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse"> 
+                      <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse">
                         <div
                           className={`w-full bg-gray-200 rounded-xl ${ratios[index].class}`}
                         />
- 
+
                         <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
                           <div className="flex justify-between items-end">
                             <div className="space-y-2">
@@ -449,12 +445,52 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                 })}
               </div>
             ) : fetchError ? (
-              <div className=" p-4 text-center">
-                No dogs posted so far. 
+              <div className="flex flex-col flex-grow min-h-[60vh] sm:min-h-[50vh] items-center justify-center p-4">
+                <div className="text-center text-gray-500 bg-violet-50 rounded-xl w-full max-w-sm mx-auto p-8 shadow-inner border border-violet-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-12 w-12 mx-auto mb-4 text-violet-300"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <p className="text-gray-600 font-medium">
+                    No dogs posted yet
+                  </p>
+                  <p className="text-sm mt-1 text-gray-500">
+                    Your future posts will appear here
+                  </p>
+                </div>
               </div>
             ) : dogsData.length === 0 ? (
-              <div className="text-gray-500 p-4 text-center">
-                No dogs posted so far.  
+              <div className="flex flex-col flex-grow min-h-[60vh] sm:min-h-[50vh] items-center justify-center p-4">
+                <div className="text-center text-gray-500 bg-violet-50 rounded-xl w-full max-w-sm mx-auto p-8 shadow-inner border border-violet-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-12 w-12 mx-auto mb-4 text-violet-300"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <p className="text-gray-600 font-medium">
+                    No dogs posted yet
+                  </p>
+                  <p className="text-sm mt-1 text-gray-500">
+                    Your future posts will appear here
+                  </p>
+                </div>
               </div>
             ) : (
               <div
@@ -496,7 +532,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                                 state: {
                                   selectedDog: {
                                     id: dog._id,
-                                    lat: dog.location.coordinates[1], 
+                                    lat: dog.location.coordinates[1],
                                     lng: dog.location.coordinates[0],
                                   },
                                 },
@@ -522,7 +558,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                 ))}
               </div>
             )}
-          </div> 
+          </div>
         </div>{" "}
       </div>
     </div>
