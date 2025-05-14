@@ -119,7 +119,7 @@ const Sidebar = ({
               className="flex w-full p-3 transition-colors hover:bg-violet-50">
               <div className="flex w-full items-start gap-4">
                 <div className="flex-shrink-0">
-                  <div className="w-15 h-15 rounded-full overflow-hidden">
+                  <div className="w-16 h-16 rounded-full overflow-hidden">
                     <img
                       src={userData.dp_url || auth0User.picture}
                       alt="Profile"
