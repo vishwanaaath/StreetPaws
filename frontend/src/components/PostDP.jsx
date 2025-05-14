@@ -222,7 +222,7 @@ const PostDP = () => {
               <button
                 type="button"
                 onClick={handleSubmit}
-                disabled={isUploading || !username.trim() || !phoneNumber}
+                disabled={isUploading || !username.trim() || !phoneNumber || phoneNumber.length<6}
                 className="w-full py-3 mt-4 bg-gradient-to-r cursor-pointer from-violet-600 to-purple-500 text-white text-2xl font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-75 disabled:hover:scale-100 flex justify-center items-center">
                 {isUploading ? (
                   <div className="flex items-center space-x-3">
