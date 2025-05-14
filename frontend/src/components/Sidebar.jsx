@@ -62,6 +62,7 @@ const Sidebar = ({
       },
     });
     setNotificationMessage("Successfully logged out");
+    setNotificationImage(userData.dp_url);
   };
 
   const handleSidebarLeave = (e) => {
