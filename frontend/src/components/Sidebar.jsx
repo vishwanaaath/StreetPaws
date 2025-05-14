@@ -145,7 +145,11 @@ const Sidebar = ({
               <button
                 onClick={handleListDog}
                 className="flex items-center gap-2 px-4 py-2 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
-                <img src="./images/marker.svg" alt="" className="w-5 h-5" />
+                <img
+                  src="./images/Sitting dog.svg"
+                  alt=""
+                  className="w-5 h-5"
+                />
                 <span>Post Dog</span>
               </button>
               <Link
