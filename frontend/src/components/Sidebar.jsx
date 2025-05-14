@@ -76,6 +76,10 @@ const Sidebar = ({
     }
   };
 
+  const handleListDog = async () => {
+      navigate("/list-dog", { state: { user: userData } });
+  };
+
   return (
     <div
       className={`sidebar-container fixed left-0 top-0 h-full w-[260px] backdrop-blur-lg bg-white/80 border-r border-gray-200 shadow-2xl transform transition-transform duration-300 z-[1001] ${
@@ -128,8 +132,8 @@ const Sidebar = ({
             </Link>
             {/* Post Dogs & Community - always visible below profile or at top */}
             <div className="px-2 pt-4">
-              <Link
-                to="/list-dog"
+              <button
+                onClick={handleListDog}
                 className="flex items-center gap-2 px-4 py-2 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
                 <svg
                   className="w-5 h-5"
@@ -144,7 +148,7 @@ const Sidebar = ({
                   />
                 </svg>{" "}
                 <span>Post Dog</span>
-              </Link>
+              </button>
               <Link
                 to="/users"
                 className="flex items-center gap-2 px-4 py-2 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">

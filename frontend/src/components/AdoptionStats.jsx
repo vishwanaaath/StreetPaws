@@ -38,8 +38,7 @@ const AdoptionStats = () => {
     navigate(path);
   };
 
-  const handleListDog = async () => {
-    document.body.classList.add("cursor-wait");
+  const handleListDog = async () => { 
     if (!isAuthenticated)
       return loginWithRedirect({ appState: { returnTo: "/list-dog" } });
 
