@@ -113,7 +113,7 @@ const PostDP = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 flex flex-col">
+    <div className="min-h-screen bg-gray-100 p-1  sm:p-0 sm:pt-6  flex flex-col">
       <div className="absolute inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 z-0" />
 
       <Notification
@@ -222,7 +222,12 @@ const PostDP = () => {
               <button
                 type="button"
                 onClick={handleSubmit}
-                disabled={isUploading || !username.trim() || !phoneNumber || phoneNumber.length<12}
+                disabled={
+                  isUploading ||
+                  !username.trim() ||
+                  !phoneNumber ||
+                  phoneNumber.length < 12
+                }
                 className="w-full py-3 mt-4 bg-gradient-to-r cursor-pointer from-violet-600 to-purple-500 text-white text-2xl font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-75 disabled:hover:scale-100 flex justify-center items-center">
                 {isUploading ? (
                   <div className="flex items-center space-x-3">
