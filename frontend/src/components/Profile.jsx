@@ -215,7 +215,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl min-h-screen mx-auto">
         <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
             <div
