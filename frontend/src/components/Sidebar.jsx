@@ -131,7 +131,7 @@ const Sidebar = ({
         <div className="px-2 pt-4">
           <Link
             to="/list-dog"
-            className="flex items-center gap-2 mx-4 p-3 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+            className="flex items-center gap-2 px-4 py-2 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
             <svg
               className="w-5 h-5"
               fill="none"
@@ -148,7 +148,7 @@ const Sidebar = ({
           </Link>
           <Link
             to="/users"
-            className="flex items-center gap-2 mx-4 p-3 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+            className="flex items-center gap-2 px-4 py-2 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
             <svg
               className="w-5 h-5"
               fill="none"
