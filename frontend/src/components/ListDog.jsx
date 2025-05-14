@@ -744,8 +744,8 @@ const ListDog = () => {
                 onClick={() => {
                   if (step === 1 && previewImage) setStep(2);
                   else if (step === 2 && type) setStep(3);
-                  else if (step === 3 && location) setStep(4);
-                  else if (step === 4 && age) setStep(5);
+                  else if (step === 3 && geoLocation) setStep(4);
+                  else if (step === 4 && age && gender) setStep(5);
                 }}
                 className="px-4 py-2 bg-violet-500 font-bold text-white cursor-pointer  rounded-lg hover:bg-violet-600 transition-colors"
                 disabled={(step === 2 && !type) || (step === 4 && !age)}>
