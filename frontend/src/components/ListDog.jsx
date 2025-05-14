@@ -268,7 +268,7 @@ const ListDog = () => {
     setErrors({});
   };
   return (
-    <div className="min-h-screen  py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen  py-1 px-1 sm:px-6 lg:px-8">
       <Notification
         message={notificationMessage}
         image={notificationImage}
@@ -278,21 +278,8 @@ const ListDog = () => {
     
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl  opacity-30 -z-10 pointer-events-none" />
 
-      <Link
-        to="/"
-        className="inline-flex items-center mb-6 text-violet-500 hover:text-violet-700">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 mr-1"
-          viewBox="0 0 20 20"
-          fill="currentColor">
-          <path
-            fillRule="evenodd"
-            d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-            clipRule="evenodd"
-          />
-        </svg>
-      </Link>
+   
+        
 
       <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl   p-8">
         <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-6">
