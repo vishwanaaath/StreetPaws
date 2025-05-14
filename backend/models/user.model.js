@@ -1,40 +1,55 @@
-import mongoose from "mongoose"; 
+import mongoose from "mongoose";
+
 const userSchema = new mongoose.Schema(
   {
-    username: {
-      type: String,
-      required: [true, "Username is required"],
-      minlength: [3, "Username must be at least 3 characters"],
-      maxlength: [30, "Username cannot exceed 30 characters"],
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: [true, "Email is required"],
-      unique: true,
-      match: [/^\S+@\S+\.\S+$/, "Please use a valid email address"],
-      lowercase: true,
-    },
+    // Required Identity Fields
     auth0_id: {
       type: String,
       required: [true, "Auth0 ID is required"],
       unique: true,
       index: true,
     },
+    username: {
+      type: String,
+      required: [true, "Username is required"],
+      minlength: [3, "Username must be at least 3 characters"],
+      maxlength: [30, "Username cannot exceed 30 characters"],
+      match: [
+        /^[a-zA-Z0-9_]+$/,
+        "Username can only contain letters, numbers and underscores",
+      ],
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+      index: true,
+      match: [
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "Please use a valid email address",
+      ],
+      lowercase: true,
+    },
+
+    // Optional Profile Information
     dp_url: {
       type: String,
-      required: [true, "Profile picture URL is required"],
+      default: "https://via.placeholder.com/150",
       match: [/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i, "Invalid URL format"],
     },
     phoneNumber: {
       type: String,
-      required: [true, "Phone number is required"],
+      required: false,
       validate: {
-        validator: (v) => /^\+?[1-9]\d{1,14}$/.test(v.replace(/[\s()-]/g, "")),
+        validator: (v) =>
+          !v || /^\+?[1-9]\d{1,14}$/.test(v.replace(/[\s()-]/g, "")),
         message: (props) =>
           `${props.value} is not a valid international phone number!`,
       },
     },
+
+    // Application State
     profile_complete: {
       type: Boolean,
       default: false,
@@ -46,15 +61,31 @@ const userSchema = new mongoose.Schema(
         default: [],
       },
     ],
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
   },
   {
     collection: "users",
+    timestamps: true, // Automatically adds createdAt and updatedAt
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
+
+// Indexes for search optimization
+userSchema.index({
+  username: "text",
+  email: "text",
+});
+
+// Model Methods (example)
+userSchema.methods.getPublicProfile = function () {
+  return {
+    id: this._id,
+    username: this.username,
+    email: this.email,
+    dp_url: this.dp_url,
+    dogsListed: this.dogsListed,
+  };
+};
 
 const User = mongoose.model("User", userSchema);
 
