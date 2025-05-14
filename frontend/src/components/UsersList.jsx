@@ -44,7 +44,7 @@ const UsersList = () => {
   if (loading) return <UserLoader />;
 
   return (
-    <div className="relative min-h-screen bg-gray-50 p-1 flex flex-col"> 
+    <div className="relative min-h-screen bg-gray-50 p-1  sm:p-0sm:pt-6 flex flex-col"> 
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 z-0" />
 
       <div className="relative z-10 max-w-4xl mx-auto flex-1 w-full">
