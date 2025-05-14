@@ -20,45 +20,7 @@ const Sidebar = ({
 
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
-  const [type, settype] = useState("");
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [istypeDropdownOpen, setIstypeDropdownOpen] = useState(false);
-  const [distance, setDistance] = useState(null);
-  const [isDistanceDropdownOpen, setIsDistanceDropdownOpen] = useState(false);
 
-  const dogType = [
-    {
-      name: "Brown",
-      imageUrl:
-        "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/Brown.jpg",
-    },
-    {
-      name: "Black",
-      imageUrl:
-        "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745406357610-black.jpg",
-    },
-    {
-      name: "White",
-      imageUrl:
-        "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745406393596-white.jpg",
-    },
-    {
-      name: "Brown and White",
-      imageUrl:
-        "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745405559806-brown-white.jpg",
-    },
-    {
-      name: "Black and White",
-      imageUrl:
-        "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745405701747-black-white.jpg",
-    },
-    {
-      name: "Unique",
-      imageUrl:
-        "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745406502654-spotted-dog.jpg",
-    },
-  ];
- 
   useEffect(() => {
     const fetchUserData = async () => {
       if (isAuthenticated && auth0User?.sub) {
@@ -72,9 +34,6 @@ const Sidebar = ({
           );
 
           setUserData(response.data);
-          console.log(response.data);
-          console.log("signed");
-
         } catch (error) {
           console.error("Error fetching user data:", error);
           if (error.response?.status === 404) {
@@ -124,8 +83,8 @@ const Sidebar = ({
       }`}
       onMouseEnter={() => setSidebarVisible(true)}
       onMouseLeave={handleSidebarLeave}>
-      {/* Scrollable Content Area */}
       <div className="h-[calc(100%-120px)] overflow-y-auto pb-4">
+        {/* Profile section if logged in */}
         {isLoading || (isAuthenticated && !userData) ? (
           <div className="flex w-full p-3 animate-pulse">
             <div className="flex w-full items-start gap-4">
@@ -138,62 +97,76 @@ const Sidebar = ({
               </div>
             </div>
           </div>
-        ) : isAuthenticated ? (
-          <>
-            {/* Profile Section */}
-            <Link
-              to="/profile"
-              state={{ user: userData }}
-              className="flex w-full p-3 transition-colors hover:bg-violet-50">
-              <div className="flex w-full items-start gap-4">
-                <div className="flex-shrink-0">
-                  <div className="w-15 h-15 rounded-full overflow-hidden">
-                    <img
-                      src={userData.dp_url || auth0User.picture}
-                      alt="Profile"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col mt-2.5 justify-center flex-1">
-                  <p className="text-[16px] font-bold text-gray-800">
-                    {userData.username}
-                  </p>
-                  <p className="text-[13px] text-gray-900 mt-1">
-                    {userData.dogsListed?.length || 0}{" "}
-                    {userData.dogsListed?.length === 1
-                      ? "dog listed"
-                      : "dogs listed"}
-                  </p>
+        ) : isAuthenticated && userData ? (
+          <Link
+            to="/profile"
+            state={{ user: userData }}
+            className="flex w-full p-3 transition-colors hover:bg-violet-50">
+            <div className="flex w-full items-start gap-4">
+              <div className="flex-shrink-0">
+                <div className="w-15 h-15 rounded-full overflow-hidden">
+                  <img
+                    src={userData.dp_url || auth0User.picture}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
-            </Link>
-          </>
+              <div className="flex flex-col mt-2.5 justify-center flex-1">
+                <p className="text-[16px] font-bold text-gray-800">
+                  {userData.username}
+                </p>
+                <p className="text-[13px] text-gray-900 mt-1">
+                  {userData.dogsListed?.length || 0}{" "}
+                  {userData.dogsListed?.length === 1
+                    ? "dog listed"
+                    : "dogs listed"}
+                </p>
+              </div>
+            </div>
+          </Link>
         ) : null}
+
+        {/* Post Dogs & Community - always visible below profile or at top */}
+        <div className="px-4 pt-4 space-y-2">
+          <Link
+            to="/list-dog"
+            className="flex items-center gap-2 mx-4 p-3 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+              />
+            </svg>{" "}
+            <span>Post Dog</span>
+          </Link>
+          <Link
+            to="/users"
+            className="flex items-center gap-2 mx-4 p-3 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+              />
+            </svg>{" "}
+            <span>Community</span>
+          </Link>
+        </div>
       </div>
 
-
-      {/* Community Link */}
-      <Link
-        to="/users"
-        className="flex items-center gap-2 mx-4 p-3 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-          />
-        </svg>
-        <span>Community</span>
-      </Link>
-
-      
-      {/* Auth Buttons Container */}
+      {/* Auth Buttons */}
       <div className="absolute bottom-4 left-0 right-0 px-4 space-y-3">
         {isAuthenticated ? (
           <button
