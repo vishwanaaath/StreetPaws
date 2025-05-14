@@ -142,7 +142,7 @@ const Sidebar = ({
             </Link>
 
             {/* Post Dog and Community */}
-            <div className="px-2 pt-4">
+            <div className="px-2">
               <button
                 onClick={handleListDog}
                 className="flex items-center gap-2 px-4 py-2 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
