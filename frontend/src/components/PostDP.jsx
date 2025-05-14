@@ -6,7 +6,6 @@ import "react-phone-number-input/style.css";
 import axios from "axios";
 import Notification from "./Notification";
 
-
 const CustomInput = React.forwardRef((props, ref) => (
   <input
     {...props}
@@ -19,7 +18,6 @@ const PostDP = () => {
   const { user: auth0User } = useAuth0();
   const navigate = useNavigate();
 
-  
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [notificationMessage, setNotificationMessage] = useState(null);
@@ -30,7 +28,6 @@ const PostDP = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isUploading, setIsUploading] = useState(false);
 
-  
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -49,10 +46,20 @@ const PostDP = () => {
   }, [auth0User?.picture]);
 
   const handleSubmit = async () => {
+    // 🔒 Validation
+    if (!username.trim()) {
+      alert("Username is required.");
+      return;
+    }
+
+    if (!phoneNumber) {
+      alert("Phone number is required.");
+      return;
+    }
+
     setIsUploading(true);
 
     try {
-      
       if (!auth0User?.sub?.includes("|")) {
         throw new Error("Invalid user authentication");
       }
@@ -60,7 +67,6 @@ const PostDP = () => {
       const numericAuth0Id = auth0User.sub.split("|")[1];
       let dpUrl = previewImage;
 
-      
       if (selectedFile) {
         const formData = new FormData();
         formData.append("file", selectedFile);
@@ -70,10 +76,10 @@ const PostDP = () => {
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
+
         dpUrl = uploadResponse.data.downloadUrl;
       }
 
-      
       const userData = {
         username: username.trim(),
         phoneNumber,
@@ -84,20 +90,17 @@ const PostDP = () => {
         dogsListed: [],
       };
 
-      
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/users`,
         userData
       );
 
-      
       const customUser = {
         ...response.data.user,
         auth0Data: auth0User,
       };
-      localStorage.setItem("currentUser", JSON.stringify(customUser));
 
-      
+      localStorage.setItem("currentUser", JSON.stringify(customUser));
       navigate("/map", { state: { user: customUser } });
     } catch (error) {
       console.error("Submission error:", error);
@@ -218,7 +221,7 @@ const PostDP = () => {
               <button
                 type="button"
                 onClick={handleSubmit}
-                disabled={isUploading}
+                disabled={isUploading || !username.trim() || !phoneNumber}
                 className="w-full py-3 mt-4 bg-gradient-to-r cursor-pointer from-violet-600 to-purple-500 text-white text-2xl font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-75 disabled:hover:scale-100 flex justify-center items-center">
                 {isUploading ? (
                   <div className="flex items-center space-x-3">

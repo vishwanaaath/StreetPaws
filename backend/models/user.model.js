@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
     },
     username: {
       type: String,
-      required: [true, "Username is required"], 
+      required: [true, "Username is required"],
       trim: true,
     },
     email: {
@@ -36,8 +36,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
       validate: {
-        validator: (v) =>
-          !v || /^\+?[1-9]\d{1,14}$/.test(v.replace(/[\s()-]/g, "")),
+        validator: (v) => {
+          if (!v) return true;
+          const cleaned = v.replace(/[\s()-]/g, "").trim();
+          return /^\+?[1-9]\d{1,14}$/.test(cleaned);
+        },
         message: (props) =>
           `${props.value} is not a valid international phone number!`,
       },
