@@ -268,7 +268,7 @@ const ListDog = () => {
     setErrors({});
   };
   return (
-    <div className="min-h-screen  py-1 px-1 sm:px-6 lg:px-8">
+    <div className="min-h-screen  p-1  sm:p-0 sm:pt-6">
       <Notification
         message={notificationMessage}
         image={notificationImage}
