@@ -260,7 +260,7 @@ const MapView = () => {
       navigate("/user", { state: { user: response.data } });
     } catch (error) {
       console.error("Error fetching lister's profile:", error);
-      alert("login to view lister's profile");
+      alert("Login to view lister's profile");
       if (error.response?.status === 404) {
       }
     }
