@@ -275,12 +275,8 @@ const User = () => {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={2}
                       d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
                     />
-                  </svg>
-                </button>
-              </div>
             </div>
           </div>
           <div className="sm:mt-8 mt-6">
@@ -319,7 +315,7 @@ const User = () => {
                     strokeLinejoin="round"
                   />
                   <rect
-                    x="3"
+                   x="3"
                     y="11"
                     width="8"
                     height="10"
@@ -369,7 +365,7 @@ const User = () => {
                             <div className="space-y-2">
                               <div className="h-3 w-16 bg-gray-300 rounded" />
                             </div>
-                            <div className="h-6 w-6 bg-gray-300 rounded-full" />
+                           <div className="h-6 w-6 bg-gray-300 rounded-full" />
                           </div>
                         </div>
                       </div>

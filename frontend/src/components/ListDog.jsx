@@ -281,7 +281,7 @@ const ListDog = () => {
    
         
 
-      <div className="max-w-md mx-auto bg-white rounded-xl h-full shadow-md overflow-hidden md:max-w-2xl   p-8">
+      <div className="max-w-md mx-auto min-h-screen bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl   p-8">
         <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-6">
           Post a Dog
         </h1>
