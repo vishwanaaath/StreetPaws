@@ -5,7 +5,6 @@
   width: 33.33%;
   transition: all 400ms ease;
 }
-
 .cards.hidden-left {
   transform: translateX(-100%) scale(0.8);
   opacity: 0;
