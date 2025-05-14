@@ -151,7 +151,7 @@ const Sidebar = ({
                   alt=""
                   className="w-5 h-5"
                 />
-                <span>Post Dog</span>
+                <span>Post a Dog</span>
               </button>
               <Link
                 to="/users"
