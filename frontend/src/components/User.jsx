@@ -11,6 +11,8 @@ const User = () => {
   const { isLoading, error } = useAuth0();
   const location = useLocation();
   const [currentUser, setCurrentUser] = useState(location.state?.user || null);
+  console.log(currentUser);
+  
   const [dogsData, setDogsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null); 
