@@ -168,7 +168,7 @@ const PostDP = () => {
             <div className="flex flex-col items-center justify-center flex-1 w-full">
               <button
                 onClick={handleGoBack}
-                className="absolute top-2 left-0 p-1 hover:bg-gray-100 rounded-full transition-colors duration-200"
+                className="absolute top-1 left-0  hover:bg-gray-100 rounded-full transition-colors duration-200"
                 aria-label="Go back">
                 <svg
                   className="w-8 h-8 text-violet-400 hover:text-violet-600 transition-colors"
