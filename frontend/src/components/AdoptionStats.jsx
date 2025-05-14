@@ -108,9 +108,8 @@ const AdoptionStats = () => {
 
   return (
     <div className="relative flex flex-col sm:flex-row items-center justify-start min-h-screen overflow-hidden text-violet-400 sm:p-16 gap-9">
-      
       <div className="absolute inset-0 bg-gradient-to-tr from-violet-500/20 via-purple-500/15 to-indigo-500/10 backdrop-blur-xl -z-10" />
- 
+
       <div className="w-full max-w-2xl z-10 order-1 scale-85 sm:scale-100 sm:order-none">
         <div className="min-h-[180px] sm:min-h-[400px] flex items-center justify-start sm:block">
           {tagline === 2 && (
@@ -150,13 +149,13 @@ const AdoptionStats = () => {
             </h1>
           )}
         </div>
- 
+
         <div className="hidden sm:block mt-8">
           <div className="space-y-6">
             <button
               onClick={() => handleNavigation("/map")}
               className="sm:w-[450px] w-full py-5 px-4 bg-gradient-to-r cursor-pointer from-violet-600 to-purple-500 text-white text-2xl font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
-              Adopt a Dog
+              Find Dogs
             </button>
             <button
               onClick={handleListDog}
@@ -166,7 +165,7 @@ const AdoptionStats = () => {
           </div>
         </div>
       </div>
- 
+
       <div className="relative w-full sm:h-[500px] h-[180px] mt-4 scale-75 sm:scale-120 mr-0 sm:mr-20 flex items-center justify-center order-2 sm:order-none overflow-visible">
         {petData.map((pet, index) => (
           <div
@@ -228,13 +227,13 @@ const AdoptionStats = () => {
           </div>
         ))}
       </div>
- 
+
       <div className="w-full max-w-md z-10 order-3 sm:scale-100 scale-70 sm:hidden mt-8">
         <div className="space-y-6">
           <button
             onClick={() => handleNavigation("/map")}
             className="w-full py-5 px-8 bg-gradient-to-r cursor-pointer from-violet-600 to-purple-500 text-white text-3xl font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
-            Adopt a Dog
+            Find Dogs
           </button>
           <button
             onClick={handleListDog}
