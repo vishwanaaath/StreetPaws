@@ -3,7 +3,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import axios from "axios";
+import axios from "axios"; 
+
 import Notification from "./Notification";
 
 const CustomInput = React.forwardRef((props, ref) => (
@@ -52,10 +53,11 @@ const PostDP = () => {
       return;
     }
 
-    if (!phoneNumber) {
-      alert("Phone number is required.");
+    if (!phoneNumber || phoneNumber.length <= 6) {
+      alert("Please enter a valid phone number.");
       return;
     }
+    
 
     setIsUploading(true);
 
@@ -204,8 +206,7 @@ const PostDP = () => {
               </h2>
               <div className="w-full mb-6">
                 <PhoneInput
-                  international
-                  defaultCountry="US"
+                  defaultCountry="IN"
                   placeholder="Enter phone number"
                   value={phoneNumber}
                   onChange={setPhoneNumber}
