@@ -124,6 +124,9 @@ const Sidebar = ({
       }`}
       onMouseEnter={() => setSidebarVisible(true)}
       onMouseLeave={handleSidebarLeave}>
+
+
+
       {isLoading || (isAuthenticated && !userData) ? (
         <div className="flex w-full p-3 animate-pulse">
           <div className="flex w-full items-start gap-4">
@@ -172,91 +175,6 @@ const Sidebar = ({
         </div>
       )}
 
-      <div className="relative mt-5 w-full px-4">
-        <style jsx>{`
-          .custom-scroll::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-          }
-          .custom-scroll::-webkit-scrollbar-track {
-            background: rgba(245, 243, 255, 0.5);
-            border-radius: 10px;
-          }
-          .custom-scroll::-webkit-scrollbar-thumb {
-            background: rgba(167, 139, 250, 0.8);
-            border-radius: 10px;
-            border: 1px solid rgba(245, 243, 255, 0.5);
-          }
-          .custom-scroll::-webkit-scrollbar-thumb:hover {
-            background: rgba(139, 92, 246, 0.8);
-          }
-        `}</style>
-        <button
-          className="w-full  sm:px-4 sm:py-3.5  px-3 py-2 text-[15px] font-medium rounded-lg bg-white/80 backdrop-blur-md border-2 border-violet-400  hover:shadow-lg hover:bg-violet-100/40 transition-all duration-200"
-          onClick={() => {
-            setIstypeDropdownOpen(!istypeDropdownOpen);
-            if (isDistanceDropdownOpen) {
-              setIsDistanceDropdownOpen(false);
-            }
-          }}>
-          <div className="flex items-center cursor-pointer justify-around">
-            <span>{type || "Filter dog type"}</span>
-            <svg
-              className={`w-4 h-4 ml-2 transform transition-transform ${
-                istypeDropdownOpen ? "rotate-180" : ""
-              }`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </div>
-        </button>
-        {type && (
-          <button
-            onClick={() => settype("")}
-            className="text-xs text-violet-600 hover:text-violet-700">
-            Clear Filters
-          </button>
-        )}
-        {istypeDropdownOpen && (
-          <div className=" bg-white rounded-lg max-h-[300px] overflow-y-auto ">
-            <div className="flex px-3 py-2 gap-2 overflow-x-auto snap-x snap-mandatory touch-pan-x custom-scroll">
-              {dogType.map((typeItem) => (
-                <div
-                  key={typeItem.name}
-                  className="flex-shrink-0 w-32 snap-center">
-                  <div className="relative cursor-pointer group">
-                    <img
-                      src={typeItem.imageUrl}
-                      alt={typeItem.name}
-                      className={`w-35 h-35 object-cover rounded-lg border-2 transition-all duration-200 ${
-                        type === typeItem.name
-                          ? "border-violet-400 shadow-md"
-                          : "border-gray-200 group-hover:border-violet-300"
-                      }`}
-                      onClick={() => {
-                        settype(typeItem.name);
-                        setNotificationImage(typeItem.imageUrl);
-                        setNotificationMessage(`${typeItem.name} filter added`);
-                        setIstypeDropdownOpen(false);
-                      }}
-                    />
-                    <span className="block mt-2 text-sm font-medium text-gray-700 text-center">
-                      {typeItem.name}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
       
       {isAuthenticated && (
         <div className="absolute bottom-4 left-0 right-0 px-4 space-y-3">
