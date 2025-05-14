@@ -124,85 +124,79 @@ const Sidebar = ({
       }`}
       onMouseEnter={() => setSidebarVisible(true)}
       onMouseLeave={handleSidebarLeave}>
-
-
-
-      {isLoading || (isAuthenticated && !userData) ? (
-        <div className="flex w-full p-3 animate-pulse">
-          <div className="flex w-full items-start gap-4">
-            <div className="flex-shrink-0">
-              <div className="w-15 h-15 rounded-full bg-violet-200" />
-            </div>
-            <div className="flex flex-col mt-2.5 justify-center flex-1 space-y-2">
-              <div className="h-4 bg-violet-200 rounded w-3/4" />
-              <div className="h-3 bg-violet-200 rounded w-1/2" />
-            </div>
-          </div>
-        </div>
-      ) : isAuthenticated ? (
-        <Link
-          to="/profile"
-          state={{ user: userData }}
-          className="flex w-full p-3 transition-colors">
-          <div className="flex w-full items-start gap-4">
-            <div className="flex-shrink-0">
-              <div className="w-15 h-15 rounded-full overflow-hidden    ">
-                <img
-                  src={userData.dp_url || auth0User.picture}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
+      {/* Scrollable Content Area */}
+      <div className="h-[calc(100%-120px)] overflow-y-auto pb-4">
+        {isLoading || (isAuthenticated && !userData) ? (
+          <div className="flex w-full p-3 animate-pulse">
+            <div className="flex w-full items-start gap-4">
+              <div className="flex-shrink-0">
+                <div className="w-15 h-15 rounded-full bg-violet-200" />
+              </div>
+              <div className="flex flex-col mt-2.5 justify-center flex-1 space-y-2">
+                <div className="h-4 bg-violet-200 rounded w-3/4" />
+                <div className="h-3 bg-violet-200 rounded w-1/2" />
               </div>
             </div>
-            <div className="flex flex-col  mt-2.5 justify-center flex-1">
-              <p className="text-[16px] font-bold text-gray-800">
-                {userData.username}
-              </p>
-              <p className="text-[13px] text-gray-900 mt-1">
-                {userData.dogsListed?.length || 0}{" "}
-                {userData.dogsListed?.length === 1
-                  ? "dog listed"
-                  : "dogs listed"}
-              </p>
-            </div>
           </div>
-        </Link>
-      ) : (
-        <div className="p-4 space-y-4" onClick={handleLogin}>
-          <button className="w-full px-4 py-2 border-2 border-violet-400 cursor-pointer text-violet-500 rounded-lg hover:bg-violet-50 transition-colors">
-            Login
-          </button>
-        </div>
-      )}
+        ) : isAuthenticated ? (
+          <>
+            {/* Profile Section */}
+            <Link
+              to="/profile"
+              state={{ user: userData }}
+              className="flex w-full p-3 transition-colors hover:bg-violet-50">
+              <div className="flex w-full items-start gap-4">
+                <div className="flex-shrink-0">
+                  <div className="w-15 h-15 rounded-full overflow-hidden">
+                    <img
+                      src={userData.dp_url || auth0User.picture}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col mt-2.5 justify-center flex-1">
+                  <p className="text-[16px] font-bold text-gray-800">
+                    {userData.username}
+                  </p>
+                  <p className="text-[13px] text-gray-900 mt-1">
+                    {userData.dogsListed?.length || 0}{" "}
+                    {userData.dogsListed?.length === 1
+                      ? "dog listed"
+                      : "dogs listed"}
+                  </p>
+                </div>
+              </div>
+            </Link>
 
-      
-      {isAuthenticated && (
-        <div className="absolute bottom-4 left-0 right-0 px-4 space-y-3">
-          
-          <Link
-            to="/users"
-            className="flex items-center justify-center gap-2 w-full  sm:px-4 sm:py-3  px-3 py-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 shadow-md focus:ring-2 focus:ring-violet-400 focus:outline-none"
-            role="button"
-            aria-label="View community members">
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-              />
-            </svg>
-            <span>Community</span>
-          </Link>
- 
+            {/* Community Link */}
+            <Link
+              to="/users"
+              className="flex items-center gap-2 mx-4 p-3 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 shadow-md focus:ring-2 focus:ring-violet-400 focus:outline-none">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              <span>Community</span>
+            </Link>
+          </>
+        ) : null}
+      </div>
+
+      {/* Auth Buttons Container */}
+      <div className="absolute bottom-4 left-0 right-0 px-4 space-y-3">
+        {isAuthenticated ? (
           <button
             onClick={handleLogout}
-            className="flex items-center justify-center gap-2 w-full sm:px-4 sm:py-3  px-3 py-2 bg-violet-500 text-white rounded-lg hover:bg-red-500 transition-colors duration-300 shadow-md focus:ring-2 focus:ring-red-300 focus:outline-none"
-            aria-label="Logout">
+            className="flex items-center justify-center gap-2 w-full sm:px-4 sm:py-3 px-3 py-2 bg-violet-500 text-white rounded-lg hover:bg-red-500 transition-colors duration-300 shadow-md focus:ring-2 focus:ring-red-300 focus:outline-none">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -216,8 +210,14 @@ const Sidebar = ({
             </svg>
             <span className="font-medium text-[16px]">Logout</span>
           </button>
-        </div>
-      )}
+        ) : (
+          <button
+            onClick={handleLogin}
+            className="w-full px-4 py-2 border-2 border-violet-400 cursor-pointer text-violet-500 rounded-lg hover:bg-violet-50 transition-colors">
+            Login
+          </button>
+        )}
+      </div>
     </div>
   );
 };
