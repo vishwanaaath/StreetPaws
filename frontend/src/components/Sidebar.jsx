@@ -106,7 +106,7 @@ const Sidebar = ({
             </div>
 
             {/* Button loaders */}
-            <div className="px-2 pt-4 space-y-3 animate-pulse">
+            <div className="px-2  space-y-3 animate-pulse">
               <div className="h-[42px] rounded-lg bg-violet-200 w-full" />
               <div className="h-[42px] rounded-lg bg-violet-200 w-full" />
             </div>
