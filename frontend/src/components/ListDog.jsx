@@ -275,11 +275,7 @@ const ListDog = () => {
         duration={5000}
       />
 
-    
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl  opacity-30 -z-10 pointer-events-none" />
-
-   
-        
 
       <div className="max-w-md mx-auto min-h-screen bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl   p-8">
         <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-6">
@@ -319,7 +315,7 @@ const ListDog = () => {
               style={{ width: `${((step - 1) / 4) * 100}%` }}></div>
           </div>
         </div>
- 
+
         {step === 1 && (
           <div className="text-center">
             <label className="cursor-pointer">
@@ -369,7 +365,7 @@ const ListDog = () => {
             )}
           </div>
         )}
- 
+
         {step === 2 && (
           <div className="mb-6">
             <label className="block  text-sm font-medium text-gray-700 mb-2">
@@ -421,7 +417,7 @@ const ListDog = () => {
                   </div>
                 </div>
               )}
-            </div> 
+            </div>
           </div>
         )}
 
@@ -486,7 +482,7 @@ const ListDog = () => {
                       type="number"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                       step="any"
-                      value={manualLat} 
+                      value={manualLat}
                       onChange={(e) => {
                         setlat(e.target.value);
                         setManualLat(e.target.value);
@@ -499,7 +495,7 @@ const ListDog = () => {
                       type="number"
                       step="any"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                      value={manualLng}  
+                      value={manualLng}
                       onChange={(e) => {
                         setManualLng(e.target.value);
                         setlon(e.target.value);
@@ -552,7 +548,7 @@ const ListDog = () => {
             </div>
           </div>
         )}
- 
+
         {step === 4 && (
           <div className="space-y-6">
             <div
@@ -560,9 +556,9 @@ const ListDog = () => {
               style={{
                 height: isAgeDropdownOpen ? "200px" : "auto",
                 transition: "height 0.3s ease",
-                position: "relative",  
-                zIndex: 20, 
-                marginBottom: isAgeDropdownOpen ? "120px" : "1.5rem", 
+                position: "relative",
+                zIndex: 20,
+                marginBottom: isAgeDropdownOpen ? "120px" : "1.5rem",
               }}>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Estimated Age
@@ -599,8 +595,8 @@ const ListDog = () => {
                 height: isGenderDropdownOpen ? "200px" : "auto",
                 transition: "height 0.3s ease",
                 position: "relative",
-                zIndex: 20, 
-                marginBottom: isGenderDropdownOpen ? "30px" : "1.5rem", 
+                zIndex: 20,
+                marginBottom: isGenderDropdownOpen ? "30px" : "1.5rem",
               }}>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Gender
@@ -636,13 +632,11 @@ const ListDog = () => {
           </div>
         )}
 
-       
- 
         {step === 5 && (
           <div>
             <h2 className="text-2xl w-full font-bold text-center text-gray-800 mb-4">
               Review Your Listing
-            </h2> 
+            </h2>
             <div className="flex  flex-wrap md:flex-nowrap p-4  mb-4 justify-between">
               <div className="sm:mb-0  flex justify-center items-center  w-full rounded-lg mb-4 sm:mr-8">
                 {previewImage && (
@@ -654,13 +648,13 @@ const ListDog = () => {
                 )}
               </div>
               <div className="  flex flex-col justify-around ">
-                <p>
+                <p className="mt-1">
                   <span>Type: </span>
                   <span className="text-base text-black font-bold">
                     {type}
                   </span>{" "}
                 </p>
-                <p>
+                <p className="mt-1">
                   <span>Location: </span>
                   <span className="text-base text-black font-bold">
                     {geoLocation &&
@@ -669,18 +663,18 @@ const ListDog = () => {
                       )}`}
                   </span>{" "}
                 </p>
-                <p>
+                <p className="mt-1">
                   <span>Age: </span>
                   <span className="text-base text-black font-bold">{age}</span>
                 </p>
-                <p>
+                <p className="mt-1">
                   <span>Gender: </span>
                   <span className="text-base text-black font-bold">
                     {gender}
                   </span>
                 </p>
                 {email && (
-                  <p>
+                  <p className="mt-1">
                     <span>Email: </span>
                     <span className="text-base text-black font-bold">
                       {email}
@@ -688,7 +682,7 @@ const ListDog = () => {
                   </p>
                 )}
                 {phone && (
-                  <p>
+                  <p className="mt-1">
                     <span>Phone: </span>
                     <span className="text-base text-black font-bold">
                       {phone}
@@ -696,7 +690,7 @@ const ListDog = () => {
                   </p>
                 )}
               </div>
-            </div> 
+            </div>
             <button
               type="button"
               onClick={handleSubmit}
@@ -729,7 +723,7 @@ const ListDog = () => {
             </button>
           </div>
         )}
- 
+
         {step > 1 && step <= 5 && (
           <div className="flex justify-between mt-8">
             <button
@@ -738,7 +732,7 @@ const ListDog = () => {
               className="px-4 py-2 text-gray-500 font-bold cursor-pointer hover:text-gray-900">
               {step !== 6 ? "Back" : "Edit"}
             </button>
-            {step < 5 && ( 
+            {step < 5 && (
               <button
                 type="button"
                 onClick={() => {
