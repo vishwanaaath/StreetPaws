@@ -232,7 +232,7 @@ const Profile = () => {
               </div>
 
               {/* Mobile-only stats - tightly next to DP */}
-              <div className="md:hidden flex flex-col justify-center text-center items-start pl-6">
+              <div className="md:hidden flex flex-col justify-center items-center text-center  pl-6">
                 <p className="text-xl font-bold text-violet-600 leading-tight">
                   {currentUser.dogsListed.length}
                 </p>
@@ -278,7 +278,7 @@ const Profile = () => {
               <div className="mt-2 md:mt-4 flex items-center group">
                 <div className="flex-1 min-w-0">
                   <p
-                    className="text-gray-600 truncate hover:text-clip text-sm"
+                    className="text-gray-600  hover:text-clip text-sm"
                     title={currentUser.email}
                     style={{
                       maxWidth: "200px",
