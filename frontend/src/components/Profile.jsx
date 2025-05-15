@@ -129,7 +129,7 @@ const Profile = () => {
   return (
     <div
       className={`${showProfilePic ? "sm:p-0" : "sm:pt-6"} 
-      ${showProfilePic ? "p-0" : "p-1"}`}
+      ${showProfilePic ? "p-0" : "p-0"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
@@ -214,7 +214,7 @@ const Profile = () => {
       )}
 
       <div className="max-w-4xl min-h-screen mx-auto">
-        <div className="bg-white rounded-xl shadow-md overflow-hidden min-h-screen sm:p-6 p-2.5 ">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden min-h-screen sm:p-6 p-2 ">
           {/* Profile Header Section */}
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
             <div className="flex items-center w-full md:w-auto mt-4 gap-0">
