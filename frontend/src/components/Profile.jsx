@@ -232,7 +232,7 @@ const Profile = () => {
               </div>
 
               {/* Mobile-only stats - tightly next to DP */}
-              <div className="md:hidden flex flex-col justify-center items-center text-center ">
+              <div className="md:hidden flex flex-col justify-center items-center text-center  pl-6">
                 <p className="text-xl font-extrabold text-violet-500 leading-tight">
                   {currentUser.dogsListed.length}
                 </p>
