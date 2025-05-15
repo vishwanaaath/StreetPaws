@@ -333,7 +333,7 @@ const Profile = () => {
 
           {/* Recent Listings Section */}
           <div className="sm:mt-8 mt-4">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex justify-between items-center mb-2">
               <h2 className="sm:text-xl text-lg font-bold text-gray-800">
                 Recent Listings
               </h2>
