@@ -112,7 +112,7 @@ const Profile = () => {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center h-screen text-gray-800">
+      <div className="text-center p-8 text-red-500">
         Error loading profile: {error.message}
       </div>
     );
@@ -120,7 +120,7 @@ const Profile = () => {
 
   if (!currentUser) {
     return (
-      <div className="flex items-center justify-center h-screen text-gray-600">
+      <div className="text-center p-8 text-gray-600">
         Please log in to view your profile
       </div>
     );
@@ -128,8 +128,8 @@ const Profile = () => {
 
   return (
     <div
-      className={`${showProfilePic ? "sm:p-0" : "sm:pt-8"} 
-      ${showProfilePic ? "p-0" : "px-4"}`}
+      className={`${showProfilePic ? "sm:p-0" : "sm:pt-6"} 
+      ${showProfilePic ? "p-0" : "p-1"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
@@ -157,35 +157,34 @@ const Profile = () => {
         />
       )}
 
+      <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 -z-1 pointer-events-none" />
+
       {showProfilePic && currentUser.dp_url && (
-        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center">
+        <div className="absolute z-10 backdrop-blur-2xl backdrop-brightness-80 overflow-hidden w-full flex justify-center items-center min-h-screen min-w-screen">
           <div className="relative">
             <img
               src={
                 currentUser.dp_url ||
                 "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
               }
-              className="w-64 h-64 sm:w-80 sm:h-80 cursor-pointer object-cover rounded-full border-4 border-white/20"
+              className="sm:w-88 sm:h-88 cursor-pointer object-cover special-shadow w-58 h-58 rounded-full"
               alt="Profile"
               onClick={() => setShowProfilePic(false)}
             />
-            <button
+            <img
               onClick={() => setShowUploadModal(true)}
-              className="absolute bottom-6 right-6 bg-white/90 hover:bg-white p-2 rounded-full 
-               w-10 h-10 sm:w-11 sm:h-11 sm:bottom-8 sm:right-8
-               transform translate-x-1/4 translate-y-1/4 cursor-pointer transition-all duration-200 hover:scale-110">
-              <img
-                src="./images/new-dp.svg"
-                alt="edit"
-                className="w-full h-full"
-              />
-            </button>
+              src="./images/new-dp.svg"
+              alt="edit"
+              className={`absolute bottom-6 right-6 backdrop-blur-2xl invert-100 p-2 rounded-full 
+               w-10 h-10 sm:w-11 sm:h-11 sm:bottom-12 sm:right-12
+               transform translate-x-1/4 translate-y-1/4 cursor-pointer`}
+            />
           </div>
         </div>
       )}
 
       {selectedDogImage && (
-        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 backdrop-blur-2xl backdrop-brightness-50 flex items-center justify-center p-4">
           <div className="relative w-full h-full flex items-center justify-center">
             <img
               src={selectedDogImage}
@@ -193,8 +192,10 @@ const Profile = () => {
               alt="Dog fullscreen"
               onClick={() => setSelectedDogImage(null)}
             />
-            <button
-              className="absolute top-6 right-6 z-50 sm:w-10 sm:h-10 w-8 h-8 p-2 bg-white/90 hover:bg-white rounded-full transition-all hover:scale-110 cursor-pointer flex items-center justify-center"
+            <img
+              className="absolute top-4 right-4 z-50 sm:w-10 sm:h-10 w-8 h-8 p-2 bg-white/80 hover:bg-white rounded-full opacity-90 hover:opacity-100 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center"
+              src="./images/trash.png"
+              alt="Delete"
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedDog(
@@ -206,347 +207,333 @@ const Profile = () => {
                 );
                 setSelectedDogImage(null);
                 setShowDeleteModal(true);
-              }}>
-              <img
-                src="./images/trash.png"
-                alt="Delete"
-                className="w-full h-full"
-              />
-            </button>
+              }}
+            />
           </div>
         </div>
       )}
 
-      <div className="max-w-4xl mx-auto">
-        {/* Profile Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
-          {/* Profile Picture */}
-          <div className="relative">
-            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-tr from-gray-100 to-gray-200 overflow-hidden flex-shrink-0 border-2 border-white shadow-lg">
-              <img
-                src={
-                  currentUser.dp_url ||
-                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                }
-                alt="Profile"
-                className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
-                onClick={() => setShowProfilePic(true)}
-              />
-            </div>
-            <button
-              onClick={() => setShowUploadModal(true)}
-              className="absolute -bottom-1 -right-1 bg-white p-1.5 rounded-full shadow-md hover:scale-110 transition-transform">
-              <svg
-                className="w-4 h-4 text-gray-700"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+      <div className="max-w-4xl min-h-screen mx-auto">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden min-h-screen sm:p-6 p-2.5 ">
+          {/* Profile Header Section */}
+          <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
+            <div className="flex items-center w-full md:w-auto">
+              {/* Profile Picture */}
+              <div className="w-24 h-24 sm:w-26 sm:h-26 rounded-full bg-gray-200 overflow-hidden flex-shrink-0">
+                <img
+                  src={
+                    currentUser.dp_url ||
+                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                  }
+                  alt="Profile"
+                  className="w-full h-full object-cover cursor-pointer"
+                  onClick={() => setShowProfilePic(true)}
                 />
-              </svg>
-            </button>
-          </div>
+              </div>
 
-          {/* Profile Info */}
-          <div className="flex-1 w-full">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
-                {currentUser.username}
-              </h1>
-              {isDeveloper && (
-                <span className="inline-flex items-center gap-1 bg-gradient-to-r from-violet-600 to-indigo-600 text-white px-3 py-1 rounded-full text-xs font-medium">
-                  <svg
-                    className="w-3 h-3"
-                    fill="currentColor"
-                    viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Creator
-                </span>
-              )}
-            </div>
-
-            {/* Stats - Mobile */}
-            <div className="flex sm:hidden gap-6 mb-4">
-              <div className="text-center">
-                <p className="text-lg font-semibold text-gray-900">
-                  {currentUser.dogsListed.length}
-                </p>
-                <p className="text-xs text-gray-500 uppercase tracking-wider">
-                  Posts
-                </p>
+              {/* Mobile-only stats - take remaining space & center vertically */}
+              <div className="md:hidden flex-1 flex justify-center">
+                <div className="flex flex-col items-center">
+                  <p className="text-xl font-bold text-violet-600 leading-tight">
+                    {currentUser.dogsListed.length}
+                  </p>
+                  <p className="text-xs text-gray-600 leading-tight">
+                    Dogs Listed
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* Bio */}
-            <div className="mb-4">
+            <div className="w-full md:w-auto">
+              <div className="flex items-center sm:mb-2 mb-0 gap-2">
+                <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
+                  {currentUser.username}
+                </h1>
+                {isDeveloper && (
+                  <div className="relative flex items-center">
+                    <img
+                      src="./images/developer-badge.svg"
+                      className="w-6 h-6 flex-shrink-0"
+                    />
+                  </div>
+                )}
+              </div>
+
               {isDeveloper ? (
-                <p className="text-gray-700">
+                <p className="text-gray-600 sm:mt-2 mt-0">
                   Creator & Caretaker of{" "}
-                  <span className="font-semibold text-violet-600">
+                  <span className="font-bold text-[18px] text-violet-500">
                     StreetPaws
                   </span>
                 </p>
               ) : (
-                <p className="text-gray-600">
-                  Member since{" "}
+                <p className="text-gray-600 sm:mt-2 mt-0">
+                  Member Since{" "}
                   {new Date(currentUser.createdAt).toLocaleDateString("en-US", {
                     month: "long",
                     year: "numeric",
                   })}
                 </p>
               )}
-            </div>
 
-            {/* Email */}
-            <div className="flex items-center group">
-              <p className="text-gray-700 truncate max-w-[200px] sm:max-w-none">
-                {currentUser.email}
+              {/* Email section - simplified for mobile */}
+              <div className="mt-2 md:mt-4 flex items-center group">
+                <div className="flex-1 min-w-0">
+                  <p
+                    className="text-gray-600  hover:text-clip text-sm"
+                    title={currentUser.email}
+                    style={{
+                      maxWidth: "200px",
+                      transition: "max-width 0.2s ease-in-out",
+                    }}>
+                    {currentUser.email}
+                  </p>
+                </div>
+                <button
+                  onClick={() => handleCopy(currentUser.email)}
+                  className="text-violet-500 cursor-pointer hover:text-violet-700 transition-colors ml-2"
+                  aria-label="Copy email">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop Stats */}
+          <div className="hidden md:grid grid-cols-3 gap-6 mb-6">
+            <div className="p-4 bg-violet-50 rounded-lg border border-violet-200">
+              <h3 className="font-medium text-gray-700 text-base">
+                Dogs Listed
+              </h3>
+              <p className="text-3xl font-bold text-violet-500">
+                {currentUser.dogsListed.length}
               </p>
-              <button
-                onClick={() => handleCopy(currentUser.email)}
-                className="ml-2 text-gray-400 hover:text-gray-600 transition-colors"
-                aria-label="Copy email">
+            </div>
+          </div>
+
+          {/* Recent Listings Section */}
+          <div className="sm:mt-8 mt-4">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="sm:text-xl text-lg font-bold text-gray-800">
+                Recent Listings
+              </h2>
+              <div
+                className="sm:hidden cursor-pointer p-2"
+                onClick={() => setIsSingleColumn(!isSingleColumn)}>
                 <svg
-                  className="w-4 h-4"
+                  className={`w-6 h-6 ${
+                    isSingleColumn ? "text-gray-400" : "text-violet-500"
+                  }`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24">
-                  <path
+                  <rect
+                    x="3"
+                    y="3"
+                    width="8"
+                    height="5"
+                    rx="1"
+                    strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
                   />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          {/* Stats - Desktop */}
-          <div className="hidden sm:flex gap-8">
-            <div className="text-center">
-              <p className="text-xl font-bold text-gray-900">
-                {currentUser.dogsListed.length}
-              </p>
-              <p className="text-sm text-gray-500 uppercase tracking-wider">
-                Posts
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Posts Section */}
-        <div className="border-t border-gray-100 pt-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-900">Your Posts</h2>
-            <button
-              className="sm:hidden text-gray-500 hover:text-gray-700"
-              onClick={() => setIsSingleColumn(!isSingleColumn)}>
-              <svg
-                className={`w-6 h-6 ${
-                  isSingleColumn ? "text-gray-400" : "text-gray-600"
-                }`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
-                <rect
-                  x="3"
-                  y="3"
-                  width="8"
-                  height="5"
-                  rx="1"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <rect
-                  x="13"
-                  y="3"
-                  width="8"
-                  height="8"
-                  rx="1"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <rect
-                  x="3"
-                  y="11"
-                  width="8"
-                  height="10"
-                  rx="1"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <rect
-                  x="13"
-                  y="13"
-                  width="8"
-                  height="6"
-                  rx="1"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
-
-          {loading ? (
-            <div
-              className={`grid ${
-                isSingleColumn ? "grid-cols-1" : "grid-cols-2"
-              } sm:grid-cols-3 gap-4`}>
-              {[...Array(6)].map((_, index) => (
-                <div
-                  key={index}
-                  className="aspect-square bg-gray-100 rounded-lg animate-pulse"></div>
-              ))}
-            </div>
-          ) : fetchError ? (
-            <div className="flex flex-col items-center justify-center py-12">
-              <div className="text-center max-w-md mx-auto">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-12 w-12 mx-auto mb-4 text-gray-300"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path
+                  <rect
+                    x="13"
+                    y="3"
+                    width="8"
+                    height="8"
+                    rx="1"
+                    strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                  <rect
+                    x="3"
+                    y="11"
+                    width="8"
+                    height="10"
+                    rx="1"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <rect
+                    x="13"
+                    y="13"
+                    width="8"
+                    height="6"
+                    rx="1"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
-                <h3 className="text-lg font-medium text-gray-700 mb-1">
-                  Couldn't load posts
-                </h3>
-                <p className="text-gray-500 text-sm">
-                  There was an error fetching your posts. Please try again.
-                </p>
               </div>
             </div>
-          ) : dogsData.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12">
-              <div className="text-center max-w-md mx-auto">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-12 w-12 mx-auto mb-4 text-gray-300"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <h3 className="text-lg font-medium text-gray-700 mb-1">
-                  No posts yet
-                </h3>
-                <p className="text-gray-500 text-sm">
-                  When you post dogs, they'll appear here.
-                </p>
+
+            {loading ? (
+              <div
+                className={`${
+                  isSingleColumn ? "columns-1" : "columns-2"
+                } sm:columns-2 lg:columns-3 sm:gap-2 gap-1 space-y-3 sm:space-y-4`}>
+                {[...Array(6)].map((_, index) => {
+                  const ratios = [
+                    { class: "aspect-square" },
+                    { class: "aspect-[3/4]" },
+                    { class: "aspect-[3/2]" },
+                    { class: "aspect-square" },
+                    { class: "aspect-[3/4]" },
+                    { class: "aspect-[3/2]" },
+                  ];
+
+                  return (
+                    <div key={index} className="break-inside-avoid mb-2">
+                      <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse">
+                        <div
+                          className={`w-full bg-gray-200 rounded-xl ${ratios[index].class}`}
+                        />
+
+                        <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
+                          <div className="flex justify-between items-end">
+                            <div className="space-y-2">
+                              <div className="h-3 w-16 bg-gray-300 rounded" />
+                            </div>
+                            <div className="h-6 w-6 bg-gray-300 rounded-full" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            </div>
-          ) : (
-            <div
-              className={`grid ${
-                isSingleColumn ? "grid-cols-1" : "grid-cols-2"
-              } sm:grid-cols-3 gap-4`}>
-              {dogsData.map((dog) => (
-                <div key={dog._id} className="relative group">
-                  <div className="aspect-square overflow-hidden rounded-lg bg-gray-100">
-                    <img
-                      src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
-                      alt={dog.type}
-                      className="w-full h-full object-cover transition-transform group-hover:scale-105 cursor-pointer"
-                      onClick={() =>
-                        setSelectedDogImage(
-                          `https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`
-                        )
-                      }
+            ) : fetchError ? (
+              <div className="flex flex-col flex-grow min-h-[30vh] sm:min-h-[50vh] items-center justify-center p-4">
+                <div className="text-center text-gray-500 bg-violet-50 rounded-xl w-full max-w-sm mx-auto p-8 shadow-inner border border-violet-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-12 w-12 mx-auto mb-4 text-violet-300"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-                    <div className="w-full flex justify-between items-end">
-                      <span className="text-xs text-white">
-                        {dog.createdAt
-                          ? timeSinceListed(dog.createdAt)
-                          : "Just now"}
-                      </span>
-                      <button
-                        className="text-white hover:text-gray-200"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate("/map", {
-                            state: {
-                              selectedDog: {
-                                id: dog._id,
-                                lat: dog.location.coordinates[1],
-                                lng: dog.location.coordinates[0],
-                              },
-                            },
-                          });
-                        }}>
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
-                        </svg>
-                      </button>
+                  </svg>
+                  <p className="text-gray-600 font-medium">
+                    No dogs posted yet
+                  </p>
+                  <p className="text-sm mt-1 text-gray-500">
+                    Your future posts will appear here
+                  </p>
+                </div>
+              </div>
+            ) : dogsData.length === 0 ? (
+              <div className="flex flex-col flex-grow min-h-[30vh] sm:min-h-[50vh] items-center justify-center p-4">
+                <div className="text-center text-gray-500 bg-violet-50 rounded-xl w-full max-w-sm mx-auto p-8 shadow-inner border border-violet-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-12 w-12 mx-auto mb-4 text-violet-300"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <p className="text-gray-600 font-medium">
+                    No dogs posted yet
+                  </p>
+                  <p className="text-sm mt-1 text-gray-500">
+                    Your future posts will appear here
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div
+                className={`${
+                  isSingleColumn ? "columns-1" : "columns-2"
+                } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
+                {dogsData.map((dog) => (
+                  <div key={dog._id} className="break-inside-avoid mb-2">
+                    <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
+                      <img
+                        src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
+                        alt={dog.type}
+                        className="w-full h-auto object-cover"
+                      />
+
+                      <div
+                        onClick={() =>
+                          setSelectedDogImage(
+                            `https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`
+                          )
+                        }
+                        className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70"></div>
+                      <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
+                        <div className="flex justify-between items-end">
+                          <div>
+                            <p className="sm:text-sm text-white text-[10px]">
+                              {dog.createdAt
+                                ? timeSinceListed(dog.createdAt)
+                                : "New listing"}
+                            </p>
+                          </div>
+                          <svg
+                            className="w-5 h-5 z-5 text-white cursor-pointer mb-1 mr-1"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            onClick={() =>
+                              navigate("/map", {
+                                state: {
+                                  selectedDog: {
+                                    id: dog._id,
+                                    lat: dog.location.coordinates[1],
+                                    lng: dog.location.coordinates[0],
+                                  },
+                                },
+                              })
+                            }>
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                          </svg>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-
-      {/* Copied Notification */}
-      {showCopiedNotification && (
-        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg text-sm shadow-lg flex items-center">
-          <svg
-            className="w-4 h-4 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-            />
-          </svg>
-          Copied to clipboard
-        </div>
-      )}
     </div>
   );
 };
