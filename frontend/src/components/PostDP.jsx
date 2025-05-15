@@ -160,7 +160,7 @@ const PostDP = () => {
               <button
                 type="button"
                 onClick={handleSkipPhoto}
-                className="w-full py-3 mt-4 bg-gradient-to-r cursor-pointer from-violet-600 to-purple-500 text-white text-2xl font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
+                className="w-full cursor-pointer  text-white text-xs">
                 Skip for now
               </button>
             </div>
