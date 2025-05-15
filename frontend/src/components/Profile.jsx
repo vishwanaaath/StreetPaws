@@ -232,7 +232,7 @@ const Profile = () => {
               </div>
 
               {/* Mobile-only stats - tightly next to DP */}
-              <div className="md:hidden flex flex-col justify-center items-start pl-2">
+              {/* <div className="md:hidden flex flex-col justify-center items-start pl-2">
                 <p className="text-xl font-bold text-violet-600 leading-tight">
                   {currentUser.dogsListed.length}
                 </p>
@@ -240,7 +240,7 @@ const Profile = () => {
                   Dogs Listed
                 </p>
               </div>
-            </div>
+            </div> */}
 
             <div className="w-full md:w-auto">
               <div className="flex items-center sm:mb-2 mt-4">
@@ -259,14 +259,14 @@ const Profile = () => {
 
               {isDeveloper ? (
                 <p className="text-gray-600 sm:mt-2 mt-0">
-                  Creator & Caretaker of{" "}
+                  {currentUser.dogsListed.length} POSTS Creator & Caretaker of{" "}
                   <span className="font-bold text-[18px] text-violet-500">
                     StreetPaws
                   </span>
                 </p>
               ) : (
                 <p className="text-gray-600 sm:mt-2 mt-0">
-                  Member Since{" "}
+                  {currentUser.dogsListed.length} POSTS  Member Since{" "}
                   {new Date(currentUser.createdAt).toLocaleDateString("en-US", {
                     month: "long",
                     year: "numeric",
@@ -299,7 +299,7 @@ const Profile = () => {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={1}
+                      strokeWidth="1"
                       d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
                     />
                   </svg>
