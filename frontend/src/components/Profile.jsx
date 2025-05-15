@@ -251,7 +251,7 @@ const Profile = () => {
                   <div className="relative">
                     <img
                       src="./images/developer-badge.svg"
-                      className="w-7 h-7 flex-shrink-0"
+                      className="w-5 h-5 flex-shrink-0"
                     />
                   </div>
                 )}
@@ -259,14 +259,14 @@ const Profile = () => {
 
               {isDeveloper ? (
                 <p className="text-gray-600 sm:mt-2 mt-0">
-                  {currentUser.dogsListed.length} POSTS, Creator & Caretaker of{" "}
+                  {currentUser.dogsListed.length} Dogs, Creator & Caretaker of{" "}
                   <span className="font-bold text-[18px] text-violet-500">
                     StreetPaws
                   </span>
                 </p>
               ) : (
                 <p className="text-gray-600 sm:mt-2 mt-0">
-                  {currentUser.dogsListed.length} POSTS, Member Since{" "}
+                  {currentUser.dogsListed.length} Dogs, Member Since{" "}
                   {new Date(currentUser.createdAt).toLocaleDateString("en-US", {
                     month: "long",
                     year: "numeric",
