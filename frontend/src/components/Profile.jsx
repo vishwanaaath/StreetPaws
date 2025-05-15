@@ -23,10 +23,10 @@ const Profile = () => {
   const [showCopiedNotification, setShowCopiedNotification] = useState(false);
   const [copiedText, setCopiedText] = useState("");
   const [isSingleColumn, setIsSingleColumn] = useState(false);
-const [selectedDogImage, setSelectedDogImage] = useState(null);
+  const [selectedDogImage, setSelectedDogImage] = useState(null);
 
-  const navigate = useNavigate();  
-  const isDeveloper = currentUser?.email == "vishwanathgowda951@gmail.com";
+  const navigate = useNavigate();
+  const isDeveloper = currentUser?.email === "vishwanathgowda951@gmail.com";
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
@@ -41,7 +41,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
       const response = await axios.delete(
         `${import.meta.env.VITE_API_URL}/api/dogs/${selectedDog._id}`
       );
- 
+
       setDogsData((prev) => prev.filter((d) => d._id !== selectedDog._id));
       setCurrentUser((prevUser) => ({
         ...prevUser,
@@ -55,7 +55,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
       alert(`Delete failed: ${err.response?.data?.message || err.message}`);
     }
   };
- 
+
   useEffect(() => {
     const fetchUserDogs = async () => {
       try {
@@ -68,14 +68,12 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
             },
           }
         );
- 
+
         const sortedDogs = response.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
 
         setDogsData(sortedDogs);
-        console.log(sortedDogs);
-
         setFetchError(null);
       } catch (err) {
         setFetchError(err.response?.data?.message || "Error fetching dogs");
@@ -130,7 +128,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
 
   return (
     <div
-      className={`  ${showProfilePic ? "sm:p-0" : "sm:pt-6"} 
+      className={`${showProfilePic ? "sm:p-0" : "sm:pt-6"} 
       ${showProfilePic ? "p-0" : "p-1"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
@@ -217,31 +215,43 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
 
       <div className="max-w-4xl min-h-screen mx-auto">
         <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-6 p-2.5 ">
+          {/* Profile Header Section */}
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
-            <div
-              className={`w-26 h-26 ml-0.5 mt-2 sm:mb-0 mb-2 sm:mt-0 card rounded-full  bg-gray-200 overflow-hidden
-              }`}>
-              <img
-                src={
-                  currentUser.dp_url ||
-                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                }
-                alt="Profile"
-                className="w-full h-full cursor-pointer object-cover"
-                onClick={() => setShowProfilePic(true)}
-              />
+            <div className="flex items-center w-full md:w-auto">
+              <div
+                className={`w-26 h-26 ml-0.5 mt-2 sm:mb-0 mb-2 sm:mt-0 card rounded-full bg-gray-200 overflow-hidden`}>
+                <img
+                  src={
+                    currentUser.dp_url ||
+                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                  }
+                  alt="Profile"
+                  className="w-full h-full cursor-pointer object-cover"
+                  onClick={() => setShowProfilePic(true)}
+                />
+              </div>
+
+              {/* Mobile-only stats */}
+              <div className="md:hidden ml-6 flex-1">
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-violet-500">
+                    {currentUser.dogsListed.length}
+                  </p>
+                  <p className="text-xs text-gray-600">Dogs Listed</p>
+                </div>
+              </div>
             </div>
 
-            <div>
+            <div className="w-full md:w-auto">
               <div className="flex items-center sm:mb-2 mb-0 gap-2">
                 <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
                   {currentUser.username}
                 </h1>
                 {isDeveloper && (
-                  <div className=" relative">
+                  <div className="relative">
                     <img
                       src="./images/developer-badge.svg"
-                      className="w-7 h-7 flex-shrink-0 "
+                      className="w-7 h-7 flex-shrink-0"
                     />
                   </div>
                 )}
@@ -249,9 +259,8 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
 
               {isDeveloper ? (
                 <p className="text-gray-600 sm:mt-2 mt-0">
-                  Creator & Caretaker of{"    "}
+                  Creator & Caretaker of{" "}
                   <span className="font-bold text-[18px] text-violet-500">
-                    {" "}
                     StreetPaws
                   </span>
                 </p>
@@ -264,33 +273,12 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                   })}
                 </p>
               )}
-            </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 sm:gap-6 gap-2">
-            <div className=" sm:p-4 p-2 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="font-medium text-gray-700 text-base">
-                Dogs Listed
-              </h3>
-              <p className="text-3xl font-bold text-violet-500">
-                {currentUser.dogsListed.length}
-              </p>
-            </div>
-
-            <div className=" sm:p-4 p-2 bg-violet-50 rounded-lg border border-violet-200">
-              <h3 className="font-medium text-gray-700 text-base">
-                Contact Info
-              </h3>
-
-              <div className="flex relative items-center gap-2 group mb-1 sm:mb-2">
-                {showCopiedNotification && (
-                  <div className=" absolute bottom-20 right-0 bg-violet-500 text-white px-4 py-2 rounded-lg shadow-lg animate-slide-up">
-                    Copied {copiedText} <br /> to clipboard!
-                  </div>
-                )}
-                <div className="flex-1 min-w-0 sm:mt-1">
+              {/* Email section - simplified for mobile */}
+              <div className="mt-2 md:mt-4 flex items-center group">
+                <div className="flex-1 min-w-0">
                   <p
-                    className="text-gray-600 truncate hover:text-clip text-[14px]  hover:min-w-fit"
+                    className="text-gray-600 truncate hover:text-clip text-sm"
                     title={currentUser.email}
                     style={{
                       maxWidth: "200px",
@@ -301,7 +289,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                 </div>
                 <button
                   onClick={() => handleCopy(currentUser.email)}
-                  className="text-violet-500 cursor-pointer hover:text-violet-700 transition-colors"
+                  className="text-violet-500 cursor-pointer hover:text-violet-700 transition-colors ml-2"
                   aria-label="Copy email">
                   <svg
                     className="w-5 h-5"
@@ -317,39 +305,22 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
                   </svg>
                 </button>
               </div>
-
-              <div className="flex items-center gap-2 group">
-                <div className="flex-1 min-w-0">
-                  <p
-                    className="text-gray-600 truncate text-[14px] hover:text-clip hover:min-w-fit"
-                    title={currentUser.phoneNumber}
-                    style={{
-                      maxWidth: "200px",
-                      transition: "max-width 0.2s ease-in-out",
-                    }}>
-                    {currentUser.phoneNumber}
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleCopy(currentUser.phoneNumber)}
-                  className="text-violet-500 cursor-pointer hover:text-violet-700 transition-colors"
-                  aria-label="Copy phone number">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                    />
-                  </svg>
-                </button>
-              </div>
             </div>
           </div>
+
+          {/* Desktop Stats */}
+          <div className="hidden md:grid grid-cols-3 gap-6 mb-6">
+            <div className="p-4 bg-violet-50 rounded-lg border border-violet-200">
+              <h3 className="font-medium text-gray-700 text-base">
+                Dogs Listed
+              </h3>
+              <p className="text-3xl font-bold text-violet-500">
+                {currentUser.dogsListed.length}
+              </p>
+            </div>
+          </div>
+
+          {/* Recent Listings Section */}
           <div className="sm:mt-8 mt-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="sm:text-xl text-lg font-bold text-gray-800">
@@ -559,7 +530,7 @@ const [selectedDogImage, setSelectedDogImage] = useState(null);
               </div>
             )}
           </div>
-        </div>{" "}
+        </div>
       </div>
     </div>
   );
