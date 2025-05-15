@@ -243,7 +243,7 @@ const Profile = () => {
             </div>
 
             <div className="w-full md:w-auto">
-              <div className="flex items-center sm:mb-2 mb-0 gap-2">
+              <div className="flex items-center sm:mb-2 mt-4">
                 <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
                   {currentUser.username}
                 </h1>
@@ -299,7 +299,7 @@ const Profile = () => {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeWidth={1}
                       d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
                     />
                   </svg>
