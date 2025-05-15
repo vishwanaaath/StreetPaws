@@ -193,7 +193,7 @@ const Profile = () => {
               onClick={() => setSelectedDogImage(null)}
             />
             <img
-              className="absolute top-4 right-4 z-50 sm:w-10 sm:h-10 w-9 h-9 invert-100 rounded-full opacity-90 hover:opacity-100 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center"
+              className="absolute top-4 right-4 z-50 sm:w-10 sm:h-10 w-7 h-7 invert-100 rounded-full opacity-90 hover:opacity-100 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center"
               src="./images/trash.png"
               alt="Delete"
               onClick={(e) => {
