@@ -263,7 +263,7 @@ const Profile = () => {
                     {currentUser.dogsListed.length} Posts
                   </span>
                   , Creator & Caretaker of{" "}
-                  <span className="font-semibold text-[18px] text-violet-600">
+                  <span className="font-bold text-[18px] text-violet-600">
                     StreetPaws
                   </span>
                 </p>
