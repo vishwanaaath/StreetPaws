@@ -260,7 +260,7 @@ const Profile = () => {
               {isDeveloper ? (
                 <p className="text-gray-500 sm:mt-2 mt-0 text-base sm:text-[17px]">
                   <span className="font-medium text-gray-700">
-                    {currentUser.dogsListed.length} Dogs
+                    {currentUser.dogsListed.length} Posts
                   </span>
                   , Creator & Caretaker of{" "}
                   <span className="font-semibold text-[18px] text-violet-600">
@@ -270,7 +270,7 @@ const Profile = () => {
               ) : (
                 <p className="text-gray-500 sm:mt-2 mt-0 text-base sm:text-[17px]">
                   <span className="font-medium text-gray-700">
-                    {currentUser.dogsListed.length} Dogs
+                    {currentUser.dogsListed.length} Posts
                   </span>
                   , Member since{" "}
                   <span className="text-gray-700">
