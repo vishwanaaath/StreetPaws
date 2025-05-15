@@ -217,28 +217,28 @@ const Profile = () => {
         <div className="bg-white rounded-xl shadow-md overflow-hidden min-h-screen sm:p-6 p-2.5 ">
           {/* Profile Header Section */}
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
-            <div className="flex items-center justify-start w-full md:w-auto">
-              <div
-                className={`w-26 h-26 ml-0.5 mt-2 sm:mb-0 mb-2 sm:mt-0 card rounded-full bg-gray-200 overflow-hidden`}>
+            <div className="flex items-center w-full md:w-auto gap-0">
+              {/* Profile Picture */}
+              <div className="w-24 h-24 sm:w-26 sm:h-26 rounded-full bg-gray-200 overflow-hidden">
                 <img
                   src={
                     currentUser.dp_url ||
                     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                   }
                   alt="Profile"
-                  className="w-full h-full cursor-pointer object-cover"
+                  className="w-full h-full object-cover cursor-pointer"
                   onClick={() => setShowProfilePic(true)}
                 />
               </div>
 
-              {/* Mobile-only stats */}
-              <div className="md:hidden flex-1">
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-violet-500">
-                    {currentUser.dogsListed.length}
-                  </p>
-                  <p className="text-xs text-gray-600">Dogs Listed</p>
-                </div>
+              {/* Mobile-only stats - tightly next to DP */}
+              <div className="md:hidden flex flex-col justify-center items-start pl-2">
+                <p className="text-xl font-bold text-violet-600 leading-tight">
+                  {currentUser.dogsListed.length}
+                </p>
+                <p className="text-xs text-gray-600 leading-tight">
+                  Dogs Listed
+                </p>
               </div>
             </div>
 
