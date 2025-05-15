@@ -217,7 +217,7 @@ const Profile = () => {
         <div className="bg-white rounded-xl shadow-md overflow-hidden min-h-screen sm:p-6 p-2.5 ">
           {/* Profile Header Section */}
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
-            <div className="flex items-center w-full md:w-auto gap-0">
+            <div className="flex items-center justify-center w-full md:w-auto gap-0">
               {/* Profile Picture */}
               <div className="w-24 h-24 sm:w-26 sm:h-26 rounded-full bg-gray-200 overflow-hidden">
                 <img
