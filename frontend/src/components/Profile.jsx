@@ -259,9 +259,9 @@ const Profile = () => {
 
               {isDeveloper ? (
                 <p className="text-gray-500 sm:mt-2 mt-0 text-base sm:text-[17px]">
-                  <span className="font-medium text-gray-700">
+                  {/* <span className="font-medium text-gray-700">
                     {currentUser.dogsListed.length} Posts
-                  </span>
+                  </span> */}
                   , Creator & Caretaker of{" "}
                   <span className="font-bold text-[18px] text-violet-600">
                     StreetPaws
@@ -269,9 +269,9 @@ const Profile = () => {
                 </p>
               ) : (
                 <p className="text-gray-500 sm:mt-2 mt-0 text-base sm:text-[17px]">
-                  <span className="font-medium text-gray-700">
+                  {/* <span className="font-medium text-gray-700">
                     {currentUser.dogsListed.length} Posts
-                  </span>
+                  </span> */}
                   , Member since{" "}
                   <span className="text-gray-700">
                     {new Date(currentUser.createdAt).toLocaleDateString(
