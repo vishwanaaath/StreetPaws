@@ -342,7 +342,7 @@ const Profile = () => {
                     width="8"
                     height="5"
                     rx="1"
-                    strokeWidth="2"
+                    strokeWidth="1"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
@@ -352,7 +352,7 @@ const Profile = () => {
                     width="8"
                     height="8"
                     rx="1"
-                    strokeWidth="2"
+                    strokeWidth="1"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
@@ -362,7 +362,7 @@ const Profile = () => {
                     width="8"
                     height="10"
                     rx="1"
-                    strokeWidth="2"
+                    strokeWidth="1"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
@@ -372,7 +372,7 @@ const Profile = () => {
                     width="8"
                     height="6"
                     rx="1"
-                    strokeWidth="2"
+                    strokeWidth="1"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
