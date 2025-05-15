@@ -253,7 +253,7 @@ const Profile = () => {
                   <div className="relative">
                     <img
                       src="./images/developer-badge.svg"
-                      className="w-7 h-7 flex-shrink-0"
+                      className="w-5 h-5 flex-shrink-0"
                     />
                   </div>
                 )}
