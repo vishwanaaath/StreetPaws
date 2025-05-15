@@ -262,7 +262,7 @@ const Profile = () => {
                   {/* <span className="font-medium text-gray-700">
                     {currentUser.dogsListed.length} Posts
                   </span> */}
-                  , Creator & Caretaker of{" "}
+                  Creator & Caretaker of{" "}
                   <span className="font-bold text-[18px] text-violet-600">
                     StreetPaws
                   </span>
@@ -272,7 +272,7 @@ const Profile = () => {
                   {/* <span className="font-medium text-gray-700">
                     {currentUser.dogsListed.length} Posts
                   </span> */}
-                  , Member since{" "}
+                  Member since{" "}
                   <span className="text-gray-700">
                     {new Date(currentUser.createdAt).toLocaleDateString(
                       "en-US",
