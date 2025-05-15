@@ -107,7 +107,7 @@ const User = () => {
   return (
     <div
       className={`  ${showProfilePic ? "sm:p-0" : "sm:pt-6"} 
-      ${showProfilePic ? "p-0" : "p-1"}`}
+      ${showProfilePic ? "p-0" : "p-0"}`}
       style={{
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",

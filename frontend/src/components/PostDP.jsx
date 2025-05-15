@@ -113,7 +113,7 @@ const PostDP = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-1  sm:p-0 sm:pt-6  flex flex-col">
+    <div className="min-h-screen bg-gray-100 p-0  sm:p-0 sm:pt-6  flex flex-col">
       <div className="absolute inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 z-0" />
 
       <Notification

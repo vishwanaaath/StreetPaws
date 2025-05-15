@@ -2,7 +2,7 @@ import React from "react";
 
 const PostDPLoader = () => {
   return (
-    <div className="min-h-screen h-screen-mobile bg-gray-100 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 flex flex-col animate-pulse">
+    <div className="min-h-screen h-screen-mobile bg-gray-100 p-0 sm:py-12 px-4 sm:px-6 lg:px-8 flex flex-col animate-pulse">
       {" "}
       
       <div className="absolute inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 z-0" />
