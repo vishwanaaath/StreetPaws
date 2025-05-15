@@ -217,7 +217,7 @@ const Profile = () => {
         <div className="bg-white rounded-xl shadow-md overflow-hidden min-h-screen sm:p-6 p-2.5 ">
           {/* Profile Header Section */}
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
-            <div className="flex items-start w-full md:w-auto">
+            <div className="flex items-center justify-start w-full md:w-auto">
               <div
                 className={`w-26 h-26 ml-0.5 mt-2 sm:mb-0 mb-2 sm:mt-0 card rounded-full bg-gray-200 overflow-hidden`}>
                 <img
