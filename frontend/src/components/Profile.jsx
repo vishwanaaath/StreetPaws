@@ -219,7 +219,7 @@ const Profile = () => {
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
             <div className="flex items-center w-full md:w-auto mt-4 gap-0">
               {/* Profile Picture */}
-              <div className="w-24 h-24 sm:w-26 sm:h-26 rounded-full bg-gray-200 overflow-hidden">
+              <div className="w-24 h-24 sm:w-26 sm:h-26 rounded-full ml-2 bg-gray-200 overflow-hidden">
                 <img
                   src={
                     currentUser.dp_url ||
