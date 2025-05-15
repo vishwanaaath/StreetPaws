@@ -231,15 +231,6 @@ const Profile = () => {
                   onClick={() => setShowProfilePic(true)}
                 />
               </div>
-              <button
-                onClick={() => setShowUploadModal(true)}
-                className="absolute -bottom-2 -right-2 bg-white p-2 rounded-full shadow-md hover:scale-105 transition-transform">
-                <img
-                  src="./images/edit-icon.svg"
-                  className="w-6 h-6"
-                  alt="Edit"
-                />
-              </button>
             </div>
 
             <div className="flex-1 min-w-0">
