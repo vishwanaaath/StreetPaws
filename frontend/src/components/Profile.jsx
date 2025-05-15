@@ -247,14 +247,14 @@ const Profile = () => {
                 <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
                   {currentUser.username}
                 </h1>
-                {isDeveloper && (
+                {/* {isDeveloper && (
                   <div className="relative">
                     <img
                       src="./images/developer-badge.svg"
                       className="w-5 h-5 flex-shrink-0"
                     />
                   </div>
-                )}
+                )} */}
               </div>
 
               {isDeveloper ? (
