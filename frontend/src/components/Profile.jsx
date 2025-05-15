@@ -245,15 +245,15 @@ const Profile = () => {
             </div>
 
             <div className="w-full md:w-auto">
-              <div className="flex items-center justify-center sm:mb-2 mb-0 gap-2">
+              <div className="flex items-center sm:mb-2 mb-0 gap-2">
                 <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
                   {currentUser.username}
                 </h1>
                 {isDeveloper && (
-                  <div className="relative">
+                  <div className="relative flex items-center">
                     <img
                       src="./images/developer-badge.svg"
-                      className="w-5 h-5 flex-shrink-0"
+                      className="w-6 h-6 flex-shrink-0"
                     />
                   </div>
                 )}
