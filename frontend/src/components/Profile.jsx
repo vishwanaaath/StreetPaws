@@ -321,7 +321,7 @@ const Profile = () => {
           </div>
 
           {/* Recent Listings Section */}
-          <div className="sm:mt-8 mt-6">
+          <div className="sm:mt-8 mt-4">
             <div className="flex justify-between items-center mb-4">
               <h2 className="sm:text-xl text-lg font-bold text-gray-800">
                 Recent Listings
@@ -384,7 +384,7 @@ const Profile = () => {
               <div
                 className={`${
                   isSingleColumn ? "columns-1" : "columns-2"
-                } sm:columns-2 lg:columns-3 sm:gap-2 gap-2 space-y-3 sm:space-y-4`}>
+                } sm:columns-2 lg:columns-3 sm:gap-2 gap-1 space-y-3 sm:space-y-4`}>
                 {[...Array(6)].map((_, index) => {
                   const ratios = [
                     { class: "aspect-square" },
