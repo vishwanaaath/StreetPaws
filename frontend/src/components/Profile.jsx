@@ -217,9 +217,9 @@ const Profile = () => {
         <div className="bg-white rounded-xl shadow-md overflow-hidden min-h-screen sm:p-6 p-2.5 ">
           {/* Profile Header Section */}
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 gap-1 sm:mb-8 mb-4">
-            <div className="flex items-center w-full md:w-auto gap-0">
+            <div className="flex items-center w-full md:w-auto">
               {/* Profile Picture */}
-              <div className="w-24 h-24 sm:w-26 sm:h-26 rounded-full bg-gray-200 overflow-hidden">
+              <div className="w-24 h-24 sm:w-26 sm:h-26 rounded-full bg-gray-200 overflow-hidden flex-shrink-0">
                 <img
                   src={
                     currentUser.dp_url ||
@@ -231,14 +231,16 @@ const Profile = () => {
                 />
               </div>
 
-              {/* Mobile-only stats - tightly next to DP */}
-              <div className="md:hidden flex flex-col justify-center items-start pl-2">
-                <p className="text-xl font-bold text-violet-600 leading-tight">
-                  {currentUser.dogsListed.length}
-                </p>
-                <p className="text-xs text-gray-600 leading-tight">
-                  Dogs Listed
-                </p>
+              {/* Mobile-only stats - take remaining space & center vertically */}
+              <div className="md:hidden flex-1 flex justify-center">
+                <div className="flex flex-col items-center">
+                  <p className="text-xl font-bold text-violet-600 leading-tight">
+                    {currentUser.dogsListed.length}
+                  </p>
+                  <p className="text-xs text-gray-600 leading-tight">
+                    Dogs Listed
+                  </p>
+                </div>
               </div>
             </div>
 
