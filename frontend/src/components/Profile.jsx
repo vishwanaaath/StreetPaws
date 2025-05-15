@@ -232,7 +232,7 @@ const Profile = () => {
               </div>
 
               {/* Mobile-only stats */}
-              <div className="md:hidden ml-1 flex-1">
+              <div className="md:hidden flex-1">
                 <div className="text-center">
                   <p className="text-2xl font-bold text-violet-500">
                     {currentUser.dogsListed.length}
