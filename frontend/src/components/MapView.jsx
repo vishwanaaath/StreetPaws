@@ -256,9 +256,9 @@ const MapView = () => {
 
     if (distanceKm < 1) {
       const distanceMeters = distanceKm * 1000;
-      return `${Math.round(distanceMeters)}m away`;
+      return `${Math.round(distanceMeters)}m`;
     } else {
-      return `${distanceKm.toFixed(0)}km away`;
+      return `${distanceKm.toFixed(0)}km`;
     }
   };
 
@@ -418,11 +418,18 @@ const MapView = () => {
                       </div>
 
                       <div className="flex items-center  justify-between">
-                        <div className="text-[14px] text-gray-800 font-bold ml-2 ">
-                          {" "}
-                          {distance}
-                          <span className="text-xs font-normal text-gray-600 ml-2">{placeNames[dog._id] || " "}
-                          </span>
+                        <div className="text-base text-gray-800 font-bold ml-2">
+                          <div className="flex items-baseline gap-1">
+                            <span className="text-[14px] font-semibold text-gray-800">
+                              {distance.split(" ")[0]}
+                            </span>
+                            <span className="text-[10px] font-medium text-gray-500">
+                              {distance.split(" ")[1]}
+                            </span>
+                            <span className="text-[10px] text-gray-400 ml-1">
+                              • {placeNames[dog._id] || "Nearby area"}
+                            </span>
+                          </div>
                         </div>
 
                         <div className="flex gap-2 items-center">
@@ -477,20 +484,20 @@ const MapView = () => {
                       </div>
 
                       {isContactAsked && (
-                        <div className="flex justify-between  items-center">
+                        <div className="flex justify-between items-center">
                           <div className="ml-1">
                             {dog.type && (
-                              <div className="text-[16px] mb-1  font-bold text-gray-700">
+                              <div className="text-[16px] mb-1 font-bold text-gray-700">
                                 {dog.type}
                               </div>
                             )}
                             {dog.age && (
-                              <div className="text-[14px]  text-gray-700">
+                              <div className="text-[14px] text-gray-700">
                                 {dog.gender}, {dog.age}
                               </div>
                             )}
                           </div>
-                          <div className="relativerounded-full  w-13 h-13  mr-2">
+                          <div className="relative rounded-full w-12 h-12 mr-2">
                             {dog.lister ? (
                               <img
                                 src={
@@ -509,6 +516,8 @@ const MapView = () => {
                           </div>
                         </div>
                       )}
+
+                      
                     </div>
                   </div>
                 </Popup>
