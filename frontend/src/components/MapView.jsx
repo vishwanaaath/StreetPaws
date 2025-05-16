@@ -117,7 +117,7 @@ const MapView = () => {
         address.suburb ||
         address.village ||
         address.city_district ||
-        "Nearby area"
+        " "
       );
     } catch (error) {
       console.error("Error fetching place name:", error);
@@ -420,7 +420,7 @@ const MapView = () => {
                               {distance.split(" ")[1]}
                             </span>
                             <span className="text-[12px] text-gray-700 ml-1">
-                              | {placeNames[dog._id] || "Nearby area"}
+                              | {placeNames[dog._id] || " "}
                             </span>
                           </div>
                         </div>
