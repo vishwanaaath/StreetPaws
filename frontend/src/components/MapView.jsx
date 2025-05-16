@@ -423,10 +423,10 @@ const MapView = () => {
                             <span className="text-[14px] font-semibold text-gray-800">
                               {distance.split(" ")[0]}
                             </span>
-                            <span className="text-[8px] font-medium text-gray-500">
-                              {distance.split(" ")[1]}
+                            <span className="text-[8px] font-medium text-gray-800">
+                              {away}
                             </span>
-                            <span className="text-[10px] text-gray-400 ml-1">
+                            <span className="text-[10px] text-gray-700 ml-1">
                               • {placeNames[dog._id] || "Nearby area"}
                             </span>
                           </div>
