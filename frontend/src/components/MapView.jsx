@@ -194,8 +194,8 @@ const MapView = () => {
         setDogs(dogsWithLocation);
         const names = {};
         for (const dog of dogsWithLocation) {
-          const name = await getPlaceName(dog.lat, dog.lng);
-          names[dog._id] = name;
+          names[dog._id] =
+            (await getPlaceName(dog.lat, dog.lng)) || " "; 
         }
         setPlaceNames(names);
       } catch (error) {
@@ -411,14 +411,16 @@ const MapView = () => {
                       </div>
 
                       <div className="flex items-center  justify-between">
-                        <div className="text-base text-gray-800 font-bold">
-                          <div className="flex items-baseline gap-1">
-                            <span className="text-[14px] text-gray-700 ml-1">
-                              {`${placeNames[dog._id]}` || " "} 
-                            </span>
-                            <br />
+
+                        <div className="text-gray-800">
+                          <div className="flex flex-col">
+                            {placeNames[dog._id] && (
+                              <span className="text-[14px] text-gray-600 mb-1">
+                                {placeNames[dog._id]}
+                              </span>
+                            )}
                             <span className="text-[12px] font-semibold text-gray-800">
-                            {distance}
+                              {distance}
                             </span>
                           </div>
                         </div>
