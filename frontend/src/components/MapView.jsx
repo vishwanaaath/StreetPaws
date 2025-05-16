@@ -421,7 +421,7 @@ const MapView = () => {
                         <div className="text-base text-gray-800 font-bold ml-2 ">
                           {" "}
                           {distance}
-                          <span className="text-sm font-normal text-gray-600 ml-2">
+                          <span className="text-xs font-normal text-gray-600 ml-2">
                             • {placeNames[dog._id] || " "}
                           </span>
                         </div>
