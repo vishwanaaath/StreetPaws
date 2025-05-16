@@ -418,7 +418,7 @@ const MapView = () => {
                       </div>
 
                       <div className="flex items-center  justify-between">
-                        <div className="text-base text-gray-800 font-bold ml-2 ">
+                        <div className="text-[14px] text-gray-800 font-bold ml-2 ">
                           {" "}
                           {distance}
                           <span className="text-xs font-normal text-gray-600 ml-2">{placeNames[dog._id] || " "}
