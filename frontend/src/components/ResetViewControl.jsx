@@ -38,7 +38,7 @@ function ResetViewControl({ initialPosition, initialZoom }) {
           title="Reset to original view">
           <img
             src="./images/locate.svg"
-            className="w-10 p-2 invert-100 cursor-pointer h-10 "
+            className="w-10 p-2  cursor-pointer h-10 "
             alt="Reload"
           />
         </button>
