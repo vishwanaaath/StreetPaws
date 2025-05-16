@@ -411,7 +411,7 @@ const MapView = () => {
                       </div>
 
                       <div className="flex items-center  justify-between">
-                        <div className="text-gray-800">
+                        <div className="text-gray-800 ml-2">
                           <div className="flex flex-col">
                             {placeNames[dog._id] && (
                               <span className="text-[14px] font-semibold text-gray-600 mb-1">
