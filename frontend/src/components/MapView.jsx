@@ -388,10 +388,10 @@ const MapView = () => {
                 icon={dogIcon}>
                 <Popup>
                   <div className="relative max-h-[380px] duration-100 w-64 max-w-[260px] rounded-2xl overflow-hidden">
-                    <div
+                    {/* <div
                       className="absolute inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 
                     animate-gradient-x blur-4xl opacity-40"
-                    />
+                    /> */}
 
                     <div className="relative z-10   backdrop-blur-lg rounded-lg shadow-2xl p-2 space-y-4 text-gray-800">
                       <div
