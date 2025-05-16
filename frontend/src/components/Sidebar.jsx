@@ -83,7 +83,7 @@ const Sidebar = ({
 
   return (
     <div
-      className={`sidebar-container fixed left-0 top-0 h-full w-[260px] backdrop-blur-lg bg-white/80 border-r border-gray-200 shadow-2xl transform transition-transform duration-300 z-[1001] ${
+      className={`sidebar-container fixed left-0 top-0 h-full w-[260px] backdrop-blur-sm bg-white/80 border-r border-gray-200 shadow-2xl transform transition-transform duration-300 z-[1001] ${
         sidebarVisible ? "translate-x-0" : "-translate-x-full"
       }`}
       onMouseEnter={() => setSidebarVisible(true)}
