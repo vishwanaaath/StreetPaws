@@ -256,9 +256,9 @@ const MapView = () => {
 
     if (distanceKm < 1) {
       const distanceMeters = distanceKm * 1000;
-      return `${Math.round(distanceMeters)}m`;
+      return `${Math.round(distanceMeters)}m away`;
     } else {
-      return `${distanceKm.toFixed(0)}km`;
+      return `${distanceKm.toFixed(0)}km away`;
     }
   };
 
@@ -424,7 +424,7 @@ const MapView = () => {
                               {distance.split(" ")[0]}
                             </span>
                             <span className="text-[8px] font-medium text-gray-800">
-                              away
+                              {distance.split(" ")[1]}
                             </span>
                             <span className="text-[10px] text-gray-700 ml-1">
                               • {placeNames[dog._id] || "Nearby area"}
