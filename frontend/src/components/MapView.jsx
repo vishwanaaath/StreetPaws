@@ -51,6 +51,7 @@ const MapView = () => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [initialPosition, setInitialPosition] = useState(null);
   const [initialZoom, setInitialZoom] = useState(16);
+  const [placeNames, setPlaceNames] = useState({});
 
 
   useEffect(() => {
@@ -100,6 +101,30 @@ const MapView = () => {
     handleNewDogNavigation();
   }, [dogs, newlyListedDogId, map]);
 
+  const getPlaceName = async (lat, lng) => {
+    try {
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=16&addressdetails=1`,
+        {
+          headers: {
+            "User-Agent": "StreetPaws/1.0 (vishwanathgowda951@gmail.com)",  
+          },
+        }
+      );
+
+      const address = response.data.address;
+      return (
+        address.neighbourhood ||
+        address.suburb ||
+        address.village ||
+        address.city_district ||
+        "Nearby area"
+      );
+    } catch (error) {
+      console.error("Error fetching place name:", error);
+      return "Nearby area";
+    }
+  };
  
   useEffect(() => {
     const fetchDogs = async () => {
@@ -173,6 +198,12 @@ const MapView = () => {
           })
           .filter((dog) => dog !== null);
         setDogs(dogsWithLocation);
+        const names = {};
+        for (const dog of dogsWithLocation) {
+          const name = await getPlaceName(dog.lat, dog.lng);
+          names[dog._id] = name;
+        }
+        setPlaceNames(names);
       } catch (error) {
         console.error("Error fetching dogs:", error);
         setNotificationMessage(error.response?.data?.message || error.message);
@@ -388,7 +419,11 @@ const MapView = () => {
 
                       <div className="flex items-center  justify-between">
                         <div className="text-base text-gray-800 font-bold ml-2 ">
+                          {" "}
                           {distance}
+                          <span className="text-sm font-normal text-gray-600 ml-2">
+                            • {placeNames[dog._id] || " "}
+                          </span>
                         </div>
 
                         <div className="flex gap-2 items-center">
@@ -455,7 +490,6 @@ const MapView = () => {
                                 {dog.gender}, {dog.age}
                               </div>
                             )}
-                            
                           </div>
                           <div className="relativerounded-full  w-13 h-13  mr-2">
                             {dog.lister ? (
