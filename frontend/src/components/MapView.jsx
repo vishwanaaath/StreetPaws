@@ -375,7 +375,7 @@ const MapView = () => {
             );
 
             return (
-              <Marker
+              <Marker 
                 key={dog._id}
                 ref={(ref) => {
                   if (ref) {
@@ -393,7 +393,7 @@ const MapView = () => {
                     animate-gradient-x blur-4xl opacity-40"
                     /> */}
 
-                    <div className="relative z-10   backdrop-blur-lg rounded-lg shadow-2xl p-2 space-y-4 text-gray-800">
+                    <div className="relative z-10   backdrop-blur-lg rounded-lg shadow-2xl space-y-4 text-gray-800">
                       <div
                         className={`overflow-hidden rounded-xl relative bg-gray-100 ${
                           isContactAsked ? "min-h-60" : "h-55"
