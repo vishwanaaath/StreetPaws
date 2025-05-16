@@ -49,7 +49,7 @@ const MapViewLoader = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-center space-x-3">
               <h2 className="sm:text-2xl text-lg font-gilroy font-bold bg-gradient-to-r from-violet-600 to-purple-400 bg-clip-text text-transparent p-5">
-                Sniffing out the best bois and <br /> gals 
+                Sniffing out the best bois and gals 
               </h2>
             </div> 
           </div>
