@@ -414,7 +414,7 @@ const MapView = () => {
                         <div className="text-base text-gray-800 font-bold">
                           <div className="flex items-baseline gap-1">
                             <span className="text-[14px] text-gray-700 ml-1">
-                              {`${placeNames[dog._id]} | ` || " "}
+                              {`${placeNames[dog._id]}` || " "} <br />
                             </span>
                             <span className="text-[12px] font-semibold text-gray-800">
                             {distance}
