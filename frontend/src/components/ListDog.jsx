@@ -681,14 +681,6 @@ const ListDog = () => {
                     </span>{" "}
                   </p>
                 )}
-                {phone && (
-                  <p className="mt-1">
-                    <span>Phone: </span>
-                    <span className="text-base text-black font-bold">
-                      {phone}
-                    </span>{" "}
-                  </p>
-                )}
               </div>
             </div>
             <button
