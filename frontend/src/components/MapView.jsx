@@ -117,11 +117,11 @@ const MapView = () => {
         address.suburb ||
         address.village ||
         address.city_district ||
-        " "
+        null // Return null instead of empty string
       );
     } catch (error) {
       console.error("Error fetching place name:", error);
-      return "Nearby area";
+      return null;
     }
   };
 
@@ -194,9 +194,8 @@ const MapView = () => {
         setDogs(dogsWithLocation);
         const names = {};
         for (const dog of dogsWithLocation) {
-          names[dog._id] =
-            (await getPlaceName(dog.lat, dog.lng)) || " "; 
-        }
+          names[dog._id] = await getPlaceName(dog.lat, dog.lng); 
+        } 
         setPlaceNames(names);
       } catch (error) {
         console.error("Error fetching dogs:", error);
@@ -413,12 +412,21 @@ const MapView = () => {
                       <div className="flex items-center  justify-between">
                         <div className="text-gray-800 ml-2">
                           <div className="flex flex-col">
-                            {placeNames[dog._id] && (
-                              <span className="text-[14px] font-semibold text-gray-600 mb-1">
-                                {placeNames[dog._id]}
-                              </span>
+                            {/* Place Name with Skeleton */}
+                            {placeNames[dog._id] === undefined ? (
+                              <div className="animate-pulse">
+                                <div className="h-4 w-24 bg-gray-200 rounded mb-1"></div>
+                              </div>
+                            ) : (
+                              placeNames[dog._id] && (
+                                <span className="text-[14px] font-semibold text-gray-600 mb-1">
+                                  {placeNames[dog._id]}
+                                </span>
+                              )
                             )}
-                            <span className="text-[12px]  text-gray-800">
+
+                            {/* Distance (always visible) */}
+                            <span className="text-[12px] text-gray-800">
                               {distance}
                             </span>
                           </div>
