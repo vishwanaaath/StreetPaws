@@ -411,7 +411,7 @@ const MapView = () => {
                       </div>
 
                       <div className="flex items-center  justify-between">
-                        <div className="text-base text-gray-800 font-bold ml-2">
+                        <div className="text-base text-gray-800 font-bold">
                           <div className="flex items-baseline gap-1">
                             <span className="text-[14px] text-gray-700 ml-1">
                               {`${placeNames[dog._id]} | ` || " "}
