@@ -312,7 +312,7 @@ const MapView = () => {
         onMouseEnter={() => setSidebarVisible(true)}
         onMouseLeave={handleSidebarLeave}>
         <div
-          className={`absolute top-1/2 -translate-y-1/2 left-1 w-8 h-8 invert-50 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300 ${
+          className={`absolute top-1/2 -translate-y-1/2 left-1 w-8 h-8 invert-0 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300 ${
             sidebarVisible
               ? "opacity-0 -translate-x-8"
               : "opacity-100 translate-x-2 hover:translate-x-3"
