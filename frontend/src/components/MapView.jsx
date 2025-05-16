@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 import Notification from "./Notification";
 import ResetViewControl from "./ResetViewControl";
 import MapViewLoader from "./MapViewLoader";
- 
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -32,13 +32,13 @@ const MapView = () => {
   const [map, setMap] = useState(null);
   const markerRefs = useRef({});
 
-  const { user, getAccessTokenSilently } = useAuth0();  
+  const { user, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
   const [location, setLocation] = useState(null);
   const [viewDogLocation, setViewDogLocation] = useState(() => {
-    const selectedDog = Location.state?.selectedDog; 
-    
-    return selectedDog ? { lat: selectedDog.lat, lng: selectedDog.lng } : null;  
+    const selectedDog = Location.state?.selectedDog;
+
+    return selectedDog ? { lat: selectedDog.lat, lng: selectedDog.lng } : null;
   });
 
   const [dogs, setDogs] = useState([]);
@@ -53,10 +53,9 @@ const MapView = () => {
   const [initialZoom, setInitialZoom] = useState(16);
   const [placeNames, setPlaceNames] = useState({});
 
-
   useEffect(() => {
     if (Location.state?.newlyListedDogId) {
-      setNewlyListedDogId(Location.state.newlyListedDogId); 
+      setNewlyListedDogId(Location.state.newlyListedDogId);
       navigate(Location.pathname, { replace: true, state: {} });
     }
   }, [Location]);
@@ -73,23 +72,23 @@ const MapView = () => {
       }
     }
   }, [dogs, newlyListedDogId, map]);
- 
+
   useEffect(() => {
     const handleNewDogNavigation = () => {
       if (newlyListedDogId && dogs.length > 0 && map) {
         const newDog = dogs.find((dog) => dog._id === newlyListedDogId);
 
-        if (newDog) { 
-          setTimeout(() => { 
+        if (newDog) {
+          setTimeout(() => {
             map.flyTo([newDog.lat, newDog.lng], 16, {
-              duration: 1,  
+              duration: 1,
             });
- 
+
             const marker = markerRefs.current[newDog._id];
             if (marker) {
               setTimeout(() => {
                 marker.openPopup();
-                
+
                 map.panBy([0, -75], { animate: true, duration: 0.5 });
               }, 300);
             }
@@ -107,7 +106,7 @@ const MapView = () => {
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=16&addressdetails=1`,
         {
           headers: {
-            "User-Agent": "StreetPaws/1.0 (vishwanathgowda951@gmail.com)",  
+            "User-Agent": "StreetPaws/1.0 (vishwanathgowda951@gmail.com)",
           },
         }
       );
@@ -125,7 +124,7 @@ const MapView = () => {
       return "Nearby area";
     }
   };
- 
+
   useEffect(() => {
     const fetchDogs = async () => {
       try {
@@ -137,7 +136,7 @@ const MapView = () => {
         if (!Array.isArray(response.data)) {
           throw new Error("Invalid response format");
         }
- 
+
         const dogsWithLocation = response.data
           .map((dog) => {
             if (!dog.location) {
@@ -159,22 +158,17 @@ const MapView = () => {
                 return null;
               }
               [lng, lat] = dog.location.coordinates;
-            }
-            
-            else if (
+            } else if (
               typeof dog.location.lat === "number" &&
               typeof dog.location.lng === "number"
             ) {
               lat = dog.location.lat;
               lng = dog.location.lng;
-            }
-            
-            else {
+            } else {
               console.warn("Invalid location data for dog:", dog._id);
               return null;
             }
 
-            
             if (
               isNaN(lat) ||
               isNaN(lng) ||
@@ -313,20 +307,19 @@ const MapView = () => {
         />
       )}
 
-     
+      <div
+        className="edge-detector fixed left-0 top-0 h-full w-4 z-[1000] transition-all duration-200"
+        onMouseEnter={() => setSidebarVisible(true)}
+        onMouseLeave={handleSidebarLeave}>
         <div
-          className="edge-detector fixed left-0 top-0 h-full w-4 z-[1000] transition-all duration-200"
-          onMouseEnter={() => setSidebarVisible(true)}
-          onMouseLeave={handleSidebarLeave}>
-          <div
-            className={`absolute top-1/2 -translate-y-1/2 left-1 w-8 h-8 invert-50 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300 ${
-              sidebarVisible
-                ? "opacity-0 -translate-x-8"
-                : "opacity-100 translate-x-2 hover:translate-x-3"
-            }`}>
-            <img src="./images/left.svg" alt="Toggle sidebar" />
-          </div>
-        </div> 
+          className={`absolute top-1/2 -translate-y-1/2 left-1 w-8 h-8 invert-50 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300 ${
+            sidebarVisible
+              ? "opacity-0 -translate-x-8"
+              : "opacity-100 translate-x-2 hover:translate-x-3"
+          }`}>
+          <img src="./images/left.svg" alt="Toggle sidebar" />
+        </div>
+      </div>
 
       <Sidebar
         sidebarVisible={sidebarVisible}
@@ -369,15 +362,15 @@ const MapView = () => {
 
             if (dog.location?.coordinates) {
               [lng, lat] = dog.location.coordinates;
-            } else { 
+            } else {
               lat = dog.location?.lat;
               lng = dog.location?.lng;
             }
 
             const distance = calculateDistance(
-              location[0],  
-              location[1],  
-              lat,  
+              location[0],
+              location[1],
+              lat,
               lng
             );
 
@@ -423,11 +416,11 @@ const MapView = () => {
                             <span className="text-[14px] font-semibold text-gray-800">
                               {distance.split(" ")[0]}
                             </span>
-                            <span className="text-[8px] font-medium text-gray-800">
+                            <span className="text-[12px] font-medium text-gray-800">
                               {distance.split(" ")[1]}
                             </span>
-                            <span className="text-[10px] text-gray-700 ml-1">
-                              • {placeNames[dog._id] || "Nearby area"}
+                            <span className="text-[12px] text-gray-700 ml-1">
+                              | {placeNames[dog._id] || "Nearby area"}
                             </span>
                           </div>
                         </div>
@@ -516,8 +509,6 @@ const MapView = () => {
                           </div>
                         </div>
                       )}
-
-
                     </div>
                   </div>
                 </Popup>
