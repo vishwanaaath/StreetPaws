@@ -78,7 +78,7 @@ const [searchText, setSearchText] = useState("");
               />
             </div>
           )}
-          <div className="flex-1 overflow-y-auto space-y-2 pb-4">
+          <div className="flex-1 overflow-y-auto space-y-2 pb-2">
             {filteredUsers.map((user) => (
               <div
                 key={user._id}
@@ -99,7 +99,7 @@ const [searchText, setSearchText] = useState("");
 
                 <div className="ml-6 flex-1 min-w-0">
                   <div className="flex items-center">
-                    <h2 className="text-base sm:text-lg font-semibold text-gray-800 truncate">
+                    <h2 className="text-lg sm:text-lg font-semibold text-gray-800">
                       {user.username}
                     </h2>
                   </div>
