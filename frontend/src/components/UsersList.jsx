@@ -97,8 +97,8 @@ const [searchText, setSearchText] = useState("");
                   className="w-15 h-15 sm:w-14 sm:h-14 rounded-full object-cover"
                 />
 
-                <div className="ml-4 flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
+                <div className="ml-6 flex-1 min-w-0">
+                  <div className="flex items-center">
                     <h2 className="text-base sm:text-lg font-semibold text-gray-800 truncate">
                       {user.username}
                     </h2>
