@@ -103,7 +103,7 @@ const [searchText, setSearchText] = useState("");
                       {user.username}
                     </h2>
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-gray-500 ">
                     {user.dogsListed?.length || 0}{" "}
                     {user.dogsListed?.length === 1
                       ? "dog posted"
