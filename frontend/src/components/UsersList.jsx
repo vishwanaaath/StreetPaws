@@ -68,10 +68,10 @@ const [searchText, setSearchText] = useState("");
             </button>
           </h1>
           {searchVisible && (
-            <div className="px-4 mb-2">
+            <div className="px-4 mt-2 mb-2">
               <input
                 type="text"
-                placeholder="Search by username..."
+                placeholder="Search by username"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
