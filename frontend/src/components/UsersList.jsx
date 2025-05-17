@@ -83,7 +83,7 @@ const [searchText, setSearchText] = useState("");
               <div
                 key={user._id}
                 onClick={() => handleListerProfileClick(user._id)}
-                className="group relative cursor-pointer flex items-center p-2 sm:p-4  
+                className="group relative cursor-pointer flex items-center ml-2 p-2 sm:p-4  
                   bg-white transition-all duration-200
                   active:scale-[0.98] active:shadow-sm">
                 <div className="absolute inset-0 bg-violet-500 opacity-0 group-active:opacity-10 transition-opacity rounded-xl" />
@@ -97,7 +97,7 @@ const [searchText, setSearchText] = useState("");
                   className="w-15 h-15 sm:w-14 sm:h-14 rounded-full object-cover"
                 />
 
-                <div className="ml-6 flex-1 min-w-0">
+                <div className="ml-4 flex-1 min-w-0">
                   <div className="flex items-center">
                     <h2 className="text-lg sm:text-lg font-semibold text-gray-800">
                       {user.username}
