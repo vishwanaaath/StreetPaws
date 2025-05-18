@@ -207,6 +207,7 @@ const MapView = () => {
       }
     };
 
+  setInterval(() => {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const userLocation = [pos.coords.latitude, pos.coords.longitude];
@@ -214,17 +215,20 @@ const MapView = () => {
 
         setLocation(userLocation);
         setInitialPosition(userLocation);
-        fetchDogs();
       },
       (error) => {
         console.error("Geolocation error:", error);
         setNotificationMessage(
           "Could not get your location. Using default view."
         );
-        setNotificationImage("/images/location-error.svg");
-        fetchDogs();
       }
     );
+    
+  }, 1000);
+
+  
+  fetchDogs();
+
   }, []);
 
   const handleViewportChanged = (e) => {
