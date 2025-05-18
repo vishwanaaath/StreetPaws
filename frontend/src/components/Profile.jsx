@@ -184,7 +184,7 @@ const Profile = () => {
       )}
 
       {selectedDogImage && (
-        <div className="fixed inset-0 z-50 backdrop-blur-2xl backdrop-brightness-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 backdrop-blur-2xl bg-white/80 backdrop-brightness-50 flex items-center justify-center p-4">
           <div className="relative w-full h-full flex items-center justify-center">
             <img
               src={selectedDogImage}
