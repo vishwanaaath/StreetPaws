@@ -201,7 +201,7 @@ const MapView = () => {
       } catch (error) {
         console.error("Error fetching dogs:", error);
         setNotificationMessage("Bad internet");
-        setNotificationImage("./images/bad-internet.svg");
+        setNotificationImage("./images/bad-internet.png");
       } finally {
         setIsLoadingDogs(false);
       }
