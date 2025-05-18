@@ -219,7 +219,7 @@ const MapView = () => {
       (error) => {
         console.error("Geolocation error:", error);
         setNotificationMessage(
-          "Could not get your location. Using default view."
+          "Could not get your location. "
         );
       }
     );
@@ -233,6 +233,7 @@ const MapView = () => {
 
   const handleViewportChanged = (e) => {
     const map = e.target;
+
     setMapBounds(map.getBounds());
   };
 
