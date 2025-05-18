@@ -278,9 +278,7 @@ const ListDog = () => {
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl  opacity-30 -z-10 pointer-events-none" />
 
       <div className="max-w-md mx-auto min-h-screen bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl   p-8">
-        <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-6">
-          Post a Dog
-        </h1>
+        
 
         {/* Progress indicator */}
         <div className="mb-8">
