@@ -200,8 +200,8 @@ const MapView = () => {
         setPlaceNames(names);
       } catch (error) {
         console.error("Error fetching dogs:", error);
-        setNotificationMessage(error.response?.data?.message || error.message);
-        setNotificationImage("/images/error-icon.svg");
+        setNotificationMessage("Bad internet");
+        setNotificationImage("./images/bad-internet.svg");
       } finally {
         setIsLoadingDogs(false);
       }
