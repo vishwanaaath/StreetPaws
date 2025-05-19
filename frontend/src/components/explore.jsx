@@ -71,7 +71,7 @@ const Explore = () => {
 
   return (
     <div className="p-2 sm:p-4">
-      <div className="sticky top-0 bg-white z-10 pb-2 sm:pb-4">
+      <div className="sticky top-0 bg-white z-10 pb-2 pt-1 sm:pb-4">
         <div className="flex space-x-4 overflow-x-auto pb-2 hide-scrollbar">
           {colorFilters.map((color) => (
             <button
@@ -79,7 +79,7 @@ const Explore = () => {
               onClick={() => setSelectedColor(color)}
               className={`whitespace-nowrap py-1.5 px-3 transition-colors text-sm ${
                 selectedColor === color
-                  ? "text-violet-600 font-semibold"
+                  ? "text-violet-600 font-bold"
                   : "text-gray-500 hover:text-gray-600"
               }`}>
               {color}
