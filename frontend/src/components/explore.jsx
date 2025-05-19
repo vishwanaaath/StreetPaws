@@ -17,79 +17,87 @@ const colorFilters = [
 
 const Explore = () => {
   const [dogsData, setDogsData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
   const [selectedColor, setSelectedColor] = useState("All");
-  const [animationDirection, setAnimationDirection] = useState("left");
+  const [swipeDirection, setSwipeDirection] = useState(null);
   const navigate = useNavigate();
-  const previousColorRef = useRef("All");
+  const prevIndexRef = useRef(0);
 
-  useEffect(() => {
-    const prev = colorFilters.indexOf(previousColorRef.current);
-    const curr = colorFilters.indexOf(selectedColor);
+  // Improved swipe handling
+  const handlers = useSwipeable({
+    onSwiping: (e) => {
+      setSwipeDirection(e.dir === "Left" ? "left" : "right");
+    },
+    onSwiped: (e) => {
+      const currentIndex = colorFilters.indexOf(selectedColor);
+      const dir = e.dir === "Left" ? "left" : "right";
+      
+      let newIndex = dir === "left" 
+        ? (currentIndex + 1) % colorFilters.length
+        : (currentIndex - 1 + colorFilters.length) % colorFilters.length;
 
-    if (prev !== curr) {
-      setAnimationDirection(curr > prev ? "left" : "right");
-      previousColorRef.current = selectedColor;
-    }
-  }, [selectedColor]);
-  
-
-  const filteredDogs = dogsData.filter(
-    (dog) => selectedColor === "All" || dog.type === selectedColor
-  );
-
-  // Detect swipe gesture
-  const handleSwipe = (dir) => {
-    const currentIndex = colorFilters.indexOf(selectedColor);
-    let newIndex;
-    if (dir === "left") {
-      newIndex = (currentIndex + 1) % colorFilters.length;
-    } else if (dir === "right") {
-      newIndex = (currentIndex - 1 + colorFilters.length) % colorFilters.length;
-    }
-    setSelectedColor(colorFilters[newIndex]);    
-  };
-
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => handleSwipe("left"),
-    onSwipedRight: () => handleSwipe("right"),
-    delta: 30,
+      setSelectedColor(colorFilters[newIndex]);
+      prevIndexRef.current = currentIndex;
+    },
+    delta: 50,
+    preventScrollOnSwipe: true,
     trackTouch: true,
-    trackMouse: true,
+    trackMouse: false,
   });
 
+  // Fetch dogs data
   useEffect(() => {
-    const fetchUserDogs = async () => {
+    const fetchDogs = async () => {
       try {
-        setLoading(true);
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/dogs/`
         );
-        const sortedDogs = response.data.sort(
+        setDogsData(response.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
-        setDogsData(sortedDogs);
       } catch (err) {
         setFetchError(err.response?.data?.message || "Error fetching dogs");
       } finally {
         setLoading(false);
       }
     };
-    fetchUserDogs();
+    fetchDogs();
   }, []);
 
+  // Filter dogs based on selected color
+  const filteredDogs = dogsData.filter(
+    (dog) => selectedColor === "All" || dog.type === selectedColor
+  );
+
+  // Animation variants
+  const swipeVariants = {
+    enter: (direction) => ({
+      x: direction === "left" ? 100 : -100,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction) => ({
+      x: direction === "left" ? -100 : 100,
+      opacity: 0,
+    }),
+  };
+
   return (
-    <div {...swipeHandlers} className="p-2 sm:p-4">
-      {/* Swipeable Filter Header */}
-      <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4">
+    <div {...handlers} className="p-2 sm:p-4">
+      {/* Filter Header */}
+      <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4 shadow-sm">
         <div className="flex space-x-4 overflow-x-auto hide-scrollbar">
           {colorFilters.map((color) => (
             <button
               key={color}
               onClick={() => {
-                if (color === selectedColor) return;
-                previousColorRef.current = selectedColor;
+                const newIndex = colorFilters.indexOf(color);
+                setSwipeDirection(newIndex > prevIndexRef.current ? "left" : "right");
+                prevIndexRef.current = colorFilters.indexOf(selectedColor);
                 setSelectedColor(color);
               }}
               className={`whitespace-nowrap py-1.5 px-3 text-base transition-colors ${
@@ -103,14 +111,11 @@ const Explore = () => {
         </div>
       </div>
 
-      {/* Loading or Error or Empty */}
+      {/* Content Area */}
       {loading ? (
         <div className="columns-2 sm:columns-2 lg:columns-3 gap-2 space-y-4 animate-pulse">
           {[...Array(9)].map((_, i) => (
-            <div
-              key={i}
-              className="break-inside-avoid mb-2 h-48 bg-gray-200 rounded-xl"
-            />
+            <div key={i} className="break-inside-avoid mb-2 h-48 bg-gray-200 rounded-xl" />
           ))}
         </div>
       ) : fetchError ? (
@@ -118,22 +123,18 @@ const Explore = () => {
           <p className="font-semibold">{fetchError}</p>
           <p>Please try again later.</p>
         </div>
-      ) : filteredDogs.length === 0 ? (
-        <div className="text-center text-gray-500 mt-8">
-          <p>No {selectedColor.toLowerCase()} dogs posted yet.</p>
-        </div>
       ) : (
-        <AnimatePresence mode="wait" initial={false}>
+        <AnimatePresence mode="wait" custom={swipeDirection}>
           <motion.div
             key={selectedColor}
-            initial={{
-              x: animationDirection === "left" ? 200 : -200,
-              opacity: 0,
-            }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: animationDirection === "left" ? -200 : 200, opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="columns-2 sm:columns-2 lg:columns-3 gap-2 space-y-3 sm:space-y-4">
+            custom={swipeDirection}
+            variants={swipeVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.25 }}
+            className="columns-2 sm:columns-2 lg:columns-3 gap-2 space-y-3 sm:space-y-4"
+          >
             {filteredDogs.map((dog) => (
               <div key={dog._id} className="break-inside-avoid mb-2">
                 <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
@@ -144,35 +145,26 @@ const Explore = () => {
                   />
                   <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
                     <div className="flex justify-end items-end">
-                      <svg
-                        className="w-5 h-5 text-white cursor-pointer"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        onClick={() =>
-                          navigate("/map", {
-                            state: {
-                              selectedDog: {
-                                id: dog._id,
-                                lat: dog.location.coordinates[1],
-                                lng: dog.location.coordinates[0],
-                              },
-                            },
-                          })
-                        }>
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                      </svg>
+                      <button
+                        onClick={() => navigate("/map", {
+                          state: { selectedDog: {
+                            id: dog._id,
+                            lat: dog.location.coordinates[1],
+                            lng: dog.location.coordinates[0],
+                          }}
+                        })}
+                        className="text-white hover:text-violet-100 transition-colors"
+                      >
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      </button>
                     </div>
                   </div>
                 </div>
