@@ -265,7 +265,10 @@ const Profile = () => {
                   Creator & Caretaker of{" "}
                   <span className="font-bold text-[18px] text-violet-600">
                     StreetPaws
-                  </span>
+                  </span> 
+                   <Link
+                                to="/explore"
+                                ></Link>
                 </p>
               ) : (
                 <p className="text-gray-500 sm:mt-2 mt-0 text-base sm:text-[17px]">
