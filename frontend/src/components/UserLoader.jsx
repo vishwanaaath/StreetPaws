@@ -19,7 +19,7 @@ const UserLoader = () => {
               <div
                 key={index}
                 className="group relative flex items-center ml-2 p-2 sm:p-4 bg-white">
-                <div className="w-15 h-15 sm:w-14 sm:h-14 rounded-full bg-gray-200 animate-pulse" />
+                <div className="w-14 h-14 sm:w-14 sm:h-14 rounded-full bg-gray-200 animate-pulse" />
                 <div className="ml-4 flex-1 min-w-0 space-y-2">
                   <div className="h-4 bg-gray-200 rounded w-32 animate-pulse" />
                   <div className="h-3 bg-gray-200 rounded w-24 animate-pulse" />

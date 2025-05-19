@@ -94,7 +94,7 @@ const [searchText, setSearchText] = useState("");
                     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                   }
                   alt={user.username}
-                  className="w-15 h-15 sm:w-14 sm:h-14 rounded-full object-cover"
+                  className="w-14 h-14 sm:w-14 sm:h-14 rounded-full object-cover"
                 />
 
                 <div className="ml-4 flex-1 min-w-0">
