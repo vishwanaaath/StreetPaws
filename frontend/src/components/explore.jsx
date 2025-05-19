@@ -1,13 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import "./Profile.css"
 const Explore = () => {
   const [dogsData, setDogsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
-  const [isSingleColumn] = useState(false); // Add state management for column layout if needed
+  const [isSingleColumn] = useState(false);
+  const [selectedColor, setSelectedColor] = useState("All");
   const navigate = useNavigate();
+
+  const colorFilters = [
+    "All",
+    "Brown",
+    "Black",
+    "White",
+    "Brown and White",
+    "Black and White",
+    "Unique",
+  ];
+
+  const filteredDogs = dogsData.filter(
+    (dog) => selectedColor === "All" || dog.color === selectedColor
+  );
 
   // Time formatting function
   const timeSinceListed = (dateString) => {
@@ -51,6 +66,24 @@ const Explore = () => {
 
   return (
     <div className="p-2 sm:p-4">
+      <div className="sticky top-0 bg-white z-10 pb-2 sm:pb-4">
+        <div className="flex space-x-2 overflow-x-auto pb-2 hide-scrollbar">
+          {colorFilters.map((color) => (
+            <button
+              key={color}
+              onClick={() => setSelectedColor(color)}
+              className={`whitespace-nowrap px-4 py-2 rounded-full text-sm transition-colors
+                ${
+                  selectedColor === color
+                    ? "bg-violet-600 text-white"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}>
+              {color}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {loading ? (
         <div
           className={`${
@@ -107,7 +140,7 @@ const Explore = () => {
             <p className="text-sm mt-1 text-gray-500">Please try again later</p>
           </div>
         </div>
-      ) : dogsData.length === 0 ? (
+      ) : filteredDogs.length === 0 ? (
         <div className="flex flex-col flex-grow min-h-[30vh] sm:min-h-[50vh] items-center justify-center p-4">
           <div className="text-center text-gray-500 bg-violet-50 rounded-xl w-full max-w-sm mx-auto p-8 shadow-inner border border-violet-100">
             <svg
@@ -123,9 +156,11 @@ const Explore = () => {
                 d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <p className="text-gray-600 font-medium">No dogs posted yet</p>
+            <p className="text-gray-600 font-medium">
+              No {selectedColor.toLowerCase()} dogs found
+            </p>
             <p className="text-sm mt-1 text-gray-500">
-              Your future posts will appear here
+              Try selecting a different color filter
             </p>
           </div>
         </div>
@@ -134,7 +169,7 @@ const Explore = () => {
           className={`${
             isSingleColumn ? "columns-1" : "columns-2"
           } sm:columns-2 lg:columns-3 sm:gap-2 gap-1 space-y-2 sm:space-y-4`}>
-          {dogsData.map((dog) => (
+          {filteredDogs.map((dog) => (
             <div key={dog._id} className="break-inside-avoid mb-2">
               <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
                 <img
