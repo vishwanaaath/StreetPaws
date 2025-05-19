@@ -140,11 +140,11 @@ const Explore = () => {
 
       {/* Content Area */}
       {loading ? (
-        <div className="columns-2 sm:columns-3 lg:columns-3 gap-[2px] space-y-2 animate-pulse">
+        <div className="columns-2 sm:columns-3 lg:columns-3 custom-column-gap animate-pulse">
           {[...Array(9)].map((_, i) => (
             <div
               key={i}
-              className="break-inside-avoid mb-2 h-48 bg-gray-200 rounded-xl"
+              className="break-inside-avoid h-48 bg-gray-200 rounded-xl"
             />
           ))}
         </div>
@@ -163,9 +163,9 @@ const Explore = () => {
             animate="center"
             exit="exit"
             transition={{ duration: 0.25 }}
-            className="columns-2 sm:columns-3 lg:columns-3 gap-[2px] space-y-2">
+            className="columns-2 sm:columns-3 lg:columns-3 custom-column-gap">
             {filteredDogs.map((dog) => (
-              <div key={dog._id} className="break-inside-avoid mb-2">
+              <div key={dog._id} className="break-inside-avoid">
                 <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
                   <img
                     src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}

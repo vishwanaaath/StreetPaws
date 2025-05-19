@@ -7,6 +7,17 @@
     display: none;
   } 
 
+  /* Custom column gap */
+.custom-column-gap {
+  column-gap: 2px !important;
+}
+
+/* Override break-inside-avoid if needed */
+.break-inside-avoid {
+  break-inside: avoid;
+  margin-bottom: 2px; /* Reduced from mb-2 (8px) */
+}
+
   /* Profile.css */
 
 .hide-scrollbar {
