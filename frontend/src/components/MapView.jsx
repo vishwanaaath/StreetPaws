@@ -324,12 +324,12 @@ const MapView = () => {
               : "opacity-100 translate-x-2 hover:translate-x-3"
           }`}>
           {!imgLoaded && (
-            <span className="text-black text-xl font-bold select-none">{`<`}</span>
+            <span className="text-black text-xl font-bold select-none">{`<<<`}</span>
           )}
           <img
             src="./images/left.svg"
             alt="<"
-            className={`${imgLoaded ? "block" : "hidden"} w-5 h-5`}
+            className={`${imgLoaded ? "block" : "hidden"} w-15 h-15`}
             onLoad={() => setImgLoaded(true)}
           />
         </div>
