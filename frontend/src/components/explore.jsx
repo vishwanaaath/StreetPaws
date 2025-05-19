@@ -130,7 +130,7 @@ const Explore = () => {
 
           {/* Sliding underline */}
           <motion.div
-            className="absolute bottom-0 h-0.5 bg-violet-600 rounded"
+            className="absolute bottom-0 h-1 bg-violet-600 rounded"
             layout
             transition={{ type: "spring", stiffness: 500, damping: 30 }}
             style={{ left: underlineProps.left, width: underlineProps.width }}
