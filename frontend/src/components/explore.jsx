@@ -97,7 +97,7 @@ const Explore = () => {
   return (
     <div {...handlers} className="p-2 sm:p-4">
       {/* Filter Header with animated underline */}
-      <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4 shadow-sm">
+      <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4 ">
         <div
           ref={containerRef}
           className="relative flex space-x-4 overflow-x-auto hide-scrollbar">
