@@ -324,7 +324,7 @@ const MapView = () => {
               : "opacity-100 translate-x-2 hover:translate-x-3"
           }`}>
           {!imgLoaded && (
-            <span className="text-black text-xl font-bold select-none">{`❮❮`}</span>
+            <span className="text-black text-xl select-none">{`❮❮`}</span>
           )}
           <img
             src="./images/left.svg"
