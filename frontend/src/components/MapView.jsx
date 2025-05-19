@@ -322,7 +322,7 @@ const MapView = () => {
               ? "opacity-0 -translate-x-8"
               : "opacity-100 translate-x-2 hover:translate-x-3"
           }`}>
-          <img src="./images/left.svg" alt="Toggle sidebar" />
+          <img src="./images/left.svg" alt="<" />
         </div>
       </div>
 
