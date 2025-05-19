@@ -122,7 +122,7 @@ const Explore = () => {
               className={`relative whitespace-nowrap cursor-pointer py-1.5 px-3 text-base ${
                 selectedColor === color
                   ? "text-violet-600 font-extrabold"
-                  : "text-black font-bold "
+                  : "text-black font-semibold "
               }`}>
               {color}
             </button>
