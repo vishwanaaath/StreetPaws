@@ -72,17 +72,16 @@ const Explore = () => {
   return (
     <div className="p-2 sm:p-4">
       <div className="sticky top-0 bg-white z-10 pb-2 sm:pb-4">
-        <div className="flex space-x-2 overflow-x-auto pb-2 hide-scrollbar">
+        <div className="flex space-x-4 overflow-x-auto pb-2 hide-scrollbar">
           {colorFilters.map((color) => (
             <button
               key={color}
               onClick={() => setSelectedColor(color)}
-              className={`whitespace-nowrap px-4 py-2 rounded-full text-sm transition-colors
-                ${
-                  selectedColor === color
-                    ? "bg-violet-600 text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}>
+              className={`whitespace-nowrap py-1.5 px-3 transition-colors text-sm ${
+                selectedColor === color
+                  ? "text-violet-600 font-semibold"
+                  : "text-gray-500 hover:text-gray-600"
+              }`}>
               {color}
             </button>
           ))}
@@ -91,7 +90,7 @@ const Explore = () => {
 
       <Sidebar
         sidebarVisible={sidebarVisible}
-        setSidebarVisible={setSidebarVisible}  
+        setSidebarVisible={setSidebarVisible}
       />
 
       {loading ? (
