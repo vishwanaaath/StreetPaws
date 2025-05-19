@@ -63,7 +63,7 @@ const [searchText, setSearchText] = useState("");
             <div className="flex items-center gap-2">
               <button
                 onClick={() => navigate("/map")}
-                className="text-violet-600 hover:text-violet-800 transition">
+                className="text-violet-600 mr-1 hover:text-violet-800 transition">
                 <ArrowLeft size={25} />
               </button>
               Community
