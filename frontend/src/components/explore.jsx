@@ -95,125 +95,119 @@ const Explore = () => {
   };
 
   return (
-    <div className="sm:p-0 sm:pt-6">
-      <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 z-0" />
+    <div {...handlers} className="p-2 sm:p-4">
+      {/* Filter Header with animated underline */}
+      <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4 ">
+        <div
+          ref={containerRef}
+          className="relative flex space-x-4 overflow-x-auto hide-scrollbar">
+          {colorFilters.map((color) => (
+            <button
+              key={color}
+              data-color={color}
+              onClick={() => {
+                const newIndex = colorFilters.indexOf(color);
+                setSwipeDirection(
+                  newIndex > prevIndexRef.current ? "left" : "right"
+                );
+                prevIndexRef.current = colorFilters.indexOf(selectedColor);
+                setSelectedColor(color);
+              }}
+              className={`relative whitespace-nowrap py-1.5 px-3 text-base ${
+                selectedColor === color
+                  ? "text-violet-600 font-bold"
+                  : "text-gray-500 hover:text-gray-600"
+              }`}>
+              {color}
+            </button>
+          ))}
 
-      <div
-        {...handlers}
-        className="relative z-10 max-w-4xl mx-auto flex-1 w-full p-2">
-        {/* Filter Header with animated underline */}
-        <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4 ">
-          <div
-            ref={containerRef}
-            className="relative flex space-x-4 overflow-x-auto hide-scrollbar">
-            {colorFilters.map((color) => (
-              <button
-                key={color}
-                data-color={color}
-                onClick={() => {
-                  const newIndex = colorFilters.indexOf(color);
-                  setSwipeDirection(
-                    newIndex > prevIndexRef.current ? "left" : "right"
-                  );
-                  prevIndexRef.current = colorFilters.indexOf(selectedColor);
-                  setSelectedColor(color);
-                }}
-                className={`relative whitespace-nowrap py-1.5 px-3 text-base ${
-                  selectedColor === color
-                    ? "text-violet-600 font-bold"
-                    : "text-gray-500 hover:text-gray-600"
-                }`}>
-                {color}
-              </button>
-            ))}
-
-            {/* Sliding underline */}
-            <motion.div
-              className="absolute bottom-0 h-0.5 bg-violet-600 rounded"
-              layout
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-              style={{ left: underlineProps.left, width: underlineProps.width }}
-            />
-          </div>
+          {/* Sliding underline */}
+          <motion.div
+            className="absolute bottom-0 h-0.5 bg-violet-600 rounded"
+            layout
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+            style={{ left: underlineProps.left, width: underlineProps.width }}
+          />
         </div>
+      </div>
 
-        {/* Content Area */}
-        {loading ? (
-          <div className="columns-2 sm:columns-2 lg:columns-3 gap-1 space-y-4 animate-pulse">
-            {[...Array(9)].map((_, i) => (
-              <div
-                key={i}
-                className="break-inside-avoid mb-2 h-48 bg-gray-200 rounded-xl"
-              />
-            ))}
-          </div>
-        ) : fetchError ? (
-          <div className="text-center text-gray-500 mt-8">
-            <p className="font-semibold">{fetchError}</p>
-            <p>Please try again later.</p>
-          </div>
-        ) : (
-          <AnimatePresence mode="wait" custom={swipeDirection}>
-            <motion.div
-              key={selectedColor}
-              custom={swipeDirection}
-              variants={swipeVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.25 }}
-              className="columns-2 sm:columns-3 lg:columns-3 gap-1 space-y-3 sm:space-y-4">
-              {filteredDogs.map((dog) => (
-                <div key={dog._id} className="break-inside-avoid mb-2">
-                  <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
-                    <img
-                      src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
-                      alt={dog.type}
-                      className="w-full h-auto object-cover"
-                    />
-                    <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
-                      <div className="flex justify-end items-end">
-                        <button
-                          onClick={() =>
-                            navigate("/map", {
-                              state: {
-                                selectedDog: {
-                                  id: dog._id,
-                                  lat: dog.location.coordinates[1],
-                                  lng: dog.location.coordinates[0],
-                                },
+      {/* Content Area */}
+      {loading ? (
+        <div className="columns-2 sm:columns-2 lg:columns-3 gap-1 space-y-4 animate-pulse">
+          {[...Array(9)].map((_, i) => (
+            <div
+              key={i}
+              className="break-inside-avoid mb-2 h-48 bg-gray-200 rounded-xl"
+            />
+          ))}
+        </div>
+      ) : fetchError ? (
+        <div className="text-center text-gray-500 mt-8">
+          <p className="font-semibold">{fetchError}</p>
+          <p>Please try again later.</p>
+        </div>
+      ) : (
+        <AnimatePresence mode="wait" custom={swipeDirection}>
+          <motion.div
+            key={selectedColor}
+            custom={swipeDirection}
+            variants={swipeVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.25 }}
+            className="columns-2 sm:columns-3 lg:columns-3 gap-1 space-y-3 sm:space-y-4">
+            {filteredDogs.map((dog) => (
+              <div key={dog._id} className="break-inside-avoid mb-2">
+                <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
+                  <img
+                    src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
+                    alt={dog.type}
+                    className="w-full h-auto object-cover"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
+                    <div className="flex justify-end items-end">
+                      <button
+                        onClick={() =>
+                          navigate("/map", {
+                            state: {
+                              selectedDog: {
+                                id: dog._id,
+                                lat: dog.location.coordinates[1],
+                                lng: dog.location.coordinates[0],
                               },
-                            })
-                          }
-                          className="text-white hover:text-violet-100 transition-colors">
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                            />
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                          </svg>
-                        </button>
-                      </div>
+                            },
+                          })
+                        }
+                        className="text-white hover:text-violet-100 transition-colors">
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                        </svg>
+                      </button>
                     </div>
                   </div>
                 </div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
-        )}
-      </div>
+              </div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      )}
     </div>
   );
 };
