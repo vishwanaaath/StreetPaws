@@ -99,11 +99,11 @@ const [searchText, setSearchText] = useState("");
 
                 <div className="ml-4 flex-1 min-w-0">
                   <div className="flex items-center">
-                    <h2 className="text-lg sm:text-lg font-semibold text-gray-800">
+                    <h2 className="text-base sm:text-lg font-semibold text-gray-800">
                       {user.username}
                     </h2>
                   </div>
-                  <p className="text-sm text-gray-500 ">
+                  <p className="text-[12px] text-gray-500 ">
                     {user.dogsListed?.length || 0}{" "}
                     {user.dogsListed?.length === 1
                       ? "dog posted"
