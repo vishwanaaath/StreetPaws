@@ -229,7 +229,7 @@ const AdoptionStats = () => {
       </div>
 
       <div className="w-full max-w-md z-10 order-3 sm:scale-100  sm:hidden mt-8">
-        <div className="space-y-6 flex items-center justify-center">
+        <div className="space-y-6 flex flex-wrap items-center justify-center">
           <button
             onClick={() => handleNavigation("/map")}
             className="w-[90%] py-3 px-4 bg-gradient-to-r cursor-pointer from-violet-600 to-purple-500 text-white text-2xl font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
