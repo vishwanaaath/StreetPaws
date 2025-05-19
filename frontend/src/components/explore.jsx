@@ -106,7 +106,7 @@ const Explore = () => {
       <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4 ">
         <div
           ref={containerRef}
-          className="relative flex space-x-4 overflow-x-auto hide-scrollbar">
+          className="relative flex space-x-4 cursor-pointer overflow-x-auto hide-scrollbar">
           {colorFilters.map((color) => (
             <button
               key={color}
@@ -121,8 +121,8 @@ const Explore = () => {
               }}
               className={`relative whitespace-nowrap py-1.5 px-3 text-base ${
                 selectedColor === color
-                  ? "text-violet-600 font-bold"
-                  : "text-gray-500 hover:text-gray-600"
+                  ? "text-violet-600 font-extrabold"
+                  : "text-gray-500 font-bold hover:text-gray-600"
               }`}>
               {color}
             </button>
