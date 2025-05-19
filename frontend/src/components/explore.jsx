@@ -77,7 +77,7 @@ const Explore = () => {
             <button
               key={color}
               onClick={() => setSelectedColor(color)}
-              className={`whitespace-nowrap py-1.5 px-3 transition-colors text-sm ${
+              className={`whitespace-nowrap py-1.5 px-3 transition-colors text-base ${
                 selectedColor === color
                   ? "text-violet-600 font-bold"
                   : "text-gray-500 hover:text-gray-600"
