@@ -119,10 +119,10 @@ const Explore = () => {
                 prevIndexRef.current = colorFilters.indexOf(selectedColor);
                 setSelectedColor(color);
               }}
-              className={`relative whitespace-nowrap py-1.5 px-3 text-base ${
+              className={`relative whitespace-nowrap cursor-pointer py-1.5 px-3 text-base ${
                 selectedColor === color
                   ? "text-violet-600 font-extrabold"
-                  : "text-gray-500 font-bold hover:text-gray-600"
+                  : "text-black font-bold "
               }`}>
               {color}
             </button>
