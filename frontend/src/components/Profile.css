@@ -9,13 +9,12 @@
 
   /* Custom column gap */
 .custom-column-gap {
-  column-gap: 2px !important;
+  column-gap: 4px !important;
 }
 
 /* Override break-inside-avoid if needed */
 .break-inside-avoid {
   break-inside: avoid;
-  margin-bottom: 2px; /* Reduced from mb-2 (8px) */
 }
 
 .image-item {
