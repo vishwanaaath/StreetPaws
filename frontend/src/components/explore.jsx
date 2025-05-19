@@ -159,10 +159,10 @@ const Explore = () => {
               />
             </svg>
             <p className="text-gray-600 font-medium">
-              No {selectedColor.toLowerCase()} dogs found
+              No {selectedColor.toLowerCase()} dogs posted yet
             </p>
             <p className="text-sm mt-1 text-gray-500">
-              Try selecting a different color filter
+              Try selecting a different color type
             </p>
           </div>
         </div>
@@ -180,16 +180,10 @@ const Explore = () => {
                   className="w-full h-auto object-cover"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70"></div>
+                {/* <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70"></div> */}
                 <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
                   <div className="flex justify-between items-end">
-                    <div>
-                      <p className="sm:text-sm text-white text-[10px]">
-                        {dog.createdAt
-                          ? timeSinceListed(dog.createdAt)
-                          : "New listing"}
-                      </p>
-                    </div>
+                   
                     <svg
                       className="w-5 h-5 z-5 text-white cursor-pointer mb-1 mr-1"
                       fill="none"
