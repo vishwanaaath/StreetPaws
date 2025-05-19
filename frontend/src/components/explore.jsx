@@ -55,7 +55,7 @@ const Explore = () => {
         );
         setDogsData(response.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
+        ));
       } catch (err) {
         setFetchError(err.response?.data?.message || "Error fetching dogs");
       } finally {
