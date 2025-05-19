@@ -8,6 +8,7 @@ import PostDP from "./components/PostDP.jsx";
 import EditDog from "./components/EditDog.jsx";
 import UsersList from "./components/UsersList";
 import User from "./components/User.jsx";
+import Explore from "./components/explore.jsx";
  
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         <Route path="/edit-dog" element={<EditDog />} />
         <Route path="/users" element={<UsersList />} />;
         <Route path="/user" element={<User />} />;
+        <Route path="/explore" element={<Explore />} />;
       </Routes>
     </Router>
   );
