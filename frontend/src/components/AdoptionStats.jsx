@@ -228,7 +228,7 @@ const AdoptionStats = () => {
         ))}
       </div>
 
-      <div className="w-full max-w-md z-10 order-3 sm:scale-100 scale-70 sm:hidden mt-8">
+      <div className="w-full max-w-md z-10 order-3 sm:scale-100  sm:hidden mt-8">
         <div className="space-y-6">
           <button
             onClick={() => handleNavigation("/map")}
