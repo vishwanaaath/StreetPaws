@@ -382,7 +382,7 @@ const Profile = () => {
               <div
                 className={`${
                   isSingleColumn ? "columns-1" : "columns-2"
-                } sm:columns-3 lg:columns-3 sm:gap-2 gap-1 space-y-3 sm:space-y-4`}>
+                } sm:columns-3 lg:columns-3 sm:gap-2 custom-column-gap`}>
                 {[...Array(6)].map((_, index) => {
                   const ratios = [
                     { class: "aspect-square" },
@@ -394,7 +394,9 @@ const Profile = () => {
                   ];
 
                   return (
-                    <div key={index} className="break-inside-avoid mb-2">
+                    <div
+                      key={index}
+                      className="break-inside-avoid image-item ">
                       <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse">
                         <div
                           className={`w-full bg-gray-200 rounded-xl ${ratios[index].class}`}
@@ -465,9 +467,11 @@ const Profile = () => {
               <div
                 className={`${
                   isSingleColumn ? "columns-1" : "columns-2"
-                } sm:columns-3 lg:columns-3 sm:gap-2 gap-1 space-y-2 sm:space-y-4`}>
+                } sm:columns-3 lg:columns-3 sm:gap-2 custom-column-gap`}>
                 {dogsData.map((dog) => (
-                  <div key={dog._id} className="break-inside-avoid mb-2">
+                  <div
+                    key={dog._id}
+                    className="break-inside-avoid image-item ">
                     <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
                       <img
                         src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
