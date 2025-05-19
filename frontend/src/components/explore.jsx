@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Profile.css"
+import Sidebar from "./Sidebar";
+
 const Explore = () => {
   const [dogsData, setDogsData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -85,6 +87,15 @@ const Explore = () => {
           ))}
         </div>
       </div>
+
+      <Sidebar
+        sidebarVisible={sidebarVisible}
+        setSidebarVisible={setSidebarVisible}
+        setNotificationMessage={setNotificationMessage}
+        setNotificationImage={setNotificationImage}
+        selectedColor={selectedColor}
+        handleColorSelect={handleColorSelect}
+      />
 
       {loading ? (
         <div
@@ -183,7 +194,6 @@ const Explore = () => {
                 {/* <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70"></div> */}
                 <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
                   <div className="flex justify-between items-end">
-                   
                     <svg
                       className="w-5 h-5 z-5 text-white cursor-pointer mb-1 mr-1"
                       fill="none"
