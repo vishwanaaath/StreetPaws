@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSwipeable } from "react-swipeable";
-import "./Profile.css"
-import Sidebar from "./Sidebar";
-
+import "./Profile.css"; 
 const Explore = () => {
   const [dogsData, setDogsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
   const [isSingleColumn] = useState(false);
   const [selectedColor, setSelectedColor] = useState("All");
-  const navigate = useNavigate();
-    const [sidebarVisible, setSidebarVisible] = useState(false);
+  const navigate = useNavigate(); 
+  const [animationDirection, setAnimationDirection] = useState(null);
+  const previousColorRef = useRef(selectedColor);
 
   const colorFilters = [
     "All",
@@ -28,20 +27,15 @@ const Explore = () => {
     (dog) => selectedColor === "All" || dog.type === selectedColor
   );
 
-  // Time formatting function
-  const timeSinceListed = (dateString) => {
-    const now = new Date();
-    const postedDate = new Date(dateString);
-    const seconds = Math.floor((now - postedDate) / 1000);
+  useEffect(() => {
+    const prevIndex = colorFilters.indexOf(previousColorRef.current);
+    const newIndex = colorFilters.indexOf(selectedColor);
 
-    if (seconds < 60) return "Just now";
-    const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `${minutes}m ago`;
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours}h ago`;
-    const days = Math.floor(hours / 24);
-    return `${days}d ago`;
-  };
+    if (prevIndex !== newIndex) {
+      setAnimationDirection(newIndex > prevIndex ? "left" : "right");
+      previousColorRef.current = selectedColor;
+    }
+  }, [selectedColor]);
 
 
   const handleSwipe = (dir) => {
@@ -62,8 +56,6 @@ const Explore = () => {
     trackMouse: true,
   });
 
-
-
   useEffect(() => {
     const fetchUserDogs = async () => {
       try {
@@ -78,7 +70,7 @@ const Explore = () => {
 
         setDogsData(sortedDogs);
         console.log(dogsData);
-        
+
         setFetchError(null);
       } catch (err) {
         setFetchError(err.response?.data?.message || "Error fetching dogs");
@@ -93,7 +85,8 @@ const Explore = () => {
 
   return (
     <div {...swipeHandlers} className="p-2 sm:p-4">
-      <div className="sticky top-0 bg-white z-10 pb-2 sm:pb-4">
+      {/* Filter Header */}
+      <div className="sticky top-0 bg-white z-20 pb-2 sm:pb-4 shadow-sm">
         <div className="flex space-x-4 overflow-x-auto hide-scrollbar">
           {colorFilters.map((color) => (
             <button
@@ -101,7 +94,7 @@ const Explore = () => {
               onClick={() => setSelectedColor(color)}
               className={`whitespace-nowrap py-1.5 px-3 transition-colors text-base ${
                 selectedColor === color
-                  ? "text-violet-600 font-bold"
+                  ? "text-violet-600 font-bold border-b-2 border-violet-600"
                   : "text-gray-500 hover:text-gray-600"
               }`}>
               {color}
@@ -110,16 +103,21 @@ const Explore = () => {
         </div>
       </div>
 
-      {/* Add swipe indicator animation */}
-      <div className="absolute top-1/2 left-0 right-0 flex justify-between px-4 opacity-50 pointer-events-none">
-        <div className="swipe-indicator-left hidden sm:block">←</div>
-        <div className="swipe-indicator-right hidden sm:block">→</div>
+      {/* Swipe Indicators */}
+      <div className="fixed top-1/2 left-0 right-0 flex justify-between px-4 opacity-50 pointer-events-none z-10">
+        <div
+          className={`swipe-indicator ${
+            animationDirection === "right" ? "animate-bounce-left" : ""
+          }`}>
+          ←
+        </div>
+        <div
+          className={`swipe-indicator ${
+            animationDirection === "left" ? "animate-bounce-right" : ""
+          }`}>
+          →
+        </div>
       </div>
-      
-      <Sidebar
-        sidebarVisible={sidebarVisible}
-        setSidebarVisible={setSidebarVisible}
-      />
 
       {loading ? (
         <div
@@ -205,7 +203,8 @@ const Explore = () => {
         <div
           className={`${
             isSingleColumn ? "columns-1" : "columns-2"
-          } sm:columns-2 lg:columns-3 sm:gap-2 gap-1 space-y-2 sm:space-y-4`}>
+          } sm:columns-2 lg:columns-3 sm:gap-2 gap-1 space-y-2 sm:space-y-4
+        ${animationDirection ? `slide-${animationDirection}` : ""}`}>
           {filteredDogs.map((dog) => (
             <div key={dog._id} className="break-inside-avoid mb-2">
               <div className="relative overflow-hidden special-shadow-1 rounded-xl group">

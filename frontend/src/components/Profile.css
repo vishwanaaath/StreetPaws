@@ -7,6 +7,72 @@
     display: none;
   } 
 
+  /* Swipe Animations */
+.slide-left {
+  animation: slideInLeft 0.4s ease-out;
+}
+
+.slide-right {
+  animation: slideInRight 0.4s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Swipe Indicators */
+.swipe-indicator {
+  font-size: 2.5rem;
+  color: #7c3aed;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.animate-bounce-left {
+  animation: bounceLeft 1s infinite;
+  opacity: 1;
+}
+
+.animate-bounce-right {
+  animation: bounceRight 1s infinite;
+  opacity: 1;
+}
+
+@keyframes bounceLeft {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-20px); }
+}
+
+@keyframes bounceRight {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(20px); }
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
   .swipe-indicator-left,
 .swipe-indicator-right {
