@@ -89,7 +89,7 @@ const Explore = () => {
   return (
     <div {...handlers} className="p-2 sm:p-4">
       {/* Filter Header */}
-      <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4 shadow-sm">
+      <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4 ">
         <div className="flex space-x-4 overflow-x-auto hide-scrollbar">
           {colorFilters.map((color) => (
             <button
