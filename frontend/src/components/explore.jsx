@@ -91,11 +91,7 @@ const Explore = () => {
 
       <Sidebar
         sidebarVisible={sidebarVisible}
-        setSidebarVisible={setSidebarVisible}
-        setNotificationMessage={setNotificationMessage}
-        setNotificationImage={setNotificationImage}
-        selectedColor={selectedColor}
-        handleColorSelect={handleColorSelect}
+        setSidebarVisible={setSidebarVisible}  
       />
 
       {loading ? (
