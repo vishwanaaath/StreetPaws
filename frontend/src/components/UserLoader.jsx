@@ -14,7 +14,7 @@ const UserLoader = () => {
               <Search size={20} />
             </button>
           </h1>
-          <div className="flex-1 overflow-y-auto space-y-2 pb-2">
+          <div className="flex-1 overflow-y-auto space-y-1 pb-1">
             {[...Array(12)].map((_, index) => (
               <div
                 key={index}

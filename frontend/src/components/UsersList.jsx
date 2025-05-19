@@ -85,7 +85,7 @@ const [searchText, setSearchText] = useState("");
               />
             </div>
           )}
-          <div className="flex-1 overflow-y-auto space-y-2 pb-2">
+          <div className="flex-1 overflow-y-auto space-y-1 pb-1">
             {filteredUsers.map((user) => (
               <div
                 key={user._id}
