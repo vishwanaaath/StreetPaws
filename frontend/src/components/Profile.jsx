@@ -243,7 +243,7 @@ const Profile = () => {
             </div>
 
             <div className="w-full md:w-auto">
-              <div className="flex items-center sm:mb-2 mt-2">
+              <div className="flex items-center mt-2">
                 <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
                   {currentUser.username}
                 </h1>
@@ -258,7 +258,7 @@ const Profile = () => {
               </div>
 
               {isDeveloper ? (
-                <p className="text-gray-500 sm:mt-2 mt-0 text-base sm:text-[17px]">
+                <p className="text-gray-500  mt-0 text-base sm:text-[17px]">
                   {/* <span className="font-medium text-gray-700">
                     {currentUser.dogsListed.length} Posts
                   </span> */}
