@@ -186,7 +186,7 @@ const Explore = () => {
                             },
                           })
                         }
-                        className="text-white hover:text-violet-100 transition-colors">
+                        className="text-white cursor-pointer hover:text-violet-100 transition-colors">
                         <svg
                           className="w-5 h-5"
                           fill="none"
