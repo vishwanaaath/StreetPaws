@@ -21,7 +21,7 @@ const Explore = () => {
   ];
 
   const filteredDogs = dogsData.filter(
-    (dog) => selectedColor === "All" || dog.color === selectedColor
+    (dog) => selectedColor === "All" || dog.type === selectedColor
   );
 
   // Time formatting function
@@ -52,6 +52,8 @@ const Explore = () => {
         );
 
         setDogsData(sortedDogs);
+        console.log(dogsData);
+        
         setFetchError(null);
       } catch (err) {
         setFetchError(err.response?.data?.message || "Error fetching dogs");
