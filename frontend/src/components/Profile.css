@@ -9,7 +9,7 @@
 
   /* Custom column gap */
 .custom-column-gap {
-  column-gap: 4px !important;
+  column-gap: 6px !important;
 }
 
 /* Override break-inside-avoid if needed */
@@ -18,7 +18,7 @@
 }
 
 .image-item {
-  margin-bottom: 8px; /* mb-2 equivalent */
+  margin-bottom: 10px; /* mb-2 equivalent */
 }
 
   /* Profile.css */
