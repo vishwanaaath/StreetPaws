@@ -64,7 +64,7 @@ const [searchText, setSearchText] = useState("");
               <button
                 onClick={() => navigate("/map")}
                 className="text-violet-600 mr-1 hover:text-violet-800 transition">
-                <ArrowLeft size={25} />
+                <ArrowLeft size={23} />
               </button>
               Community
             </div>
