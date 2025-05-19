@@ -70,7 +70,7 @@ const [searchText, setSearchText] = useState("");
             </div>
             <button
               onClick={() => setSearchVisible((prev) => !prev)}
-              className="text-violet-600 hover:text-violet-800 transition">
+              className="text-violet-600 px-3 py-2 hover:text-violet-800 transition">
               <Search size={20} />
             </button>
           </h1>
