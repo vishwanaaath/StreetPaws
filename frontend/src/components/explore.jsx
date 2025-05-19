@@ -24,6 +24,17 @@ const Explore = () => {
   const navigate = useNavigate();
   const previousColorRef = useRef("All");
 
+  useEffect(() => {
+    const prev = colorFilters.indexOf(previousColorRef.current);
+    const curr = colorFilters.indexOf(selectedColor);
+
+    if (prev !== curr) {
+      setAnimationDirection(curr > prev ? "left" : "right");
+      previousColorRef.current = selectedColor;
+    }
+  }, [selectedColor]);
+  
+
   const filteredDogs = dogsData.filter(
     (dog) => selectedColor === "All" || dog.type === selectedColor
   );
@@ -34,12 +45,10 @@ const Explore = () => {
     let newIndex;
     if (dir === "left") {
       newIndex = (currentIndex + 1) % colorFilters.length;
-      setAnimationDirection("left");
     } else if (dir === "right") {
       newIndex = (currentIndex - 1 + colorFilters.length) % colorFilters.length;
-      setAnimationDirection("right");
     }
-    setSelectedColor(colorFilters[newIndex]);
+    setSelectedColor(colorFilters[newIndex]);    
   };
 
   const swipeHandlers = useSwipeable({
@@ -79,12 +88,8 @@ const Explore = () => {
             <button
               key={color}
               onClick={() => {
-                setAnimationDirection(
-                  colorFilters.indexOf(color) >
-                    colorFilters.indexOf(selectedColor)
-                    ? "left"
-                    : "right"
-                );
+                if (color === selectedColor) return;
+                previousColorRef.current = selectedColor;
                 setSelectedColor(color);
               }}
               className={`whitespace-nowrap py-1.5 px-3 text-base transition-colors ${
