@@ -253,6 +253,7 @@ const Profile = () => {
                     <span className="font-bold text-[18px] text-violet-600">
                       StreetPaws
                     </span>
+                    <br />
                     <Link to="/explore">explore</Link>
                   </p>
                 ) : (
@@ -499,6 +500,7 @@ const Profile = () => {
                               navigate("/map", {
                                 state: {
                                   selectedDog: {
+                                    // comingFrom: Profile,
                                     id: dog._id,
                                     lat: dog.location.coordinates[1],
                                     lng: dog.location.coordinates[0],
