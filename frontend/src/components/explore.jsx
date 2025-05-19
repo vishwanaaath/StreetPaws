@@ -28,8 +28,14 @@ const Explore = () => {
 
   // Swipe handlers
   const handlers = useSwipeable({
-    onSwiping: (e) => setSwipeDirection(e.dir === "Left" ? "left" : "right"),
+    onSwiping: (e) => {
+      if (e.dir === "Left" || e.dir === "Right") {
+        setSwipeDirection(e.dir === "Left" ? "left" : "right");
+      }
+    },
     onSwiped: (e) => {
+      if (e.dir !== "Left" && e.dir !== "Right") return; // Ignore vertical swipes
+
       const currentIndex = colorFilters.indexOf(selectedColor);
       const dir = e.dir === "Left" ? "left" : "right";
       const newIndex =
@@ -45,6 +51,7 @@ const Explore = () => {
     trackTouch: true,
     trackMouse: false,
   });
+  
 
   // Fetch dogs data
   useEffect(() => {
