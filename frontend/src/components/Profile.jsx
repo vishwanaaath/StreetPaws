@@ -247,44 +247,35 @@ const Profile = () => {
                 <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
                   {currentUser.username}
                 </h1>
-                {/* {isDeveloper && (
-                  <div className="relative">
-                    <img
-                      src="./images/developer-badge.svg"
-                      className="w-5 h-5 flex-shrink-0"
-                    />
-                  </div>
-                )} */}
+                {isDeveloper ? (
+                  <p className="text-gray-500  mt-0 text-base sm:text-[17px]">
+                    {/* <span className="font-medium text-gray-700">
+                    {currentUser.dogsListed.length} Posts
+                  </span> */}
+                    Creator & Caretaker of{" "}
+                    <span className="font-bold text-[18px] text-violet-600">
+                      StreetPaws
+                    </span>
+                    <Link to="/explore">explore</Link>
+                  </p>
+                ) : (
+                  <p className="text-gray-500 sm:mt-2 mt-0 text-base sm:text-[17px]">
+                    {/* <span className="font-medium text-gray-700">
+                    {currentUser.dogsListed.length} Posts
+                  </span> */}
+                    Member since{" "}
+                    <span className="text-gray-700">
+                      {new Date(currentUser.createdAt).toLocaleDateString(
+                        "en-US",
+                        {
+                          month: "long",
+                          year: "numeric",
+                        }
+                      )}
+                    </span>
+                  </p>
+                )}
               </div>
-
-              {isDeveloper ? (
-                <p className="text-gray-500  mt-0 text-base sm:text-[17px]">
-                  {/* <span className="font-medium text-gray-700">
-                    {currentUser.dogsListed.length} Posts
-                  </span> */}
-                  Creator & Caretaker of{" "}
-                  <span className="font-bold text-[18px] text-violet-600">
-                    StreetPaws
-                  </span>
-                  <Link to="/explore">explore</Link>
-                </p>
-              ) : (
-                <p className="text-gray-500 sm:mt-2 mt-0 text-base sm:text-[17px]">
-                  {/* <span className="font-medium text-gray-700">
-                    {currentUser.dogsListed.length} Posts
-                  </span> */}
-                  Member since{" "}
-                  <span className="text-gray-700">
-                    {new Date(currentUser.createdAt).toLocaleDateString(
-                      "en-US",
-                      {
-                        month: "long",
-                        year: "numeric",
-                      }
-                    )}
-                  </span>
-                </p>
-              )}
 
               {/* Email section - simplified for mobile */}
               <div className="mt-2 md:mt-4 flex items-center group">
