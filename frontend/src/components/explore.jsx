@@ -103,21 +103,7 @@ const Explore = () => {
         </div>
       </div>
 
-      {/* Swipe Indicators */}
-      <div className="fixed top-1/2 left-0 right-0 flex justify-between px-4 opacity-50 pointer-events-none z-10">
-        <div
-          className={`swipe-indicator ${
-            animationDirection === "right" ? "animate-bounce-left" : ""
-          }`}>
-          ←
-        </div>
-        <div
-          className={`swipe-indicator ${
-            animationDirection === "left" ? "animate-bounce-right" : ""
-          }`}>
-          →
-        </div>
-      </div>
+   
 
       {loading ? (
         <div
