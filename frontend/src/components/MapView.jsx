@@ -52,6 +52,7 @@ const MapView = () => {
   const [initialPosition, setInitialPosition] = useState(null);
   const [initialZoom, setInitialZoom] = useState(16);
   const [placeNames, setPlaceNames] = useState({});
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   useEffect(() => {
     if (Location.state?.newlyListedDogId) {
@@ -322,7 +323,15 @@ const MapView = () => {
               ? "opacity-0 -translate-x-8"
               : "opacity-100 translate-x-2 hover:translate-x-3"
           }`}>
-          <img src="./images/left.svg" alt="<" />
+          {!imgLoaded && (
+            <span className="text-black text-xl font-bold select-none">{`<`}</span>
+          )}
+          <img
+            src="./images/left.svg"
+            alt="<"
+            className={`${imgLoaded ? "block" : "hidden"} w-5 h-5`}
+            onLoad={() => setImgLoaded(true)}
+          />
         </div>
       </div>
 
@@ -380,7 +389,7 @@ const MapView = () => {
             );
 
             return (
-              <Marker 
+              <Marker
                 key={dog._id}
                 ref={(ref) => {
                   if (ref) {
