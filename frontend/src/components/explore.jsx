@@ -71,8 +71,8 @@ const Explore = () => {
 
   return (
     <div className="p-2 sm:p-4">
-      <div className="sticky top-0 bg-white z-10 pb-2 pt-1 sm:pb-4">
-        <div className="flex space-x-4 overflow-x-auto pb-1 hide-scrollbar">
+      <div className="sticky top-0 bg-white z-10 pb-2  sm:pb-4">
+        <div className="flex space-x-4 overflow-x-auto  hide-scrollbar">
           {colorFilters.map((color) => (
             <button
               key={color}
