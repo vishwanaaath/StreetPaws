@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useSwipeable } from "react-swipeable";
 import "./Profile.css"
 import Sidebar from "./Sidebar";
 
@@ -42,6 +43,27 @@ const Explore = () => {
     return `${days}d ago`;
   };
 
+
+  const handleSwipe = (dir) => {
+    const currentIndex = colorFilters.indexOf(selectedColor);
+    if (dir === "left") {
+      const nextIndex = (currentIndex + 1) % colorFilters.length;
+      setSelectedColor(colorFilters[nextIndex]);
+    } else if (dir === "right") {
+      const prevIndex =
+        (currentIndex - 1 + colorFilters.length) % colorFilters.length;
+      setSelectedColor(colorFilters[prevIndex]);
+    }
+  };
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => handleSwipe("left"),
+    onSwipedRight: () => handleSwipe("right"),
+    trackMouse: true,
+  });
+
+
+
   useEffect(() => {
     const fetchUserDogs = async () => {
       try {
@@ -70,9 +92,9 @@ const Explore = () => {
   }, []);
 
   return (
-    <div className="p-2 sm:p-4">
-      <div className="sticky top-0 bg-white z-10 pb-2  sm:pb-4">
-        <div className="flex space-x-4 overflow-x-auto  hide-scrollbar">
+    <div {...swipeHandlers} className="p-2 sm:p-4">
+      <div className="sticky top-0 bg-white z-10 pb-2 sm:pb-4">
+        <div className="flex space-x-4 overflow-x-auto hide-scrollbar">
           {colorFilters.map((color) => (
             <button
               key={color}
@@ -88,6 +110,12 @@ const Explore = () => {
         </div>
       </div>
 
+      {/* Add swipe indicator animation */}
+      <div className="absolute top-1/2 left-0 right-0 flex justify-between px-4 opacity-50 pointer-events-none">
+        <div className="swipe-indicator-left hidden sm:block">←</div>
+        <div className="swipe-indicator-right hidden sm:block">→</div>
+      </div>
+      
       <Sidebar
         sidebarVisible={sidebarVisible}
         setSidebarVisible={setSidebarVisible}

@@ -8,6 +8,27 @@
   } 
 
 
+  .swipe-indicator-left,
+.swipe-indicator-right {
+  font-size: 2rem;
+  animation: swipeHint 1.5s infinite;
+  transform: translateY(-50%);
+}
+
+@keyframes swipeHint {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
+}
+
+.swipe-indicator-left {
+  animation-name: swipeHintLeft;
+}
+
+@keyframes swipeHintLeft {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-10px); }
+}
+
 .card {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.1);
   transition: ease-in all 0.1s;
