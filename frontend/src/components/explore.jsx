@@ -86,7 +86,7 @@ const Explore = () => {
   return (
     <div {...swipeHandlers} className="p-2 sm:p-4">
       {/* Filter Header */}
-      <div className="sticky top-0 bg-white z-20 pb-2 sm:pb-4 shadow-sm">
+      <div className="sticky top-0 bg-white z-20 pb-2 sm:pb-4">
         <div className="flex space-x-4 overflow-x-auto hide-scrollbar">
           {colorFilters.map((color) => (
             <button
