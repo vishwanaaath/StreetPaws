@@ -11,6 +11,7 @@ const Explore = () => {
   const [isSingleColumn] = useState(false);
   const [selectedColor, setSelectedColor] = useState("All");
   const navigate = useNavigate();
+    const [sidebarVisible, setSidebarVisible] = useState(false);
 
   const colorFilters = [
     "All",
