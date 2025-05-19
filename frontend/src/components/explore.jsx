@@ -141,7 +141,7 @@ const Explore = () => {
 
       {/* Content Area */}
       {loading ? (
-        <div className="columns-2 sm:columns-2 lg:columns-3 gap-1 space-y-4 animate-pulse">
+        <div className="columns-2 sm:columns-2 lg:columns-3 gap-1 space-y-2 animate-pulse">
           {[...Array(9)].map((_, i) => (
             <div
               key={i}
@@ -164,7 +164,7 @@ const Explore = () => {
             animate="center"
             exit="exit"
             transition={{ duration: 0.25 }}
-            className="columns-2 sm:columns-3 lg:columns-3 gap-1 space-y-3 sm:space-y-4">
+            className="columns-2 sm:columns-3 lg:columns-3 gap-1 space-y-2 ">
             {filteredDogs.map((dog) => (
               <div key={dog._id} className="break-inside-avoid mb-2">
                 <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
