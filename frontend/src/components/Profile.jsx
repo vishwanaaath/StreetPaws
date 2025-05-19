@@ -396,7 +396,7 @@ const Profile = () => {
               <div
                 className={`${
                   isSingleColumn ? "columns-1" : "columns-2"
-                } sm:columns-2 lg:columns-3 sm:gap-2 gap-1 space-y-3 sm:space-y-4`}>
+                } sm:columns-3 lg:columns-3 sm:gap-2 gap-1 space-y-3 sm:space-y-4`}>
                 {[...Array(6)].map((_, index) => {
                   const ratios = [
                     { class: "aspect-square" },
@@ -479,7 +479,7 @@ const Profile = () => {
               <div
                 className={`${
                   isSingleColumn ? "columns-1" : "columns-2"
-                } sm:columns-2 lg:columns-3 sm:gap-2 gap-1 space-y-2 sm:space-y-4`}>
+                } sm:columns-3 lg:columns-3 sm:gap-2 gap-1 space-y-2 sm:space-y-4`}>
                 {dogsData.map((dog) => (
                   <div key={dog._id} className="break-inside-avoid mb-2">
                     <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
