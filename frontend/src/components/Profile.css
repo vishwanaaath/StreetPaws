@@ -18,6 +18,10 @@
   margin-bottom: 2px; /* Reduced from mb-2 (8px) */
 }
 
+.image-item {
+  margin-bottom: 8px; /* mb-2 equivalent */
+}
+
   /* Profile.css */
 
 .hide-scrollbar {
