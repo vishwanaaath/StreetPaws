@@ -174,7 +174,7 @@ const Explore = () => {
                   />
                   <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
                     <div className="flex justify-end items-end">
-                      <button
+                      {/* <button
                         onClick={() =>
                           navigate("/map", {
                             state: {
@@ -205,7 +205,7 @@ const Explore = () => {
                             d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                           />
                         </svg>
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </div>
