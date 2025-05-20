@@ -45,12 +45,6 @@ const Explore = () => {
   const scrollPositionRef = useRef(0);
   const swipeLockedRef = useRef(false); // Reference to track if swipe is locked
 
-  // Constants for button positioning (in pixels)
-  const BUTTON_DISTANCE_X_PROFILE = 80; // Horizontal distance for profile button
-  const BUTTON_DISTANCE_Y_PROFILE = 40; // Vertical distance for profile button
-  const BUTTON_DISTANCE_X_LOCATE = 60; // Horizontal distance for location button
-  const BUTTON_DISTANCE_Y_LOCATE = 80; // Vertical distance for location button
-
   // Fetch dogs data with improved error handling
   useEffect(() => {
     const fetchDogs = async () => {
@@ -490,6 +484,12 @@ const Explore = () => {
     // For left side of screen: buttons on right side of touch
 
     let profileX, profileY, locationX, locationY;
+
+    // Constants for button positioning (in pixels)
+    const BUTTON_DISTANCE_X_PROFILE = 80; // Horizontal distance for profile button
+    const BUTTON_DISTANCE_Y_PROFILE = 10; // Vertical distance for profile button
+    const BUTTON_DISTANCE_X_LOCATE = 80; // Horizontal distance for location button
+    const BUTTON_DISTANCE_Y_LOCATE = 10; // Vertical distance for location button
 
     if (isRightSide) {
       // Right side touch - buttons appear at 10 and 11 o'clock
