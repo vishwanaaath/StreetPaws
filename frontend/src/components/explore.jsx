@@ -693,7 +693,7 @@ const Explore = () => {
                             }}
                             role="button"
                             aria-label="View profile (press P)">
-                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-white bg-violet-100 overflow-hidden shadow-lg flex items-center justify-center">
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-violet-100 overflow-hidden shadow-lg flex items-center justify-center">
                               <img
                                 src={
                                   dog.lister?.dp_url ||
