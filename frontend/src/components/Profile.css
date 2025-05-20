@@ -130,8 +130,7 @@
 }
 
 /* Optional: Add subtle hover zoom effect for dog cards */
-.group:hover img {
-  transform: scale(1.03);
+.group:hover img { 
   transition: transform 0.2s ease;
 }
 
