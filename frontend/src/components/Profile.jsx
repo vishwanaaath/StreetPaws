@@ -394,7 +394,9 @@ const Profile = () => {
                   ];
 
                   return (
-                    <div key={index} className="break-inside-avoid image-item ">
+                    <div
+                      key={index}
+                      className="break-inside-avoid image-item ">
                       <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse">
                         <div
                           className={`w-full bg-gray-200 rounded-xl ${ratios[index].class}`}
@@ -470,34 +472,20 @@ const Profile = () => {
                   <div
                     key={dog._id}
                     className="break-inside-avoid image-item ">
-                    <div className="relative overflow-hidden special-shadow-1 rounded-xl group aspect-square">
-                      {/* Blurred Placeholder */}
-                      <div
-                        className="absolute inset-0 blur-xl bg-gray-200 transition-all duration-500"
-                        style={{
-                          backgroundImage: `url(https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}?width=20)`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                        }}
-                      />
-    
-                      {/* Main Image */}
+                    <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
                       <img
                         src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                         alt={dog.type}
-                        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 blur-sm"
-                        onLoad={(e) => e.target.classList.remove("blur-sm")}
+                        className="w-full h-auto object-cover"
                       />
-    
-                      {/* Existing Overlay Elements */}
+
                       <div
                         onClick={() =>
                           setSelectedDogImage(
                             `https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`
                           )
                         }
-                        className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70"
-                      />
+                        className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70"></div>
                       <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
                         <div className="flex justify-between items-end">
                           <div>
@@ -516,6 +504,7 @@ const Profile = () => {
                               navigate("/map", {
                                 state: {
                                   selectedDog: {
+                                    // comingFrom: Profile,
                                     id: dog._id,
                                     lat: dog.location.coordinates[1],
                                     lng: dog.location.coordinates[0],
@@ -545,9 +534,9 @@ const Profile = () => {
             )}
           </div>
         </div>
-        </div>
-        </div>
-      );
-    };
-    
-    export default Profile;
+      </div>
+    </div>
+  );
+};
+
+export default Profile;
