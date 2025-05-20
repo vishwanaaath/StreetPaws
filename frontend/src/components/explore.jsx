@@ -619,8 +619,7 @@ const Explore = () => {
                 style={{
                   zIndex: activeOverlay === dog._id ? 50 : 0, // Higher z-index than the blur overlay (which is 40)
                   filter: activeOverlay === dog._id ? "none" : "", // Ensure no blur on the active image
-                  position: activeOverlay === dog._id ? "relative" : "static", // Make it positioned so z-index works
-                  scale: activeOverlay === dog._id ? 1.02 : 1, // Make it positioned so z-index works
+                  position: activeOverlay === dog._id ? "relative" : "static", // Make it positioned so z-index works 
                 
                 }}
                 onLoad={(e) => {
