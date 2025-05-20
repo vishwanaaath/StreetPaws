@@ -493,10 +493,10 @@ const Explore = () => {
 
     if (isRightSide) {
       // Right side touch - buttons appear at 10 and 11 o'clock
-      profileX = touchX -10 // 10 o'clock position
+      profileX = touchX -40 // 10 o'clock position
       profileY = touchY - 120;
-
-      locationX = touchX -70 // 11 o'clock position
+      
+      locationX = touchX -100 // 11 o'clock position
       locationY = touchY -60;
     } else {
       // Left side touch - buttons appear at 1 and 2 o'clock
