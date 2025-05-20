@@ -161,7 +161,7 @@ const Explore = () => {
           container.scrollTo({ left: scrollLeft, behavior: "smooth" });
 
           // Update underline position after scrolling
-          setTimeout(updateUnderlinePosition, 300);
+          setTimeout(updateUnderlinePosition, 500);
         }
       }, 50);
     },
@@ -222,7 +222,7 @@ const Explore = () => {
   const handleTouchStart = (dogId, e) => {
     touchTimer.current = setTimeout(() => {
       setActiveOverlay(dogId);
-    }, 300);
+    }, 500);
   };
 
   // Optimized button proximity check with throttling
