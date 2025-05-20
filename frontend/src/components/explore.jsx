@@ -27,6 +27,7 @@ const Explore = () => {
   const [buttonStates, setButtonStates] = useState({});
   const [underlineProps, setUnderlineProps] = useState({ left: 0, width: 0 });
   const [errorMessage, setErrorMessage] = useState(null);
+  const [screenPosition, setScreenPosition] = useState({ x: 0, y: 0 }); // Track touch position
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -38,6 +39,7 @@ const Explore = () => {
   const touchTimer = useRef(null);
   const lastActiveButtonRef = useRef({});
   const colorButtonsRef = useRef({});
+  const viewportWidth = useRef(window.innerWidth);
 
   // Fetch dogs data with improved error handling
   useEffect(() => {
@@ -76,6 +78,16 @@ const Explore = () => {
     };
 
     fetchDogs();
+  }, []);
+
+  // Set viewport width on resize
+  useEffect(() => {
+    const handleResize = () => {
+      viewportWidth.current = window.innerWidth;
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Clean up timer on unmount
@@ -220,6 +232,15 @@ const Explore = () => {
 
   // Touch interactions
   const handleTouchStart = (dogId, e) => {
+    // Save touch position to determine which side of the screen the image is on
+    if (e.touches && e.touches[0]) {
+      const touch = e.touches[0];
+      setScreenPosition({
+        x: touch.clientX,
+        y: touch.clientY,
+      });
+    }
+
     touchTimer.current = setTimeout(() => {
       setActiveOverlay(dogId);
     }, 700);
@@ -231,7 +252,7 @@ const Explore = () => {
       const buttons = buttonsRef.current[dogId];
       if (!buttons) return;
 
-      const activationRadius = 40;
+      const activationRadius = 50; // Increased radius for easier touch
       let activeButton = null;
       let maxScale = 1;
 
@@ -357,6 +378,23 @@ const Explore = () => {
     (dog) => selectedColor === "All" || dog.type === selectedColor
   );
 
+  // Calculate button positions based on touch position
+  const getButtonPositions = (screenX) => {
+    const screenCenter = viewportWidth.current / 2;
+    // Determine if touch is on left or right side of screen
+    const isRightSide = screenX > screenCenter;
+
+    return {
+      isRightSide,
+      // If touch is on right side, place buttons on left, and vice versa
+      containerPosition: isRightSide
+        ? "items-center justify-start"
+        : "items-center justify-end",
+      profilePosition: isRightSide ? "ml-6" : "mr-6",
+      locationPosition: isRightSide ? "ml-6" : "mr-6",
+    };
+  };
+
   return (
     <div className="p-2 sm:p-4" {...handlers}>
       {/* Error Message Toast */}
@@ -470,88 +508,151 @@ const Explore = () => {
                 }}
               />
 
-              {/* Overlay with Buttons */}
+              {/* Fullscreen Blur Overlay with Buttons */}
               <AnimatePresence>
                 {activeOverlay === dog._id && (
-                  <motion.div
-                    className="z-10 absolute inset-0 bg-black/40 flex items-end justify-between p-3"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}>
-                    {/* Profile Button with keyboard shortcut hint */}
+                  <>
+                    {/* Fullscreen blur overlay */}
                     <motion.div
-                      id={`profile-btn-${dog._id}`}
-                      className="relative z-20"
-                      animate={{
-                        scale:
-                          buttonStates[dog._id]?.activeButton === "profile"
-                            ? buttonStates[dog._id]?.scale
-                            : 1,
-                      }}
-                      role="button"
-                      aria-label="View profile (press P)">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white overflow-hidden">
-                        <img
-                          src={
-                            dog.lister?.dp_url ||
-                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                          }
-                          className="w-full h-full object-cover"
-                          alt="Profile"
-                          onError={(e) => {
-                            e.target.src =
-                              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
-                          }}
-                        />
-                      </div>
-                    </motion.div>
+                      className="fixed inset-0 z-40 backdrop-blur-md"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    />
 
-                    {/* Location Button with keyboard shortcut hint */}
-                    <motion.div
-                      id={`location-btn-${dog._id}`}
-                      className="relative z-20"
-                      animate={{
-                        scale:
-                          buttonStates[dog._id]?.activeButton === "location"
-                            ? buttonStates[dog._id]?.scale
-                            : 1,
-                      }}
-                      role="button"
-                      aria-label="View location (press L)">
-                      <div className="p-2 bg-white rounded-full shadow-lg">
-                        <svg
-                          className="w-6 h-6 text-gray-800"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
-                        </svg>
-                      </div>
-                    </motion.div>
-                  </motion.div>
+                    {/* Buttons container that positions based on touch location */}
+                    {(() => {
+                      const buttonPositions = getButtonPositions(
+                        screenPosition.x
+                      );
+                      return (
+                        <motion.div
+                          className={`fixed inset-0 z-50 flex flex-col ${buttonPositions.containerPosition} p-6`}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.2 }}>
+                          {/* Profile Button with bowl-shaped motion path */}
+                          <motion.div
+                            id={`profile-btn-${dog._id}`}
+                            className={`mb-6 ${buttonPositions.profilePosition}`}
+                            animate={{
+                              scale:
+                                buttonStates[dog._id]?.activeButton ===
+                                "profile"
+                                  ? buttonStates[dog._id]?.scale
+                                  : 1,
+                              y: [0, -15, 0],
+                              transition: {
+                                y: {
+                                  repeat: Infinity,
+                                  duration: 2,
+                                  ease: "easeInOut",
+                                },
+                              },
+                            }}
+                            role="button"
+                            aria-label="View profile (press P)">
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-white bg-violet-100 overflow-hidden shadow-lg flex items-center justify-center">
+                              <img
+                                src={
+                                  dog.lister?.dp_url ||
+                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                }
+                                className="w-full h-full object-cover"
+                                alt="Profile"
+                                onError={(e) => {
+                                  e.target.src =
+                                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+                                }}
+                              />
+                              <div className="absolute -bottom-1 left-0 right-0 text-center text-xs font-bold text-white bg-black/50 py-1">
+                                Profile
+                              </div>
+                            </div>
+                          </motion.div>
+
+                          {/* Location Button with bowl-shaped motion path */}
+                          <motion.div
+                            id={`location-btn-${dog._id}`}
+                            className={`${buttonPositions.locationPosition}`}
+                            animate={{
+                              scale:
+                                buttonStates[dog._id]?.activeButton ===
+                                "location"
+                                  ? buttonStates[dog._id]?.scale
+                                  : 1,
+                              y: [0, -15, 0],
+                              transition: {
+                                y: {
+                                  repeat: Infinity,
+                                  duration: 2,
+                                  ease: "easeInOut",
+                                  delay: 0.5,
+                                },
+                              },
+                            }}
+                            role="button"
+                            aria-label="View location (press L)">
+                            <div className="p-4 bg-white rounded-full shadow-lg w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center relative">
+                              <svg
+                                className="w-8 h-8 sm:w-10 sm:h-10 text-violet-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                />
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                />
+                              </svg>
+                              <div className="absolute -bottom-1 left-0 right-0 text-center text-xs font-bold text-white bg-black/50 py-1">
+                                Location
+                              </div>
+                            </div>
+                          </motion.div>
+
+                          {/* Close button */}
+                          <motion.div
+                            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 20 }}
+                            transition={{ delay: 0.2 }}
+                            onClick={() => setActiveOverlay(null)}>
+                            <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center">
+                              <svg
+                                className="w-6 h-6 text-gray-800"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
+                              </svg>
+                            </div>
+                          </motion.div>
+                        </motion.div>
+                      );
+                    })()}
+                  </>
                 )}
               </AnimatePresence>
             </div>
           ))}
         </div>
       )}
-
-      {/* Debug info (remove in production) */}
-      {/* <div className="fixed bottom-0 left-0 bg-white p-2 text-xs opacity-50">
-        Dogs: {dogsData.length}, Filtered: {filteredDogs.length}, Type: {selectedColor}
-      </div> */}
     </div>
   );
 };
