@@ -134,7 +134,7 @@ const Explore = () => {
                   className="w-full bg-gray-200 rounded-xl"
                   style={{
                     // Use random realistic aspect ratios (or your most common image ratio)
-                    paddingTop: `${Math.random() * 40 + 60}%`, // Generates between 60%-100% aspect ratio
+                    paddingTop: `${Math.random() * 30 + 70}%`, // Generates between 60%-100% aspect ratio
                   }}
                 />
               </div>
