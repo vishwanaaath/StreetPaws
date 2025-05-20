@@ -662,7 +662,7 @@ const Explore = () => {
                           <>
                             {/* Large text indicators for buttons - position based on button location */}
                             <div
-                              className="fixed text-black font-bold text-4xl pointer-events-none"
+                              className="fixed text-black font-bold text-2xl pointer-events-none"
                               style={{
                                 left: isRightSide ? "5%" : "auto",
                                 right: isRightSide ? "auto" : "5%",
@@ -680,7 +680,7 @@ const Explore = () => {
                             </div>
 
                             <div
-                              className="fixed text-black font-bold text-4xl pointer-events-none"
+                              className="fixed text-black font-bold text-2xl pointer-events-none"
                               style={{
                                 left: isRightSide ? "5%" : "auto",
                                 right: isRightSide ? "auto" : "5%",
