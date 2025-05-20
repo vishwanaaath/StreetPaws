@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
+import { throttle } from "lodash"; 
 import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Profile.css";
@@ -37,7 +38,18 @@ const Explore = () => {
   const touchTimer = useRef(null);
   // Add these to your state declarations
   const [touchPosition, setTouchPosition] = useState(null);
-  const lastActiveButtonRef = useRef({}); // Add this with other refs
+  const lastActiveButtonRef = useRef({});
+
+
+  useEffect(() => {
+    // Initialize refs for all dogs when dogsData updates
+    dogsData.forEach((dog) => {
+      if (!lastActiveButtonRef.current[dog._id]) {
+        lastActiveButtonRef.current[dog._id] = null;
+      }
+    });
+  }, [dogsData]);
+
 
   // Fetch dogs data
   useEffect(() => {
@@ -63,12 +75,11 @@ const Explore = () => {
   // Update the useEffect for button measurement
   useEffect(() => {
     if (activeOverlay) {
-      // Add small delay to ensure DOM update
       requestAnimationFrame(() => {
         measureButtonPositions(activeOverlay);
       });
     }
-  }, [activeOverlay]);
+  }, [activeOverlay, measureButtonPositions]);
 
   // Color filter handlers
   const handleColorChange = (newColor, direction) => {
@@ -126,8 +137,7 @@ const Explore = () => {
   const handleTouchMove = (dogId, e) => {
     if (!activeOverlay) return;
     const touch = e.touches[0];
-    // Remove setTouchPosition() call unless you're using it elsewhere
-    checkButtonProximity(dogId, touch.clientX, touch.clientY);
+    throttledCheckButtonProximity(dogId, touch.clientX, touch.clientY);
   };
 
   const handleTouchEnd = (dog) => {
@@ -142,7 +152,7 @@ const Explore = () => {
   };
 
   // Button position tracking
-  const measureButtonPositions = (dogId) => {
+  const measureButtonPositions = useCallback((dogId) => {
     const profileBtn = document.querySelector(`#profile-btn-${dogId}`);
     const locationBtn = document.querySelector(`#location-btn-${dogId}`);
 
@@ -150,42 +160,55 @@ const Explore = () => {
       profile: profileBtn?.getBoundingClientRect(),
       location: locationBtn?.getBoundingClientRect(),
     };
-  };
+  });
 
-  const checkButtonProximity = (dogId, x, y) => {
-    const buttons = buttonsRef.current[dogId];
-    if (!buttons) return;
 
-    const activationRadius = 40;
-    let activeButton = null;
-    let maxScale = 1;
+  const throttledCheckButtonProximity = useCallback(
+    throttle((dogId, x, y) => {
+      const checkButtonProximity = (dogId, x, y) => {
+        const buttons = buttonsRef.current[dogId];
+        if (!buttons) return;
 
-    Object.entries(buttons).forEach(([key, rect]) => {
-      if (!rect) return;
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const distance = Math.hypot(x - centerX, y - centerY);
+        const activationRadius = 40;
+        let activeButton = null;
+        let maxScale = 1;
 
-      if (distance < activationRadius) {
-        const scale = 1 + (1 - distance / activationRadius) * 0.5;
-        if (scale > maxScale) {
-          maxScale = scale;
-          activeButton = key;
+        Object.entries(buttons).forEach(([key, rect]) => {
+          if (!rect) return;
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          const distance = Math.hypot(x - centerX, y - centerY);
+
+          if (distance < activationRadius) {
+            const scale = 1 + (1 - distance / activationRadius) * 0.5;
+            if (scale > maxScale) {
+              maxScale = scale;
+              activeButton = key;
+            }
+          }
+        });
+
+        // 🔔 Trigger haptic feedback if newly hovering a button
+        if (
+          activeButton &&
+          activeButton !== lastActiveButtonRef.current[dogId]
+        ) {
+          if (navigator.vibrate) navigator.vibrate(10); // Haptic feedback
+          lastActiveButtonRef.current[dogId] = activeButton;
         }
-      }
-    });
 
-    // 🔔 Trigger haptic feedback if newly hovering a button
-    if (activeButton && activeButton !== lastActiveButtonRef.current[dogId]) {
-      if (navigator.vibrate) navigator.vibrate(10); // Haptic feedback
-      lastActiveButtonRef.current[dogId] = activeButton;
-    }
+        setButtonStates((prev) => ({
+          ...prev,
+          [dogId]: { activeButton, scale: maxScale },
+        }));
+      };
+      // Existing checkButtonProximity logic
+    }, 50), // 50ms throttle
+    []
+  );
 
-    setButtonStates((prev) => ({
-      ...prev,
-      [dogId]: { activeButton, scale: maxScale },
-    }));
-  };
+
+
 
   // Action handlers
   const handleProfileAction = async (listerId) => {
@@ -201,6 +224,14 @@ const Explore = () => {
       alert("Login to view profile");
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (touchTimer.current) {
+        clearTimeout(touchTimer.current);
+      }
+    };
+  }, []);
 
   const handleLocationAction = (dog) => {
     navigate("/map", {
@@ -236,7 +267,7 @@ const Explore = () => {
         <div
           ref={containerRef}
           className="relative flex space-x-4 overflow-x-auto hide-scrollbar swipe-container">
-          {colorFilters.map((color) => (
+          {colorFilters.map((color, index) => (
             <button
               key={color}
               data-color={color}
@@ -248,6 +279,9 @@ const Explore = () => {
                     : "right"
                 )
               }
+              aria-pressed={selectedColor === color}
+              aria-label={`Filter by ${color} color`}
+              tabIndex={0}
               className={`relative whitespace-nowrap py-1.5 px-3 text-base font-semibold ${
                 selectedColor === color
                   ? "text-violet-600 font-extrabold"
@@ -287,7 +321,9 @@ const Explore = () => {
           <p>Please try again later.</p>
         </div>
       ) : (
-        <div className="columns-2 sm:columns-3 lg:columns-3 space-y-2 custom-column-gap scroll-container">
+        <div
+          {...handlers}
+          className="columns-2 sm:columns-3 lg:columns-3 space-y-2 custom-column-gap scroll-container">
           {filteredDogs.map((dog) => (
             <div
               key={dog._id}
@@ -297,18 +333,34 @@ const Explore = () => {
               onTouchMove={(e) => handleTouchMove(dog._id, e)}
               onTouchEnd={() => handleTouchEnd(dog)}
               onContextMenu={(e) => e.preventDefault()}>
+              tabIndex={0}
+              onKeyDown=
+              {(e) => {
+                if (e.key === "Enter") {
+                  setActiveOverlay(dog._id);
+                } else if (e.key === "Escape" && activeOverlay === dog._id) {
+                  setActiveOverlay(null);
+                }
+              }}
+              role="button" aria-pressed={activeOverlay === dog._id}
               {/* Dog Image */}
-
               <img
                 src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                 alt={dog.type}
                 className="z-0 w-full h-auto rounded-xl select-none touch-auto filter blur-sm transition-all duration-500 group-hover:blur-0"
                 onLoad={(e) => {
                   e.target.classList.remove("blur-sm");
-                  e.target.parentElement.style.aspectRatio = `${e.target.naturalWidth}/${e.target.naturalHeight}`;
+                  if (e.target.parentElement) {
+                    e.target.parentElement.style.aspectRatio = `${e.target.naturalWidth}/${e.target.naturalHeight}`;
+                  }
+                }}
+                onError={(e) => {
+                  // Replace with fallback image on error
+                  e.target.src =
+                    "https://via.placeholder.com/400x400?text=Image+Not+Found";
+                  e.target.classList.remove("blur-sm");
                 }}
               />
-
               {/* Overlay with Buttons */}
               <AnimatePresence>
                 {activeOverlay === dog._id && (
