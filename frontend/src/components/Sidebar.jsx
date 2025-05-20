@@ -96,6 +96,9 @@ const Sidebar = ({
     navigate("/list-dog", { state: { user: userData } });
   };
 
+  // 👇 Prevent sidebar from rendering at all until auth is ready
+  if (!authReady) return null;
+
   return (
     <div
       className={`sidebar-container fixed left-0 top-0 h-full w-[260px] backdrop-blur-sm bg-white/80 border-r border-gray-200 shadow-2xl transform transition-transform duration-300 z-[1001] ${
@@ -104,9 +107,9 @@ const Sidebar = ({
       onMouseEnter={() => setSidebarVisible(true)}
       onMouseLeave={handleSidebarLeave}>
       <div className="h-[calc(100%-120px)] overflow-y-auto pb-4">
-        {/* Profile Section */}
-        {!authReady ? null : isLoading || (isAuthenticated && !userData) ? (
+        {isLoading || (isAuthenticated && !userData) ? (
           <>
+            {/* Profile loader */}
             <div className="flex w-full p-3 animate-pulse">
               <div className="flex w-full items-start gap-4">
                 <div className="flex-shrink-0">
@@ -189,7 +192,7 @@ const Sidebar = ({
 
       {/* Auth Buttons */}
       <div className="absolute bottom-4 left-0 right-0 px-4 space-y-3">
-        {!authReady ? null : isAuthenticated ? (
+        {isAuthenticated ? (
           <button
             onClick={handleLogout}
             className="flex items-center justify-center gap-2 w-full sm:px-4 sm:py-3 px-3 py-2 bg-violet-500 text-white rounded-lg hover:bg-red-500 transition-colors duration-300 shadow-md focus:ring-2 focus:ring-red-300 focus:outline-none">
@@ -217,5 +220,3 @@ const Sidebar = ({
     </div>
   );
 };
-
-export default Sidebar;
