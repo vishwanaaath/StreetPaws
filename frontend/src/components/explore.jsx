@@ -451,7 +451,7 @@ const Explore = () => {
       // For left side: angles from -π/4 to -3π/4 (315° to 225°)
 
       const angleRange = Math.PI / 2; // 90 degrees
-      const startAngle = isRightSide ? Math.PI / 4 : (-Math.PI * 3) / 4;
+      const startAngle = isRightSide ? Math.PI / 4 : (Math.PI * 3) / 4;
       const angleDelta = i === 0 ? 0 : angleRange / (NUM_BUTTONS - 1);
       const angle = startAngle + angleDelta * i;
 
