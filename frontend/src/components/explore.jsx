@@ -589,9 +589,7 @@ const Explore = () => {
                                     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
                                 }}
                               />
-                              <div className="absolute -bottom-1 left-0 right-0 text-center text-xs font-bold text-white bg-black/50 py-1">
-                                Profile
-                              </div>
+                              
                             </div>
                           </motion.div>
 
@@ -631,9 +629,7 @@ const Explore = () => {
                                   d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                                 />
                               </svg>
-                              <div className="absolute -bottom-1 left-0 right-0 text-center text-xs font-bold text-white bg-black/50 py-1">
-                                Location
-                              </div>
+                          
                             </div>
                           </motion.div>
 
