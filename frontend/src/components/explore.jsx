@@ -46,7 +46,10 @@ const Explore = () => {
   const swipeLockedRef = useRef(false); // Reference to track if swipe is locked
 
   // Constants for button positioning (in pixels)
-  const BUTTON_DISTANCE = 100; // 3cm in pixels (approximate)
+  const BUTTON_DISTANCE_X_PROFILE = 80; // Horizontal distance for profile button
+  const BUTTON_DISTANCE_Y_PROFILE = 40; // Vertical distance for profile button
+  const BUTTON_DISTANCE_X_LOCATE = 60; // Horizontal distance for location button
+  const BUTTON_DISTANCE_Y_LOCATE = 80; // Vertical distance for location button
 
   // Fetch dogs data with improved error handling
   useEffect(() => {
@@ -489,19 +492,19 @@ const Explore = () => {
     let profileX, profileY, locationX, locationY;
 
     if (isRightSide) {
-      // Touch is on right side, place buttons on left side
-      profileX = touchX - BUTTON_DISTANCE;
-      profileY = touchY + BUTTON_DISTANCE; // Profile button is down
+      // Right side touch - buttons appear at 10 and 11 o'clock
+      profileX = touchX - BUTTON_DISTANCE_X_PROFILE; // 10 o'clock position
+      profileY = touchY + BUTTON_DISTANCE_Y_PROFILE;
 
-      locationX = touchX - BUTTON_DISTANCE;
-      locationY = touchY - BUTTON_DISTANCE; // Location button is up
+      locationX = touchX - BUTTON_DISTANCE_X_LOCATE; // 11 o'clock position
+      locationY = touchY - BUTTON_DISTANCE_Y_LOCATE;
     } else {
-      // Touch is on left side, place buttons on right side
-      profileX = touchX + BUTTON_DISTANCE;
-      profileY = touchY + BUTTON_DISTANCE; // Profile button is down
+      // Left side touch - buttons appear at 1 and 2 o'clock
+      profileX = touchX + BUTTON_DISTANCE_X_PROFILE; // 2 o'clock position
+      profileY = touchY + BUTTON_DISTANCE_Y_PROFILE;
 
-      locationX = touchX + BUTTON_DISTANCE;
-      locationY = touchY - BUTTON_DISTANCE; // Location button is up
+      locationX = touchX + BUTTON_DISTANCE_X_LOCATE; // 1 o'clock position
+      locationY = touchY - BUTTON_DISTANCE_Y_LOCATE;
     }
 
     return {
@@ -703,7 +706,6 @@ const Explore = () => {
                                     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
                                 }}
                               />
-                              
                             </div>
                           </motion.div>
 
@@ -760,7 +762,6 @@ const Explore = () => {
                                   d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                                 />
                               </svg>
-                             
                             </div>
                           </motion.div>
 
