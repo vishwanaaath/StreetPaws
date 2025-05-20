@@ -123,12 +123,22 @@ const Explore = () => {
 
       {/* Content Area */}
       {loading ? (
-        <div className="columns-2 sm:columns-3 lg:columns-3 custom-column-gap animate-pulse">
+        <div className="columns-2 sm:columns-3 lg:columns-3 custom-column-gap">
           {[...Array(9)].map((_, i) => (
             <div
               key={i}
-              className="break-inside-avoid h-48 image-item bg-gray-200 rounded-xl"
-            />
+              className="break-inside-avoid image-item animate-pulse">
+              <div className="relative overflow-hidden rounded-xl group">
+                {/* Dynamic aspect ratio skeleton */}
+                <div
+                  className="w-full bg-gray-200 rounded-xl"
+                  style={{
+                    // Use random realistic aspect ratios (or your most common image ratio)
+                    paddingTop: `${Math.random() * 40 + 60}%`, // Generates between 60%-100% aspect ratio
+                  }}
+                />
+              </div>
+            </div>
           ))}
         </div>
       ) : fetchError ? (
@@ -141,13 +151,16 @@ const Explore = () => {
           {filteredDogs.map((dog) => (
             <div key={dog._id} className="break-inside-avoid image-item">
               <div className="relative overflow-hidden rounded-xl group">
-                {/* Lazy loaded image */}
                 <img
                   src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                   alt={dog.type}
                   loading="lazy"
                   className="w-full h-auto object-cover filter blur-sm transition-all duration-500 group-hover:blur-0"
-                  onLoad={(e) => e.target.classList.remove("blur-sm")}
+                  onLoad={(e) => {
+                    e.target.classList.remove("blur-sm");
+                    // Optional: Add natural dimensions to maintain layout
+                    e.target.parentElement.style.aspectRatio = `${e.target.naturalWidth}/${e.target.naturalHeight}`;
+                  }}
                 />
               </div>
             </div>
