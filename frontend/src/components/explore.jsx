@@ -667,7 +667,7 @@ const Explore = () => {
                                 left: isRightSide ? "5%" : "auto",
                                 right: isRightSide ? "auto" : "5%",
                                 top: isTopHalf ? "70%" : "auto", // If buttons are at top, text at bottom
-                                bottom: isTopHalf ? "auto" : "70%", // If buttons are at bottom, text at top
+                                bottom: isTopHalf ? "auto" : "60%", // If buttons are at bottom, text at top
                                 transform: "translateY(-50%)",
                                 opacity:
                                   buttonStates[dog._id]?.activeButton ===
@@ -684,8 +684,8 @@ const Explore = () => {
                               style={{
                                 left: isRightSide ? "5%" : "auto",
                                 right: isRightSide ? "auto" : "5%",
-                                top: isTopHalf ? "85%" : "auto", // If buttons are at top, text at bottom
-                                bottom: isTopHalf ? "auto" : "85%", // If buttons are at bottom, text at top
+                                top: isTopHalf ? "75%" : "auto", // If buttons are at top, text at bottom
+                                bottom: isTopHalf ? "auto" : "65%", // If buttons are at bottom, text at top
                                 transform: "translateY(-50%)",
                                 opacity:
                                   buttonStates[dog._id]?.activeButton ===
