@@ -43,10 +43,10 @@ const Explore = () => {
   const viewportWidth = useRef(window.innerWidth);
   const viewportHeight = useRef(window.innerHeight);
   const scrollPositionRef = useRef(0);
+  const swipeLockedRef = useRef(false); // Reference to track if swipe is locked
 
-  // Constants for button positioning
-  const BUTTON_RADIUS = 100; // ~5cm in pixels (increased from 50px)
-  const NUM_BUTTONS = 2; // Number of buttons in the bow
+  // Constants for button positioning (in pixels)
+  const BUTTON_DISTANCE = 60; // 3cm in pixels (approximate)
 
   // Fetch dogs data with improved error handling
   useEffect(() => {
@@ -106,6 +106,14 @@ const Explore = () => {
         scrollPositionRef.current = window.scrollY;
         window.scrollTo(0, scrollPositionRef.current);
         e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+
+    const disableTouchMove = (e) => {
+      if (activeOverlay || isInteracting) {
+        e.preventDefault();
+        e.stopPropagation();
       }
     };
 
@@ -114,15 +122,38 @@ const Explore = () => {
     if (activeOverlay || isInteracting) {
       document.body.style.overflow = "hidden";
       document.body.style.touchAction = "none";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      document.body.style.top = `-${scrollPositionRef.current}px`;
+
       window.addEventListener("scroll", handleScroll, options);
-      window.addEventListener("touchmove", handleScroll, options);
+      window.addEventListener("touchmove", disableTouchMove, options);
+
+      // Lock swipe functionality when overlay is active
+      swipeLockedRef.current = true;
+    } else {
+      if (document.body.style.position === "fixed") {
+        const scrollY = parseInt(document.body.style.top || "0", 10) * -1;
+        document.body.style.position = "";
+        document.body.style.width = "";
+        document.body.style.top = "";
+        document.body.style.overflow = "";
+        document.body.style.touchAction = "";
+        window.scrollTo(0, scrollY);
+      }
+
+      // Unlock swipe functionality when overlay is inactive
+      swipeLockedRef.current = false;
     }
 
     return () => {
       document.body.style.overflow = "";
       document.body.style.touchAction = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.top = "";
       window.removeEventListener("scroll", handleScroll, options);
-      window.removeEventListener("touchmove", handleScroll, options);
+      window.removeEventListener("touchmove", disableTouchMove, options);
     };
   }, [activeOverlay, isInteracting]);
 
@@ -209,7 +240,7 @@ const Explore = () => {
           container.scrollTo({ left: scrollLeft, behavior: "smooth" });
 
           // Update underline position after scrolling
-          setTimeout(updateUnderlinePosition, 700);
+          setTimeout(updateUnderlinePosition, 300);
         }
       }, 50);
     },
@@ -247,7 +278,8 @@ const Explore = () => {
   // Improved swipe handlers with better sensitivity
   const handlers = useSwipeable({
     onSwiped: (e) => {
-      if (activeOverlay || isInteracting) return; // Don't process swipes during overlay
+      // Don't process swipes if locked (during overlay or long press)
+      if (swipeLockedRef.current) return;
 
       if (!["Left", "Right"].includes(e.dir)) return;
 
@@ -261,8 +293,8 @@ const Explore = () => {
         handleColorChange(colorFilters[newIndex], e.dir.toLowerCase());
       }
     },
-    delta: 50, // Swipe distance threshold
-    preventDefaultTouchmoveEvent: false, // Changed to false to allow normal scroll behavior when not in overlay
+    delta: 30, // Lower swipe distance threshold for better sensitivity
+    preventDefaultTouchmoveEvent: false,
     trackTouch: true,
     trackMouse: false,
     rotationAngle: 0,
@@ -280,7 +312,11 @@ const Explore = () => {
 
       // Prevent default to avoid unintended scrolling during long press
       e.preventDefault();
+      e.stopPropagation();
       setIsInteracting(true);
+
+      // Lock swipe functionality during long press detection
+      swipeLockedRef.current = true;
     }
 
     touchTimer.current = setTimeout(() => {
@@ -339,12 +375,14 @@ const Explore = () => {
       // If we're in the process of determining a long press, prevent scrolling
       if (touchTimer.current) {
         e.preventDefault();
+        e.stopPropagation();
       }
       return;
     }
 
     // Prevent default to stop scrolling
     e.preventDefault();
+    e.stopPropagation();
 
     const touch = e.touches[0];
     checkButtonProximity(dogId, touch.clientX, touch.clientY);
@@ -353,6 +391,11 @@ const Explore = () => {
   const handleTouchEnd = (dog, e) => {
     clearTimeout(touchTimer.current);
     setIsInteracting(false);
+
+    // Unlock swipe functionality
+    setTimeout(() => {
+      swipeLockedRef.current = false;
+    }, 100);
 
     // Execute action if a button is active
     if (buttonStates[dog._id]?.activeButton) {
@@ -433,38 +476,40 @@ const Explore = () => {
     (dog) => selectedColor === "All" || dog.type === selectedColor
   );
 
-  // Calculate button positions based on touch position in bow shape
-  // Much wider spacing (5cm = approximately 200px)
+  // Calculate button positions based on touch position
+  // Now placing buttons at fixed positions relative to the touch point (3cm in each direction)
   const calculateButtonPositions = (touchX, touchY) => {
     const screenCenter = viewportWidth.current / 2;
     const isRightSide = touchX > screenCenter;
 
-    // Calculate positions in a bow shape around the touch point
-    const buttons = [];
+    // Setup button positions based on which side of the screen the touch is on
+    // For right side of screen: buttons on left side of touch
+    // For left side of screen: buttons on right side of touch
 
-    // For bow shape, we'll use a wider semicircle around the touch point
-    // The radius is now BUTTON_RADIUS (approximately 5cm)
+    let profileX, profileY, locationX, locationY;
 
-    for (let i = 0; i < NUM_BUTTONS; i++) {
-      // Calculate angle (in radians) for this button
-      // For right side: angles from π/4 to 3π/4 (45° to 135°)
-      // For left side: angles from -π/4 to -3π/4 (315° to 225°)
+    if (isRightSide) {
+      // Touch is on right side, place buttons on left side
+      profileX = touchX - BUTTON_DISTANCE;
+      profileY = touchY + BUTTON_DISTANCE; // Profile button is down
 
-      const angleRange = Math.PI / 2; // 90 degrees
-      const startAngle = isRightSide ? Math.PI / 4 : (Math.PI * 3) / 4;
-      const angleDelta = i === 0 ? 0 : angleRange / (NUM_BUTTONS - 1);
-      const angle = startAngle + angleDelta * i;
+      locationX = touchX - BUTTON_DISTANCE;
+      locationY = touchY - BUTTON_DISTANCE; // Location button is up
+    } else {
+      // Touch is on left side, place buttons on right side
+      profileX = touchX + BUTTON_DISTANCE;
+      profileY = touchY + BUTTON_DISTANCE; // Profile button is down
 
-      // Calculate position on the bow with increased radius
-      const x = touchX + BUTTON_RADIUS * Math.cos(angle);
-      const y = touchY + BUTTON_RADIUS * Math.sin(angle);
-
-      buttons.push({ x, y, index: i });
+      locationX = touchX + BUTTON_DISTANCE;
+      locationY = touchY - BUTTON_DISTANCE; // Location button is up
     }
 
     return {
       isRightSide,
-      buttons,
+      buttons: [
+        { x: profileX, y: profileY, index: 0 }, // Profile button
+        { x: locationX, y: locationY, index: 1 }, // Location button
+      ],
     };
   };
 
@@ -482,7 +527,7 @@ const Explore = () => {
         <div
           ref={containerRef}
           className="relative flex space-x-4 overflow-x-auto hide-scrollbar swipe-container"
-          {...(activeOverlay ? {} : handlers)}>
+          {...handlers}>
           {colorFilters.map((color) => (
             <button
               key={color}
@@ -595,7 +640,7 @@ const Explore = () => {
                       onClick={() => setActiveOverlay(null)}
                     />
 
-                    {/* Dynamic bow-shaped buttons around touch point */}
+                    {/* Dynamic positioned buttons around touch point */}
                     {(() => {
                       const positions = calculateButtonPositions(
                         touchPosition.x,
