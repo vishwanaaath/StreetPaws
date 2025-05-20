@@ -256,7 +256,7 @@ const Explore = () => {
       const buttons = buttonsRef.current[dogId];
       if (!buttons) return;
 
-      const activationRadius = 150; // ~1cm for touch activation
+      const activationRadius = 50; // ~1cm for touch activation
       let activeButton = null;
       let maxScale = 1;
 
@@ -264,7 +264,7 @@ const Explore = () => {
         if (!rect) return;
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
-        const distance = Math.hypot(x - centerX, y - centerY);
+        const distance = 100 + Math.hypot(x - centerX, y - centerY);
 
         if (distance < activationRadius) {
           const scale = 1 + (1 - distance / activationRadius) * 0.5;
