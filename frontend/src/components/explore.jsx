@@ -493,18 +493,18 @@ const Explore = () => {
 
     if (isRightSide) {
       // Right side touch - buttons appear at 10 and 11 o'clock
-      profileX = touchX - 40; // 10 o'clock position
+      profileX = touchX -40 // 10 o'clock position
       profileY = touchY - 90;
-
-      locationX = touchX - 100; // 11 o'clock position
-      locationY = touchY - 30;
+      
+      locationX = touchX -100 // 11 o'clock position
+      locationY = touchY -30;
     } else {
       // Left side touch - buttons appear at 1 and 2 o'clock
       profileX = touchX + 40; // 2 o'clock position
-      profileY = touchY - 120;
+      profileY = touchY -120;
 
       locationX = touchX + 100; // 1 o'clock position
-      locationY = touchY - 60;
+      locationY = touchY -60;
     }
 
     return {
@@ -598,8 +598,8 @@ const Explore = () => {
             <div
               key={dog._id}
               style={{
-                zIndex: activeOverlay === dog._id ? 45 : "auto",
-                marginBottom: "8px",
+                zIndex: activeOverlay === dog._id ? 10 : "auto",
+                marginBottom: "8px", // Ensure consistent spacing
               }}
               className="break-inside-avoid relative group"
               onTouchStart={(e) => handleTouchStart(dog._id, e)}
@@ -610,15 +610,12 @@ const Explore = () => {
               onKeyDown={(e) => handleKeyDown(dog, e)}
               role="button"
               aria-pressed={activeOverlay === dog._id}>
-              {/* Dog Image with increased z-index */}
+              {/* Dog Image */}
               <img
                 src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                 alt={dog.type || "Dog"}
                 loading="lazy"
-                className="z-0 w-full h-auto rounded-xl select-none touch-auto filter transition-all duration-500 group-hover:blur-0"
-                style={{
-                  zIndex: activeOverlay === dog._id ? 55 : 0,
-                }}
+                className="z-0 w-full h-auto rounded-xl select-none touch-auto filter blur-sm transition-all duration-500 group-hover:blur-0"
                 onLoad={(e) => {
                   e.target.classList.remove("blur-sm");
                   if (e.target.parentElement) {
@@ -636,6 +633,7 @@ const Explore = () => {
               <AnimatePresence>
                 {activeOverlay === dog._id && (
                   <>
+                    {/* Fullscreen blur overlay */}
                     <motion.div
                       className="fixed inset-0 z-40 backdrop-blur-xs"
                       initial={{ opacity: 0 }}
@@ -645,46 +643,132 @@ const Explore = () => {
                       onClick={() => setActiveOverlay(null)}
                     />
 
-                    <motion.div
-                      className="fixed inset-0 z-50"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}>
-                      {/* Determine text position based on touch */}
-                      {(() => {
-                        const isTopHalf =
-                          touchPosition.y < viewportHeight.current / 2;
-                        const textContainerClass = isTopHalf
-                          ? "bottom-0 h-1/2"
-                          : "top-0 h-1/2";
+                    {/* Dynamic positioned buttons around touch point */}
+                    {(() => {
+                      const positions = calculateButtonPositions(
+                        touchPosition.x,
+                        touchPosition.y
+                      );
+                      const profileButtonPos = positions.buttons[0];
+                      const locationButtonPos = positions.buttons[1];
 
-                        return (
-                          <div
-                            className={`fixed left-0 right-0 ${textContainerClass} flex flex-col items-center justify-center space-y-4 sm:space-y-8`}>
-                            <motion.div
-                              className="text-4xl sm:text-6xl font-bold text-white cursor-pointer hover:text-violet-200 text-center"
-                              onClick={() => {
-                                handleProfileAction(dog.listerId);
-                                setActiveOverlay(null);
-                              }}
-                              whileHover={{ scale: 1.1 }}>
-                              Lister's Profile
-                            </motion.div>
+                      return (
+                        <motion.div
+                          className="fixed inset-0 z-50"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.2 }}>
+                          {/* Profile Button (positioned at calculated location) */}
+                          <motion.div
+                            id={`profile-btn-${dog._id}`}
+                            className="absolute"
+                            style={{
+                              left: `${profileButtonPos.x - 32}px`, // 32px is half the width of the button
+                              top: `${profileButtonPos.y - 32}px`, // 32px is half the height of the button
+                              // Apply clamps to keep buttons on screen
+                              transform: `translate(
+                                ${
+                                  Math.min(
+                                    Math.max(0, profileButtonPos.x - 32),
+                                    viewportWidth.current - 64
+                                  ) -
+                                  (profileButtonPos.x - 32)
+                                }px,
+                                ${
+                                  Math.min(
+                                    Math.max(0, profileButtonPos.y - 32),
+                                    viewportHeight.current - 64
+                                  ) -
+                                  (profileButtonPos.y - 32)
+                                }px
+                              )`,
+                            }}
+                            animate={{
+                              scale:
+                                buttonStates[dog._id]?.activeButton ===
+                                "profile"
+                                  ? buttonStates[dog._id]?.scale
+                                  : 1,
+                            }}
+                            role="button"
+                            aria-label="View profile (press P)">
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-violet-100 overflow-hidden shadow-lg flex items-center justify-center">
+                              <img
+                                src={
+                                  dog.lister?.dp_url ||
+                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                }
+                                className="w-full h-full object-cover"
+                                alt="Profile"
+                                onError={(e) => {
+                                  e.target.src =
+                                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+                                }}
+                              />
+                            </div>
+                          </motion.div>
 
-                            <motion.div
-                              className="text-4xl sm:text-6xl font-bold text-white cursor-pointer hover:text-violet-200 text-center"
-                              onClick={() => {
-                                handleLocationAction(dog);
-                                setActiveOverlay(null);
-                              }}
-                              whileHover={{ scale: 1.1 }}>
-                              Take Me There
-                            </motion.div>
-                          </div>
-                        );
-                      })()}
-                    </motion.div>
+                          {/* Location Button (positioned at calculated location) */}
+                          <motion.div
+                            id={`location-btn-${dog._id}`}
+                            className="absolute"
+                            style={{
+                              left: `${locationButtonPos.x - 32}px`, // 32px is half the width of the button
+                              top: `${locationButtonPos.y - 32}px`, // 32px is half the height of the button
+                              // Apply clamps to keep buttons on screen
+                              transform: `translate(
+                                ${
+                                  Math.min(
+                                    Math.max(0, locationButtonPos.x - 32),
+                                    viewportWidth.current - 64
+                                  ) -
+                                  (locationButtonPos.x - 32)
+                                }px,
+                                ${
+                                  Math.min(
+                                    Math.max(0, locationButtonPos.y - 32),
+                                    viewportHeight.current - 64
+                                  ) -
+                                  (locationButtonPos.y - 32)
+                                }px
+                              )`,
+                            }}
+                            animate={{
+                              scale:
+                                buttonStates[dog._id]?.activeButton ===
+                                "location"
+                                  ? buttonStates[dog._id]?.scale
+                                  : 1,
+                            }}
+                            role="button"
+                            aria-label="View location (press L)">
+                            <div className="p-2 bg-white rounded-full shadow-lg w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center relative">
+                              <svg
+                                className="w-8 h-8 sm:w-10 sm:h-10 text-violet-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                />
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                />
+                              </svg>
+                            </div>
+                          </motion.div>
+
+                       
+                        </motion.div>
+                      );
+                    })()}
                   </>
                 )}
               </AnimatePresence>
