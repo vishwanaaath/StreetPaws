@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Profile.css";
@@ -25,6 +26,8 @@ const Explore = () => {
   const [activeOverlay, setActiveOverlay] = useState(null);
   const [buttonStates, setButtonStates] = useState({});
   const [underlineProps, setUnderlineProps] = useState({ left: 0, width: 0 });
+
+  const { user, getAccessTokenSilently } = useAuth0();
 
   // Refs and navigation
   const navigate = useNavigate();
