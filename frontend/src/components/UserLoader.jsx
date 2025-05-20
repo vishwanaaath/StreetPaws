@@ -1,4 +1,5 @@
 import React from "react";
+import { Search } from "lucide-react";
 
 const UserLoader = () => {
   return (
@@ -9,26 +10,24 @@ const UserLoader = () => {
         <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-1 p-0.5 h-full min-h-[calc(100vh-4rem)] flex flex-col">
           <h1 className="text-[25px] font-bold text-violet-600 mb-2 mt-4 pl-4 flex justify-between items-center pr-4">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse" />
-              <div className="h-4 w-24 bg-gray-300 rounded animate-pulse" />
+              <div className="w-6 h-6 rounded-full bg-gray-200 animate-pulse mr-1" />
+              Community
             </div>
-            <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse" />
+            <div className="w-8 h-8 rounded-lg bg-gray-200 animate-pulse" />
           </h1>
 
-          <div className="px-4 mt-2 mb-2">
-            <div className="h-10 bg-gray-200 rounded-lg animate-pulse" />
-          </div>
-
           <div className="flex-1 overflow-y-auto space-y-1 pb-1">
-            {[...Array(6)].map((_, idx) => (
+            {[...Array(12)].map((_, index) => (
               <div
-                key={idx}
-                className="relative flex items-center ml-2 p-2 sm:p-4 bg-white">
-                <div className="relative w-14 h-14 sm:w-14 sm:h-14 rounded-full bg-gray-200 animate-pulse" />
+                key={index}
+                className="group relative flex items-center ml-2 p-2 sm:p-4 bg-white">
+                <div className="relative w-14 h-14 sm:w-14 sm:h-14 rounded-full">
+                  <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-full" />
+                </div>
 
                 <div className="ml-4 flex-1 min-w-0 space-y-2">
-                  <div className="h-4 w-1/2 bg-gray-300 rounded animate-pulse" />
-                  <div className="h-3 w-1/4 bg-gray-200 rounded animate-pulse" />
+                  <div className="h-5 bg-gray-200 rounded w-32 animate-pulse" />
+                  <div className="h-4 bg-gray-200 rounded w-24 animate-pulse" />
                 </div>
               </div>
             ))}
