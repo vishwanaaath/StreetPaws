@@ -501,10 +501,10 @@ const Explore = () => {
     } else {
       // Left side touch - buttons appear at 1 and 2 o'clock
       profileX = touchX + 40; // 2 o'clock position
-      profileY = touchY -90;
+      profileY = touchY -120;
 
       locationX = touchX + 100; // 1 o'clock position
-      locationY = touchY -30;
+      locationY = touchY -60;
     }
 
     return {
