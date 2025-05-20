@@ -9,7 +9,11 @@ const UserLoader = () => {
       <div className="relative z-10 max-w-4xl mx-auto flex-1 w-full">
         <div className="bg-white rounded-xl shadow-md overflow-hidden sm:p-1 p-0.5 h-full min-h-[calc(100vh-4rem)] flex flex-col">
           <h1 className="text-2xl font-bold text-violet-600 mb-2 mt-5 pl-4 flex justify-between items-center pr-4">
-            Community
+            <div className="flex items-center gap-2">
+              {/* Left arrow skeleton loader */}
+              <div className="w-6 h-6 rounded-full bg-gray-200 animate-pulse mr-1" />
+              Community
+            </div>
             <button className="text-violet-600">
               <Search size={20} />
             </button>

@@ -1,3 +1,4 @@
+javascript;
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -9,9 +10,9 @@ const UsersList = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  
-const [searchVisible, setSearchVisible] = useState(false);
-const [searchText, setSearchText] = useState("");
+  const [imageLoaded, setImageLoaded] = useState({});
+  const [searchVisible, setSearchVisible] = useState(false);
+  const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,11 +33,9 @@ const [searchText, setSearchText] = useState("");
     fetchUsers();
   }, []);
 
-
   const filteredUsers = users.filter((user) =>
     user.username?.toLowerCase().startsWith(searchText.toLowerCase())
   );
-
 
   const handleListerProfileClick = async (listerId) => {
     try {
@@ -51,7 +50,16 @@ const [searchText, setSearchText] = useState("");
     }
   };
 
+  const handleImageLoad = (userId) => {
+    setImageLoaded((prev) => ({ ...prev, [userId]: true }));
+  };
+
+  const handleImageError = (userId) => {
+    setImageLoaded((prev) => ({ ...prev, [userId]: true }));
+  };
+
   if (loading) return <UserLoader />;
+
 
   return (
     <div className="relative min-h-screen bg-gray-50 p-0  sm:p-0 sm:pt-6 flex flex-col">
@@ -95,14 +103,24 @@ const [searchText, setSearchText] = useState("");
                   active:scale-[0.98] active:shadow-sm">
                 <div className="absolute inset-0 bg-violet-500 opacity-0 group-active:opacity-10 transition-opacity rounded-xl" />
 
-                <img
-                  src={
-                    user.dp_url ||
-                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                  }
-                  alt={user.username}
-                  className="w-14 h-14 sm:w-14 sm:h-14 rounded-full object-cover"
-                />
+                <div className="relative w-14 h-14 sm:w-14 sm:h-14 rounded-full">
+                  {!imageLoaded[user._id] && (
+                    <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-full" />
+                  )}
+                  <img
+                    src={
+                      user.dp_url ||
+                      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                    }
+                    alt={user.username}
+                    className="w-full h-full rounded-full object-cover"
+                    onLoad={() => handleImageLoad(user._id)}
+                    onError={() => handleImageError(user._id)}
+                    style={{
+                      visibility: imageLoaded[user._id] ? "visible" : "hidden",
+                    }}
+                  />
+                </div>
 
                 <div className="ml-4 flex-1 min-w-0">
                   <div className="flex items-center">
