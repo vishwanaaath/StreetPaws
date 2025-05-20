@@ -493,18 +493,18 @@ const Explore = () => {
 
     if (isRightSide) {
       // Right side touch - buttons appear at 10 and 11 o'clock
-      profileX = touchX -40 // 10 o'clock position
+      profileX = touchX - 40; // 10 o'clock position
       profileY = touchY - 90;
-      
-      locationX = touchX -100 // 11 o'clock position
-      locationY = touchY -30;
+
+      locationX = touchX - 100; // 11 o'clock position
+      locationY = touchY - 30;
     } else {
       // Left side touch - buttons appear at 1 and 2 o'clock
       profileX = touchX + 40; // 2 o'clock position
-      profileY = touchY -120;
+      profileY = touchY - 120;
 
       locationX = touchX + 100; // 1 o'clock position
-      locationY = touchY -60;
+      locationY = touchY - 60;
     }
 
     return {
@@ -610,12 +610,15 @@ const Explore = () => {
               onKeyDown={(e) => handleKeyDown(dog, e)}
               role="button"
               aria-pressed={activeOverlay === dog._id}>
-              {/* Dog Image */}
+              {/* Dog Image - Increased z-index when overlay is active */}
               <img
                 src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                 alt={dog.type || "Dog"}
                 loading="lazy"
-                className="z-0 w-full h-auto rounded-xl select-none touch-auto filter blur-sm transition-all duration-500 group-hover:blur-0"
+                className="z-0 w-full h-auto rounded-xl select-none touch-auto filter transition-all duration-500 group-hover:blur-0"
+                style={{
+                  zIndex: activeOverlay === dog._id ? 45 : 0, // Higher z-index when overlay active
+                }}
                 onLoad={(e) => {
                   e.target.classList.remove("blur-sm");
                   if (e.target.parentElement) {
@@ -635,13 +638,37 @@ const Explore = () => {
                   <>
                     {/* Fullscreen blur overlay */}
                     <motion.div
-                      className="fixed inset-0 z-40 backdrop-blur-xs"
+                      className="fixed inset-0 z-40 backdrop-blur-sm"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.2 }}
                       onClick={() => setActiveOverlay(null)}
                     />
+
+                    {/* Large Text Labels - Centered in the Screen */}
+                    <motion.div
+                      className="fixed inset-0 z-41 flex flex-col items-center justify-center pointer-events-none"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}>
+                      {/* Only show text when a button is active */}
+                      {buttonStates[dog._id]?.activeButton === "profile" && (
+                        <div className="text-center mb-8">
+                          <h1 className="text-5xl font-bold text-white bg-violet-700 px-6 py-3 rounded-xl shadow-lg">
+                            Lister's Profile
+                          </h1>
+                        </div>
+                      )}
+                      {buttonStates[dog._id]?.activeButton === "location" && (
+                        <div className="text-center mb-8">
+                          <h1 className="text-5xl font-bold text-white bg-violet-700 px-6 py-3 rounded-xl shadow-lg">
+                            Take Me There
+                          </h1>
+                        </div>
+                      )}
+                    </motion.div>
 
                     {/* Dynamic positioned buttons around touch point */}
                     {(() => {
@@ -764,8 +791,6 @@ const Explore = () => {
                               </svg>
                             </div>
                           </motion.div>
-
-                       
                         </motion.div>
                       );
                     })()}
