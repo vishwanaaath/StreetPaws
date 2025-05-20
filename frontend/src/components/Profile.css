@@ -7,6 +7,17 @@
     display: none;
   } 
 
+
+
+  /* In Profile.css */
+.scroll-container {
+  touch-action: pan-y; /* Allow vertical scroll */
+}
+
+.swipe-container {
+  touch-action: pan-x; /* Allow horizontal swipe */
+}
+
   .blur-sm {
     filter: blur(2px);
   }

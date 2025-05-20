@@ -90,30 +90,26 @@ const Explore = () => {
   };
 
   // Swipe handlers
+  // Update your swipe handlers configuration to:
   const handlers = useSwipeable({
-    onSwiping: (e) => {
-      if (["Left", "Right"].includes(e.dir)) {
-        setSwipeDirection(e.dir.toLowerCase());
-      }
-    },
     onSwiped: (e) => {
       if (!["Left", "Right"].includes(e.dir)) return;
 
       const currentIndex = colorFilters.indexOf(selectedColor);
-      const dir = e.dir === "Left" ? "left" : "right";
       const newIndex =
-        dir === "left"
+        e.dir === "Left"
           ? Math.min(currentIndex + 1, colorFilters.length - 1)
           : Math.max(currentIndex - 1, 0);
 
       if (newIndex !== currentIndex) {
-        handleColorChange(colorFilters[newIndex], dir);
+        handleColorChange(colorFilters[newIndex], e.dir.toLowerCase());
       }
     },
-    delta: 50,
-    preventScrollOnSwipe: false, // Changed from true
-    trackTouch: false, // Changed from true
+    delta: 10, // More sensitive swipe
+    trackTouch: true, // Re-enable touch tracking
     trackMouse: false,
+    preventScrollOnSwipe: true,
+    axis: "x", // Restrict to horizontal swipes
   });
 
   // Touch interactions
@@ -236,7 +232,7 @@ const Explore = () => {
       <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4">
         <div
           ref={containerRef}
-          className="relative flex space-x-4 overflow-x-auto hide-scrollbar">
+          className="relative flex space-x-4 overflow-x-auto hide-scrollbar swipe-container">
           {colorFilters.map((color) => (
             <button
               key={color}
