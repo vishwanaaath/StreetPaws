@@ -27,7 +27,7 @@ const Explore = () => {
   const [buttonStates, setButtonStates] = useState({});
   const [underlineProps, setUnderlineProps] = useState({ left: 0, width: 0 });
   const [errorMessage, setErrorMessage] = useState(null);
-  const [screenPosition, setScreenPosition] = useState({ x: 0, y: 0 }); // Track touch position
+  const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 }); // Track touch position
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -40,6 +40,10 @@ const Explore = () => {
   const lastActiveButtonRef = useRef({});
   const colorButtonsRef = useRef({});
   const viewportWidth = useRef(window.innerWidth);
+
+  // Constants for button positioning
+  const BUTTON_RADIUS = 50; // ~1cm in pixels (will vary by device, but a reasonable estimate)
+  const NUM_BUTTONS = 2; // Number of buttons in the bow
 
   // Fetch dogs data with improved error handling
   useEffect(() => {
@@ -235,7 +239,7 @@ const Explore = () => {
     // Save touch position to determine which side of the screen the image is on
     if (e.touches && e.touches[0]) {
       const touch = e.touches[0];
-      setScreenPosition({
+      setTouchPosition({
         x: touch.clientX,
         y: touch.clientY,
       });
@@ -252,7 +256,7 @@ const Explore = () => {
       const buttons = buttonsRef.current[dogId];
       if (!buttons) return;
 
-      const activationRadius = 50; // Increased radius for easier touch
+      const activationRadius = 50; // ~1cm for touch activation
       let activeButton = null;
       let maxScale = 1;
 
@@ -378,20 +382,38 @@ const Explore = () => {
     (dog) => selectedColor === "All" || dog.type === selectedColor
   );
 
-  // Calculate button positions based on touch position
-  const getButtonPositions = (screenX) => {
+  // Calculate button positions based on touch position in bow shape
+  const calculateButtonPositions = (touchX, touchY) => {
     const screenCenter = viewportWidth.current / 2;
-    // Determine if touch is on left or right side of screen
-    const isRightSide = screenX > screenCenter;
+    const isRightSide = touchX > screenCenter;
+
+    // Calculate positions in a bow shape around the touch point
+    const buttons = [];
+
+    // For bow shape, we'll use a semicircle around the touch point
+    // The radius is BUTTON_RADIUS (approximately 1cm)
+    // We'll distribute the buttons evenly along this semicircle
+
+    for (let i = 0; i < NUM_BUTTONS; i++) {
+      // Calculate angle (in radians) for this button
+      // For right side: angles from π/4 to 3π/4 (45° to 135°)
+      // For left side: angles from -π/4 to -3π/4 (315° to 225°)
+
+      const angleRange = Math.PI / 2; // 90 degrees
+      const startAngle = isRightSide ? Math.PI / 4 : (-Math.PI * 3) / 4;
+      const angleDelta = i === 0 ? 0 : angleRange / (NUM_BUTTONS - 1);
+      const angle = startAngle + angleDelta * i;
+
+      // Calculate position on the bow
+      const x = touchX + BUTTON_RADIUS * Math.cos(angle);
+      const y = touchY + BUTTON_RADIUS * Math.sin(angle);
+
+      buttons.push({ x, y, index: i });
+    }
 
     return {
       isRightSide,
-      // If touch is on right side, place buttons on left, and vice versa
-      containerPosition: isRightSide
-        ? "items-center justify-start"
-        : "items-center justify-end",
-      profilePosition: isRightSide ? "ml-6" : "mr-6",
-      locationPosition: isRightSide ? "ml-6" : "mr-6",
+      buttons,
     };
   };
 
@@ -521,36 +543,36 @@ const Explore = () => {
                       transition={{ duration: 0.2 }}
                     />
 
-                    {/* Buttons container that positions based on touch location */}
+                    {/* Dynamic bow-shaped buttons around touch point */}
                     {(() => {
-                      const buttonPositions = getButtonPositions(
-                        screenPosition.x
+                      const positions = calculateButtonPositions(
+                        touchPosition.x,
+                        touchPosition.y
                       );
+                      const profileButtonPos = positions.buttons[0];
+                      const locationButtonPos = positions.buttons[1];
+
                       return (
                         <motion.div
-                          className={`fixed inset-0 z-50 flex flex-col ${buttonPositions.containerPosition} p-6`}
+                          className="fixed inset-0 z-50"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.2 }}>
-                          {/* Profile Button with bowl-shaped motion path */}
+                          {/* Profile Button (positioned at calculated location) */}
                           <motion.div
                             id={`profile-btn-${dog._id}`}
-                            className={`mb-6 ${buttonPositions.profilePosition}`}
+                            className="absolute"
+                            style={{
+                              left: `${profileButtonPos.x - 32}px`, // 32px is half the width of the button
+                              top: `${profileButtonPos.y - 32}px`, // 32px is half the height of the button
+                            }}
                             animate={{
                               scale:
                                 buttonStates[dog._id]?.activeButton ===
                                 "profile"
                                   ? buttonStates[dog._id]?.scale
                                   : 1,
-                              y: [0, -15, 0],
-                              transition: {
-                                y: {
-                                  repeat: Infinity,
-                                  duration: 2,
-                                  ease: "easeInOut",
-                                },
-                              },
                             }}
                             role="button"
                             aria-label="View profile (press P)">
@@ -573,25 +595,20 @@ const Explore = () => {
                             </div>
                           </motion.div>
 
-                          {/* Location Button with bowl-shaped motion path */}
+                          {/* Location Button (positioned at calculated location) */}
                           <motion.div
                             id={`location-btn-${dog._id}`}
-                            className={`${buttonPositions.locationPosition}`}
+                            className="absolute"
+                            style={{
+                              left: `${locationButtonPos.x - 32}px`, // 32px is half the width of the button
+                              top: `${locationButtonPos.y - 32}px`, // 32px is half the height of the button
+                            }}
                             animate={{
                               scale:
                                 buttonStates[dog._id]?.activeButton ===
                                 "location"
                                   ? buttonStates[dog._id]?.scale
                                   : 1,
-                              y: [0, -15, 0],
-                              transition: {
-                                y: {
-                                  repeat: Infinity,
-                                  duration: 2,
-                                  ease: "easeInOut",
-                                  delay: 0.5,
-                                },
-                              },
                             }}
                             role="button"
                             aria-label="View location (press L)">
