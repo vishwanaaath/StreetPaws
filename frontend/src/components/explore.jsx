@@ -493,18 +493,18 @@ const Explore = () => {
 
     if (isRightSide) {
       // Right side touch - buttons appear at 10 and 11 o'clock
-      profileX = touchX - BUTTON_DISTANCE_X_PROFILE; // 10 o'clock position
-      profileY = touchY + BUTTON_DISTANCE_Y_PROFILE;
+      profileX = touchX - 120; // 10 o'clock position
+      profileY = touchY + 60;
 
-      locationX = touchX - BUTTON_DISTANCE_X_LOCATE; // 11 o'clock position
-      locationY = touchY - BUTTON_DISTANCE_Y_LOCATE;
+      locationX = touchX - 80; // 11 o'clock position
+      locationY = touchY +40;
     } else {
       // Left side touch - buttons appear at 1 and 2 o'clock
-      profileX = touchX + BUTTON_DISTANCE_X_PROFILE; // 2 o'clock position
-      profileY = touchY + BUTTON_DISTANCE_Y_PROFILE;
+      profileX = touchX + 80; // 2 o'clock position
+      profileY = touchY + 10;
 
-      locationX = touchX + BUTTON_DISTANCE_X_LOCATE; // 1 o'clock position
-      locationY = touchY - BUTTON_DISTANCE_Y_LOCATE;
+      locationX = touchX + 80; // 1 o'clock position
+      locationY = touchY -10;
     }
 
     return {
