@@ -10,7 +10,28 @@
   .blur-sm {
     filter: blur(2px);
   }
+  .select-none {
+    user-select: none;
+    -webkit-user-select: none;
+  }
   
+  .touch-none {
+    touch-action: none;
+  }
+  
+  .image-item {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Smooth transitions for overlay */
+  .overlay-transition {
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  /* Button scaling animation */
+  .button-scale {
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
   /* Custom column gap */
 .custom-column-gap {
