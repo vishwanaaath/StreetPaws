@@ -90,13 +90,13 @@ const Explore = () => {
 
   const swipeVariants = {
     enter: (direction) => ({
-      x: direction === "left" ? 100 : -100,
-      opacity: 0,
+      x: direction === "left" ? 100 : -100, // Start offscreen (left/right)
     }),
-    center: { x: 0, opacity: 1 },
+    center: {
+      x: 0, // Slide to center position
+    },
     exit: (direction) => ({
-      x: direction === "left" ? -100 : 100,
-      opacity: 0,
+      x: direction === "left" ? -100 : 100, // Exit offscreen (left/right)
     }),
   };
 
