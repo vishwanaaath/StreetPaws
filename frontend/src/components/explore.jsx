@@ -37,28 +37,39 @@ const Explore = () => {
   const buttonsRef = useRef({});
   const touchTimer = useRef(null);
   const lastActiveButtonRef = useRef({});
+  const colorButtonsRef = useRef({});
 
-  // Fetch dogs data
+  // Fetch dogs data with improved error handling
   useEffect(() => {
     const fetchDogs = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/dogs/`
         );
-        const sortedData = response.data.sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
-        setDogsData(sortedData);
 
-        // Initialize refs for all dogs
-        sortedData.forEach((dog) => {
-          if (!lastActiveButtonRef.current[dog._id]) {
-            lastActiveButtonRef.current[dog._id] = null;
-          }
-        });
+        if (response.data && Array.isArray(response.data)) {
+          const sortedData = response.data.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          setDogsData(sortedData);
+          console.log(`Fetched ${sortedData.length} dogs`);
+
+          // Initialize refs for all dogs
+          sortedData.forEach((dog) => {
+            if (!lastActiveButtonRef.current[dog._id]) {
+              lastActiveButtonRef.current[dog._id] = null;
+            }
+          });
+        } else {
+          throw new Error("Invalid data format received from API");
+        }
       } catch (err) {
-        setFetchError(err.response?.data?.message || "Error fetching dogs");
         console.error("Fetch error:", err);
+        setFetchError(
+          err.response?.data?.message ||
+            "Error fetching dogs. Please try again."
+        );
       } finally {
         setLoading(false);
       }
@@ -98,45 +109,94 @@ const Explore = () => {
     }
   }, [activeOverlay, measureButtonPositions]);
 
-  // Color filter handlers
-  const handleColorChange = useCallback(
-    (newColor, direction) => {
-      const currentIndex = colorFilters.indexOf(selectedColor);
-
-      setSelectedColor(newColor);
-      prevIndexRef.current = currentIndex;
-
-      setTimeout(() => {
-        const container = containerRef.current;
-        if (!container) return;
-
-        const selectedBtn = container.querySelector(
-          `[data-color="${newColor}"]`
-        );
-        if (selectedBtn) {
-          const containerWidth = container.offsetWidth;
-          const btnLeft = selectedBtn.offsetLeft;
-          const btnWidth = selectedBtn.offsetWidth;
-          const scrollLeft = btnLeft - (containerWidth / 2 - btnWidth / 2);
-          container.scrollTo({ left: scrollLeft, behavior: "smooth" });
-        }
-      }, 50);
-    },
-    [selectedColor]
-  );
-
-  // Filter underline position
+  // Initialize and update color filter button refs
   useEffect(() => {
-    const selectedBtn = containerRef.current?.querySelector(
-      `[data-color="${selectedColor}"]`
-    );
-    if (selectedBtn) {
-      const { offsetLeft, offsetWidth } = selectedBtn;
-      setUnderlineProps({ left: offsetLeft, width: offsetWidth });
+    colorFilters.forEach((color) => {
+      const button = document.querySelector(`[data-color="${color}"]`);
+      if (button) {
+        colorButtonsRef.current[color] = button;
+      }
+    });
+
+    // Initial underline positioning
+    updateUnderlinePosition();
+  }, []);
+
+  // Update underline position function
+  const updateUnderlinePosition = useCallback(() => {
+    const button = colorButtonsRef.current[selectedColor];
+    if (button && containerRef.current) {
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const buttonRect = button.getBoundingClientRect();
+
+      setUnderlineProps({
+        left:
+          buttonRect.left -
+          containerRect.left +
+          containerRef.current.scrollLeft,
+        width: buttonRect.width,
+      });
     }
   }, [selectedColor]);
 
-  // Swipe handlers
+  // Color filter handlers with improved position calculation
+  const handleColorChange = useCallback(
+    (newColor, direction) => {
+      const currentIndex = colorFilters.indexOf(selectedColor);
+      setSelectedColor(newColor);
+      prevIndexRef.current = currentIndex;
+
+      // Scroll to center the selected button
+      setTimeout(() => {
+        const container = containerRef.current;
+        const button = colorButtonsRef.current[newColor];
+
+        if (container && button) {
+          const containerWidth = container.offsetWidth;
+          const buttonLeft = button.offsetLeft;
+          const buttonWidth = button.offsetWidth;
+          const scrollLeft =
+            buttonLeft - (containerWidth / 2 - buttonWidth / 2);
+
+          container.scrollTo({ left: scrollLeft, behavior: "smooth" });
+
+          // Update underline position after scrolling
+          setTimeout(updateUnderlinePosition, 300);
+        }
+      }, 50);
+    },
+    [selectedColor, updateUnderlinePosition]
+  );
+
+  // Update underline position when selected color changes
+  useEffect(() => {
+    updateUnderlinePosition();
+  }, [selectedColor, updateUnderlinePosition]);
+
+  // Also update underline position on scroll
+  useEffect(() => {
+    const handleScroll = throttle(() => {
+      updateUnderlinePosition();
+    }, 100);
+
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+      return () => container.removeEventListener("scroll", handleScroll);
+    }
+  }, [updateUnderlinePosition]);
+
+  // Update underline position on window resize
+  useEffect(() => {
+    const handleResize = throttle(() => {
+      updateUnderlinePosition();
+    }, 100);
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [updateUnderlinePosition]);
+
+  // Improved swipe handlers with better sensitivity
   const handlers = useSwipeable({
     onSwiped: (e) => {
       if (!["Left", "Right"].includes(e.dir)) return;
@@ -151,11 +211,11 @@ const Explore = () => {
         handleColorChange(colorFilters[newIndex], e.dir.toLowerCase());
       }
     },
-    delta: 10, // More sensitive swipe
+    delta: 50, // Swipe distance threshold
+    preventDefaultTouchmoveEvent: true,
     trackTouch: true,
     trackMouse: false,
-    preventScrollOnSwipe: true,
-    axis: "x", // Restrict to horizontal swipes
+    rotationAngle: 0,
   });
 
   // Touch interactions
@@ -275,6 +335,12 @@ const Explore = () => {
   };
 
   const handleLocationAction = (dog) => {
+    if (!dog.location || !dog.location.coordinates) {
+      setErrorMessage("Location information not available for this dog");
+      setTimeout(() => setErrorMessage(null), 3000);
+      return;
+    }
+
     navigate("/map", {
       state: {
         selectedDog: {
@@ -286,7 +352,7 @@ const Explore = () => {
     });
   };
 
-  // Filter dogs based on selected color
+  // Filter dogs based on selected color with fallback
   const filteredDogs = dogsData.filter(
     (dog) => selectedColor === "All" || dog.type === selectedColor
   );
@@ -328,11 +394,15 @@ const Explore = () => {
               {color}
             </button>
           ))}
+          {/* Improved underline animation */}
           <motion.div
             className="absolute bottom-0 h-1 bg-violet-600 rounded"
-            layout
+            initial={false}
+            animate={{
+              left: `${underlineProps.left}px`,
+              width: `${underlineProps.width}px`,
+            }}
             transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            style={{ left: underlineProps.left, width: underlineProps.width }}
           />
         </div>
       </div>
@@ -343,7 +413,7 @@ const Explore = () => {
           {[...Array(9)].map((_, i) => (
             <div
               key={i}
-              className="break-inside-avoid image-item animate-pulse">
+              className="break-inside-avoid image-item animate-pulse mb-2">
               <div className="relative overflow-hidden rounded-xl group">
                 <div
                   className="w-full bg-gray-200 rounded-xl"
@@ -358,12 +428,20 @@ const Explore = () => {
           <p className="font-semibold">{fetchError}</p>
           <p>Please try again later.</p>
         </div>
+      ) : filteredDogs.length === 0 ? (
+        <div className="text-center text-gray-500 mt-8">
+          <p className="font-semibold">No dogs found for this filter</p>
+          <p>Try selecting a different color filter</p>
+        </div>
       ) : (
-        <div className="columns-2 sm:columns-3 lg:columns-3 space-y-2 custom-column-gap scroll-container">
+        <div className="columns-2 sm:columns-3 lg:columns-3 gap-2 custom-column-gap">
           {filteredDogs.map((dog) => (
             <div
               key={dog._id}
-              style={{ zIndex: activeOverlay === dog._id ? 1 : "auto" }}
+              style={{
+                zIndex: activeOverlay === dog._id ? 10 : "auto",
+                marginBottom: "8px", // Ensure consistent spacing
+              }}
               className="break-inside-avoid relative group"
               onTouchStart={(e) => handleTouchStart(dog._id, e)}
               onTouchMove={(e) => handleTouchMove(dog._id, e)}
@@ -376,7 +454,8 @@ const Explore = () => {
               {/* Dog Image */}
               <img
                 src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
-                alt={dog.type}
+                alt={dog.type || "Dog"}
+                loading="lazy"
                 className="z-0 w-full h-auto rounded-xl select-none touch-auto filter blur-sm transition-all duration-500 group-hover:blur-0"
                 onLoad={(e) => {
                   e.target.classList.remove("blur-sm");
@@ -398,7 +477,8 @@ const Explore = () => {
                     className="z-10 absolute inset-0 bg-black/40 flex items-end justify-between p-3"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}>
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}>
                     {/* Profile Button with keyboard shortcut hint */}
                     <motion.div
                       id={`profile-btn-${dog._id}`}
@@ -467,6 +547,11 @@ const Explore = () => {
           ))}
         </div>
       )}
+
+      {/* Debug info (remove in production) */}
+      {/* <div className="fixed bottom-0 left-0 bg-white p-2 text-xs opacity-50">
+        Dogs: {dogsData.length}, Filtered: {filteredDogs.length}, Type: {selectedColor}
+      </div> */}
     </div>
   );
 };
