@@ -256,7 +256,7 @@ const Explore = () => {
       const buttons = buttonsRef.current[dogId];
       if (!buttons) return;
 
-      const activationRadius = 300; // ~1cm for touch activation
+      const activationRadius = 150; // ~1cm for touch activation
       let activeButton = null;
       let maxScale = 1;
 
@@ -629,7 +629,7 @@ const Explore = () => {
                                   d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                                 />
                               </svg>
-                          
+                         
                             </div>
                           </motion.div>
 
