@@ -644,7 +644,7 @@ const Explore = () => {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 0.7 }}
                       exit={{ opacity: 0 }}
-                      className="fixed inset-0 bg-white bg-opacity-50 backdrop-blur-md"
+                      className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md"
                       style={{ zIndex: 40 }}
                     />
 
@@ -667,7 +667,7 @@ const Explore = () => {
                           <>
                             {/* Large text indicators for buttons - position based on button location */}
                             <div
-                              className="fixed text-black font-bold text-2xl pointer-events-none"
+                              className="fixed text-white font-bold text-2xl pointer-events-none"
                               style={{
                                 left: isRightSide ? "5%" : "auto",
                                 right: isRightSide ? "auto" : "5%",
@@ -685,7 +685,7 @@ const Explore = () => {
                             </div>
 
                             <div
-                              className="fixed text-black font-bold text-2xl pointer-events-none"
+                              className="fixed text-white font-bold text-2xl pointer-events-none"
                               style={{
                                 left: isRightSide ? "5%" : "auto",
                                 right: isRightSide ? "auto" : "5%",
