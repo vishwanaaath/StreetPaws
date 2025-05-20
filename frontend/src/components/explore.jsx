@@ -28,6 +28,7 @@ const Explore = () => {
   const [underlineProps, setUnderlineProps] = useState({ left: 0, width: 0 });
   const [errorMessage, setErrorMessage] = useState(null);
   const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 }); // Track touch position
+  const [isInteracting, setIsInteracting] = useState(false); // Track active interaction
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -40,9 +41,11 @@ const Explore = () => {
   const lastActiveButtonRef = useRef({});
   const colorButtonsRef = useRef({});
   const viewportWidth = useRef(window.innerWidth);
+  const viewportHeight = useRef(window.innerHeight);
+  const scrollPositionRef = useRef(0);
 
   // Constants for button positioning
-  const BUTTON_RADIUS = 50; // ~1cm in pixels (will vary by device, but a reasonable estimate)
+  const BUTTON_RADIUS = 200; // ~5cm in pixels (increased from 50px)
   const NUM_BUTTONS = 2; // Number of buttons in the bow
 
   // Fetch dogs data with improved error handling
@@ -84,15 +87,44 @@ const Explore = () => {
     fetchDogs();
   }, []);
 
-  // Set viewport width on resize
+  // Set viewport dimensions on resize
   useEffect(() => {
     const handleResize = () => {
       viewportWidth.current = window.innerWidth;
+      viewportHeight.current = window.innerHeight;
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Prevent scrolling when overlay is active
+  useEffect(() => {
+    const handleScroll = (e) => {
+      if (activeOverlay || isInteracting) {
+        // Store scroll position before preventing default
+        scrollPositionRef.current = window.scrollY;
+        window.scrollTo(0, scrollPositionRef.current);
+        e.preventDefault();
+      }
+    };
+
+    const options = { passive: false };
+
+    if (activeOverlay || isInteracting) {
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
+      window.addEventListener("scroll", handleScroll, options);
+      window.addEventListener("touchmove", handleScroll, options);
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+      window.removeEventListener("scroll", handleScroll, options);
+      window.removeEventListener("touchmove", handleScroll, options);
+    };
+  }, [activeOverlay, isInteracting]);
 
   // Clean up timer on unmount
   useEffect(() => {
@@ -215,6 +247,8 @@ const Explore = () => {
   // Improved swipe handlers with better sensitivity
   const handlers = useSwipeable({
     onSwiped: (e) => {
+      if (activeOverlay || isInteracting) return; // Don't process swipes during overlay
+
       if (!["Left", "Right"].includes(e.dir)) return;
 
       const currentIndex = colorFilters.indexOf(selectedColor);
@@ -228,7 +262,7 @@ const Explore = () => {
       }
     },
     delta: 50, // Swipe distance threshold
-    preventDefaultTouchmoveEvent: true,
+    preventDefaultTouchmoveEvent: false, // Changed to false to allow normal scroll behavior when not in overlay
     trackTouch: true,
     trackMouse: false,
     rotationAngle: 0,
@@ -243,10 +277,16 @@ const Explore = () => {
         x: touch.clientX,
         y: touch.clientY,
       });
+
+      // Prevent default to avoid unintended scrolling during long press
+      e.preventDefault();
+      setIsInteracting(true);
     }
 
     touchTimer.current = setTimeout(() => {
       setActiveOverlay(dogId);
+      // Store current scroll position
+      scrollPositionRef.current = window.scrollY;
     }, 700);
   };
 
@@ -256,7 +296,7 @@ const Explore = () => {
       const buttons = buttonsRef.current[dogId];
       if (!buttons) return;
 
-      const activationRadius = 50; // ~1cm for touch activation
+      const activationRadius = 60; // Increased activation radius
       let activeButton = null;
       let maxScale = 1;
 
@@ -295,13 +335,24 @@ const Explore = () => {
   );
 
   const handleTouchMove = (dogId, e) => {
-    if (!activeOverlay) return;
+    if (!activeOverlay) {
+      // If we're in the process of determining a long press, prevent scrolling
+      if (touchTimer.current) {
+        e.preventDefault();
+      }
+      return;
+    }
+
+    // Prevent default to stop scrolling
+    e.preventDefault();
+
     const touch = e.touches[0];
     checkButtonProximity(dogId, touch.clientX, touch.clientY);
   };
 
-  const handleTouchEnd = (dog) => {
+  const handleTouchEnd = (dog, e) => {
     clearTimeout(touchTimer.current);
+    setIsInteracting(false);
 
     // Execute action if a button is active
     if (buttonStates[dog._id]?.activeButton) {
@@ -383,6 +434,7 @@ const Explore = () => {
   );
 
   // Calculate button positions based on touch position in bow shape
+  // Much wider spacing (5cm = approximately 200px)
   const calculateButtonPositions = (touchX, touchY) => {
     const screenCenter = viewportWidth.current / 2;
     const isRightSide = touchX > screenCenter;
@@ -390,9 +442,8 @@ const Explore = () => {
     // Calculate positions in a bow shape around the touch point
     const buttons = [];
 
-    // For bow shape, we'll use a semicircle around the touch point
-    // The radius is BUTTON_RADIUS (approximately 1cm)
-    // We'll distribute the buttons evenly along this semicircle
+    // For bow shape, we'll use a wider semicircle around the touch point
+    // The radius is now BUTTON_RADIUS (approximately 5cm)
 
     for (let i = 0; i < NUM_BUTTONS; i++) {
       // Calculate angle (in radians) for this button
@@ -404,7 +455,7 @@ const Explore = () => {
       const angleDelta = i === 0 ? 0 : angleRange / (NUM_BUTTONS - 1);
       const angle = startAngle + angleDelta * i;
 
-      // Calculate position on the bow
+      // Calculate position on the bow with increased radius
       const x = touchX + BUTTON_RADIUS * Math.cos(angle);
       const y = touchY + BUTTON_RADIUS * Math.sin(angle);
 
@@ -418,7 +469,7 @@ const Explore = () => {
   };
 
   return (
-    <div className="p-2 sm:p-4" {...handlers}>
+    <div className="p-2 sm:p-4">
       {/* Error Message Toast */}
       {errorMessage && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg z-50">
@@ -431,7 +482,7 @@ const Explore = () => {
         <div
           ref={containerRef}
           className="relative flex space-x-4 overflow-x-auto hide-scrollbar swipe-container"
-          {...handlers}>
+          {...(activeOverlay ? {} : handlers)}>
           {colorFilters.map((color) => (
             <button
               key={color}
@@ -505,7 +556,7 @@ const Explore = () => {
               className="break-inside-avoid relative group"
               onTouchStart={(e) => handleTouchStart(dog._id, e)}
               onTouchMove={(e) => handleTouchMove(dog._id, e)}
-              onTouchEnd={() => handleTouchEnd(dog)}
+              onTouchEnd={(e) => handleTouchEnd(dog, e)}
               onContextMenu={(e) => e.preventDefault()}
               tabIndex={0}
               onKeyDown={(e) => handleKeyDown(dog, e)}
@@ -536,11 +587,12 @@ const Explore = () => {
                   <>
                     {/* Fullscreen blur overlay */}
                     <motion.div
-                      className="fixed inset-0 z-40 backdrop-blur-xs"
+                      className="fixed inset-0 z-40 backdrop-blur-md"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.2 }}
+                      onClick={() => setActiveOverlay(null)}
                     />
 
                     {/* Dynamic bow-shaped buttons around touch point */}
@@ -566,6 +618,23 @@ const Explore = () => {
                             style={{
                               left: `${profileButtonPos.x - 32}px`, // 32px is half the width of the button
                               top: `${profileButtonPos.y - 32}px`, // 32px is half the height of the button
+                              // Apply clamps to keep buttons on screen
+                              transform: `translate(
+                                ${
+                                  Math.min(
+                                    Math.max(0, profileButtonPos.x - 32),
+                                    viewportWidth.current - 64
+                                  ) -
+                                  (profileButtonPos.x - 32)
+                                }px,
+                                ${
+                                  Math.min(
+                                    Math.max(0, profileButtonPos.y - 32),
+                                    viewportHeight.current - 64
+                                  ) -
+                                  (profileButtonPos.y - 32)
+                                }px
+                              )`,
                             }}
                             animate={{
                               scale:
@@ -589,7 +658,9 @@ const Explore = () => {
                                     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
                                 }}
                               />
-                              
+                              <div className="absolute -bottom-1 left-0 right-0 text-center text-xs font-bold text-white bg-black/50 py-1">
+                                Profile
+                              </div>
                             </div>
                           </motion.div>
 
@@ -600,6 +671,23 @@ const Explore = () => {
                             style={{
                               left: `${locationButtonPos.x - 32}px`, // 32px is half the width of the button
                               top: `${locationButtonPos.y - 32}px`, // 32px is half the height of the button
+                              // Apply clamps to keep buttons on screen
+                              transform: `translate(
+                                ${
+                                  Math.min(
+                                    Math.max(0, locationButtonPos.x - 32),
+                                    viewportWidth.current - 64
+                                  ) -
+                                  (locationButtonPos.x - 32)
+                                }px,
+                                ${
+                                  Math.min(
+                                    Math.max(0, locationButtonPos.y - 32),
+                                    viewportHeight.current - 64
+                                  ) -
+                                  (locationButtonPos.y - 32)
+                                }px
+                              )`,
                             }}
                             animate={{
                               scale:
@@ -629,7 +717,9 @@ const Explore = () => {
                                   d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                                 />
                               </svg>
-                         
+                              <div className="absolute -bottom-1 left-0 right-0 text-center text-xs font-bold text-white bg-black/50 py-1">
+                                Location
+                              </div>
                             </div>
                           </motion.div>
 
