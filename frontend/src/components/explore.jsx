@@ -478,6 +478,8 @@ const Explore = () => {
   const calculateButtonPositions = (touchX, touchY) => {
     const screenCenter = viewportWidth.current / 2;
     const isRightSide = touchX > screenCenter;
+    const isTopSide = touchPosition.y < viewportHeight.current / 2;
+
 
     // Setup button positions based on which side of the screen the touch is on
     // For right side of screen: buttons on left side of touch
@@ -662,7 +664,7 @@ const Explore = () => {
                               style={{
                                 left: isRightSide ? "5%" : "auto",
                                 right: isRightSide ? "auto" : "5%",
-                                top: "40%",
+                                top: isTopSide ? "60%" : "40%",
                                 transform: "translateY(-50%)",
                                 opacity:
                                   buttonStates[dog._id]?.activeButton ===
@@ -679,7 +681,7 @@ const Explore = () => {
                               style={{
                                 left: isRightSide ? "5%" : "auto",
                                 right: isRightSide ? "auto" : "5%",
-                                top: "60%",
+                                top: isTopSide ? "40%" : "60%",
                                 transform: "translateY(-50%)",
                                 opacity:
                                   buttonStates[dog._id]?.activeButton ===
