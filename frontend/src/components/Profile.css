@@ -7,6 +7,11 @@
     display: none;
   } 
 
+  .blur-sm {
+    filter: blur(10px);
+  }
+  
+
   /* Custom column gap */
 .custom-column-gap {
   column-gap: 6px !important;

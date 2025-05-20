@@ -26,7 +26,6 @@ const Explore = () => {
   const containerRef = useRef(null);
   const [underlineProps, setUnderlineProps] = useState({ left: 0, width: 0 });
 
-  // Swipe handlers
   const handlers = useSwipeable({
     onSwiping: (e) => {
       if (e.dir === "Left" || e.dir === "Right") {
@@ -34,8 +33,7 @@ const Explore = () => {
       }
     },
     onSwiped: (e) => {
-      if (e.dir !== "Left" && e.dir !== "Right") return; // Ignore vertical swipes
-
+      if (e.dir !== "Left" && e.dir !== "Right") return;
       const currentIndex = colorFilters.indexOf(selectedColor);
       const dir = e.dir === "Left" ? "left" : "right";
       const newIndex =
@@ -52,7 +50,6 @@ const Explore = () => {
     trackMouse: false,
   });
 
-  // Fetch dogs data
   useEffect(() => {
     const fetchDogs = async () => {
       try {
@@ -73,7 +70,6 @@ const Explore = () => {
     fetchDogs();
   }, []);
 
-  // Update underline position
   useEffect(() => {
     const selectedBtn = containerRef.current?.querySelector(
       `[data-color="${selectedColor}"]`
@@ -88,22 +84,10 @@ const Explore = () => {
     (dog) => selectedColor === "All" || dog.type === selectedColor
   );
 
-  const swipeVariants = {
-    enter: (direction) => ({
-      x: direction === "left" ? 100 : -100, // Start offscreen (left/right)
-    }),
-    center: {
-      x: 0, // Slide to center position
-    },
-    exit: (direction) => ({
-      x: direction === "left" ? -100 : 100, // Exit offscreen (left/right)
-    }),
-  };
-
   return (
     <div {...handlers} className="p-2 sm:p-4">
-      {/* Filter Header with animated underline */}
-      <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4 ">
+      {/* Filter Header */}
+      <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4">
         <div
           ref={containerRef}
           className="relative flex space-x-4 cursor-pointer overflow-x-auto hide-scrollbar">
@@ -122,13 +106,12 @@ const Explore = () => {
               className={`relative whitespace-nowrap cursor-pointer py-1.5 px-3 text-base ${
                 selectedColor === color
                   ? "text-violet-600 font-extrabold"
-                  : "text-black font-semibold "
+                  : "text-black font-semibold"
               }`}>
               {color}
             </button>
           ))}
 
-          {/* Sliding underline */}
           <motion.div
             className="absolute bottom-0 h-1 bg-violet-600 rounded"
             layout
@@ -140,7 +123,7 @@ const Explore = () => {
 
       {/* Content Area */}
       {loading ? (
-        <div className="columns-2 sm:columns-3 lg:columns-3  custom-column-gap animate-pulse">
+        <div className="columns-2 sm:columns-3 lg:columns-3 custom-column-gap animate-pulse">
           {[...Array(9)].map((_, i) => (
             <div
               key={i}
@@ -154,65 +137,22 @@ const Explore = () => {
           <p>Please try again later.</p>
         </div>
       ) : (
-        <AnimatePresence mode="wait" custom={swipeDirection}>
-          <motion.div
-            key={selectedColor}
-            custom={swipeDirection}
-            variants={swipeVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.25 }}
-            className="columns-2 sm:columns-3 lg:columns-3 space-y-2 custom-column-gap">
-            {filteredDogs.map((dog) => (
-              <div key={dog._id} className="break-inside-avoid image-item">
-                <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
-                  <img
-                    src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
-                    alt={dog.type}
-                    className="w-full h-auto object-cover"
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
-                    <div className="flex justify-end items-end">
-                      {/* <button
-                        onClick={() =>
-                          navigate("/map", {
-                            state: {
-                              selectedDog: {
-                                id: dog._id,
-                                lat: dog.location.coordinates[1],
-                                lng: dog.location.coordinates[0],
-                              },
-                            },
-                          })
-                        }
-                        className="text-white cursor-pointer hover:text-violet-100 transition-colors">
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
-                        </svg>
-                      </button> */}
-                    </div>
-                  </div>
-                </div>
+        <div className="columns-2 sm:columns-3 lg:columns-3 space-y-2 custom-column-gap">
+          {filteredDogs.map((dog) => (
+            <div key={dog._id} className="break-inside-avoid image-item">
+              <div className="relative overflow-hidden rounded-xl group">
+                {/* Lazy loaded image */}
+                <img
+                  src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
+                  alt={dog.type}
+                  loading="lazy"
+                  className="w-full h-auto object-cover filter blur-sm transition-all duration-500 group-hover:blur-0"
+                  onLoad={(e) => e.target.classList.remove("blur-sm")}
+                />
               </div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
