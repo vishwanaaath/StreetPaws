@@ -32,6 +32,9 @@ const Explore = () => {
   const containerRef = useRef(null);
   const buttonsRef = useRef({});
   const touchTimer = useRef(null);
+  // Add these to your state declarations
+  const [touchPosition, setTouchPosition] = useState(null);
+  const lastActiveButtonRef = useRef({}); // Add this with other refs
 
   // Fetch dogs data
   useEffect(() => {
@@ -53,6 +56,16 @@ const Explore = () => {
     };
     fetchDogs();
   }, []);
+
+  // Update the useEffect for button measurement
+  useEffect(() => {
+    if (activeOverlay) {
+      // Add small delay to ensure DOM update
+      requestAnimationFrame(() => {
+        measureButtonPositions(activeOverlay);
+      });
+    }
+  }, [activeOverlay]);
 
   // Color filter handlers
   const handleColorChange = (newColor, direction) => {
@@ -105,17 +118,15 @@ const Explore = () => {
   // Touch interactions
   const handleTouchStart = (dogId, e) => {
     const touch = e.touches[0];
-    setTouchPosition({ x: touch.clientX, y: touch.clientY });
     touchTimer.current = setTimeout(() => {
-      setActiveOverlay(dogId);
-      measureButtonPositions(dogId);
+      setActiveOverlay(dogId); // This triggers re-render and useEffect
     }, 300);
   };
 
   const handleTouchMove = (dogId, e) => {
     if (!activeOverlay) return;
     const touch = e.touches[0];
-    setTouchPosition({ x: touch.clientX, y: touch.clientY });
+    // Remove setTouchPosition() call unless you're using it elsewhere
     checkButtonProximity(dogId, touch.clientX, touch.clientY);
   };
 
@@ -175,7 +186,6 @@ const Explore = () => {
       [dogId]: { activeButton, scale: maxScale },
     }));
   };
-  
 
   // Action handlers
   const handleProfileAction = async (listerId) => {
@@ -281,6 +291,7 @@ const Explore = () => {
           {filteredDogs.map((dog) => (
             <div
               key={dog._id}
+              style={{ zIndex: activeOverlay === dog._id ? 1 : "auto" }} // Add this
               className="break-inside-avoid relative group"
               onTouchStart={(e) => handleTouchStart(dog._id, e)}
               onTouchMove={(e) => handleTouchMove(dog._id, e)}
