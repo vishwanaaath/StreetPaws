@@ -19,7 +19,14 @@ const Sidebar = ({
   } = useAuth0();
 
   const [userData, setUserData] = useState(null);
+  const [authReady, setAuthReady] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoading) {
+      setAuthReady(true);
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -43,8 +50,16 @@ const Sidebar = ({
       }
     };
 
-    fetchUserData();
-  }, [isAuthenticated, auth0User?.sub, navigate, getAccessTokenSilently]);
+    if (authReady) {
+      fetchUserData();
+    }
+  }, [
+    authReady,
+    isAuthenticated,
+    auth0User?.sub,
+    navigate,
+    getAccessTokenSilently,
+  ]);
 
   const handleLogin = async () => {
     if (!isAuthenticated) {
@@ -62,7 +77,7 @@ const Sidebar = ({
       },
     });
     setNotificationMessage("Successfully logged out");
-    setNotificationImage(userData.dp_url);
+    setNotificationImage(userData?.dp_url);
   };
 
   const handleSidebarLeave = (e) => {
@@ -78,7 +93,7 @@ const Sidebar = ({
   };
 
   const handleListDog = async () => {
-      navigate("/list-dog", { state: { user: userData } });
+    navigate("/list-dog", { state: { user: userData } });
   };
 
   return (
@@ -89,10 +104,9 @@ const Sidebar = ({
       onMouseEnter={() => setSidebarVisible(true)}
       onMouseLeave={handleSidebarLeave}>
       <div className="h-[calc(100%-120px)] overflow-y-auto pb-4">
-        {/* Profile section if logged in */}
-        {isLoading || (isAuthenticated && !userData) ? (
+        {/* Profile Section */}
+        {!authReady ? null : isLoading || (isAuthenticated && !userData) ? (
           <>
-            {/* Profile loader */}
             <div className="flex w-full p-3 animate-pulse">
               <div className="flex w-full items-start gap-4">
                 <div className="flex-shrink-0">
@@ -105,8 +119,7 @@ const Sidebar = ({
               </div>
             </div>
 
-            {/* Button loaders */}
-            <div className="px-2  space-y-3 animate-pulse">
+            <div className="px-2 space-y-3 animate-pulse">
               <div className="h-[42px] rounded-lg bg-violet-200 w-full" />
               <div className="h-[42px] rounded-lg bg-violet-200 w-full" />
             </div>
@@ -141,7 +154,6 @@ const Sidebar = ({
               </div>
             </Link>
 
-            {/* Post Dog and Community */}
             <div className="px-2">
               <button
                 onClick={handleListDog}
@@ -177,7 +189,7 @@ const Sidebar = ({
 
       {/* Auth Buttons */}
       <div className="absolute bottom-4 left-0 right-0 px-4 space-y-3">
-        {isAuthenticated ? (
+        {!authReady ? null : isAuthenticated ? (
           <button
             onClick={handleLogout}
             className="flex items-center justify-center gap-2 w-full sm:px-4 sm:py-3 px-3 py-2 bg-violet-500 text-white rounded-lg hover:bg-red-500 transition-colors duration-300 shadow-md focus:ring-2 focus:ring-red-300 focus:outline-none">
