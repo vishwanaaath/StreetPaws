@@ -26,6 +26,33 @@ const Explore = () => {
   const containerRef = useRef(null);
   const [underlineProps, setUnderlineProps] = useState({ left: 0, width: 0 });
 
+  const handleColorChange = (newColor, direction) => {
+    const newIndex = colorFilters.indexOf(newColor);
+    const currentIndex = colorFilters.indexOf(selectedColor);
+
+    // Update state
+    setSwipeDirection(direction);
+    setSelectedColor(newColor);
+    prevIndexRef.current = currentIndex;
+
+    // Scroll to center the selected button
+    setTimeout(() => {
+      const container = containerRef.current;
+      const selectedBtn = container.querySelector(`[data-color="${newColor}"]`);
+      if (selectedBtn) {
+        const containerWidth = container.offsetWidth;
+        const btnLeft = selectedBtn.offsetLeft;
+        const btnWidth = selectedBtn.offsetWidth;
+        const scrollLeft = btnLeft - (containerWidth / 2 - btnWidth / 2);
+
+        container.scrollTo({
+          left: scrollLeft,
+          behavior: "smooth",
+        });
+      }
+    }, 50);
+  };
+
   const handlers = useSwipeable({
     onSwiping: (e) => {
       if (e.dir === "Left" || e.dir === "Right") {
@@ -34,15 +61,20 @@ const Explore = () => {
     },
     onSwiped: (e) => {
       if (e.dir !== "Left" && e.dir !== "Right") return;
+
       const currentIndex = colorFilters.indexOf(selectedColor);
       const dir = e.dir === "Left" ? "left" : "right";
-      const newIndex =
-        dir === "left"
-          ? (currentIndex + 1) % colorFilters.length
-          : (currentIndex - 1 + colorFilters.length) % colorFilters.length;
 
-      setSelectedColor(colorFilters[newIndex]);
-      prevIndexRef.current = currentIndex;
+      let newIndex;
+      if (dir === "left") {
+        newIndex = Math.min(currentIndex + 1, colorFilters.length - 1);
+      } else {
+        newIndex = Math.max(currentIndex - 1, 0);
+      }
+
+      if (newIndex !== currentIndex) {
+        handleColorChange(colorFilters[newIndex], dir);
+      }
     },
     delta: 50,
     preventScrollOnSwipe: true,
@@ -97,11 +129,9 @@ const Explore = () => {
               data-color={color}
               onClick={() => {
                 const newIndex = colorFilters.indexOf(color);
-                setSwipeDirection(
-                  newIndex > prevIndexRef.current ? "left" : "right"
-                );
-                prevIndexRef.current = colorFilters.indexOf(selectedColor);
-                setSelectedColor(color);
+                const direction =
+                  newIndex > prevIndexRef.current ? "left" : "right";
+                handleColorChange(color, direction);
               }}
               className={`relative whitespace-nowrap cursor-pointer py-1.5 px-3 text-base ${
                 selectedColor === color
@@ -129,12 +159,10 @@ const Explore = () => {
               key={i}
               className="break-inside-avoid image-item animate-pulse">
               <div className="relative overflow-hidden rounded-xl group">
-                {/* Dynamic aspect ratio skeleton */}
                 <div
                   className="w-full bg-gray-200 rounded-xl"
                   style={{
-                    // Use random realistic aspect ratios (or your most common image ratio)
-                    paddingTop: `${Math.random() * 15 + 85}%`, // Generates between 60%-100% aspect ratio
+                    paddingTop: `${Math.random() * 15 + 85}%`,
                   }}
                 />
               </div>
@@ -158,7 +186,6 @@ const Explore = () => {
                   className="w-full h-auto object-cover filter blur-sm transition-all duration-500 group-hover:blur-0"
                   onLoad={(e) => {
                     e.target.classList.remove("blur-sm");
-                    // Optional: Add natural dimensions to maintain layout
                     e.target.parentElement.style.aspectRatio = `${e.target.naturalWidth}/${e.target.naturalHeight}`;
                   }}
                 />
