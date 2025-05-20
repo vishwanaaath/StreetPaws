@@ -620,6 +620,8 @@ const Explore = () => {
                   zIndex: activeOverlay === dog._id ? 50 : 0, // Higher z-index than the blur overlay (which is 40)
                   filter: activeOverlay === dog._id ? "none" : "", // Ensure no blur on the active image
                   position: activeOverlay === dog._id ? "relative" : "static", // Make it positioned so z-index works
+                  scale: activeOverlay === dog._id ? 1.02 : 1, // Make it positioned so z-index works
+                
                 }}
                 onLoad={(e) => {
                   e.target.classList.remove("blur-sm");
@@ -676,7 +678,7 @@ const Explore = () => {
                                   buttonStates[dog._id]?.activeButton ===
                                   "profile"
                                     ? 1
-                                    : 0.3,
+                                    : 0,
                                 transition: "opacity 0.2s ease",
                               }}>
                               LISTER'S PROFILE
@@ -687,14 +689,14 @@ const Explore = () => {
                               style={{
                                 left: isRightSide ? "5%" : "auto",
                                 right: isRightSide ? "auto" : "5%",
-                                top: isTopHalf ? "75%" : "auto", // If buttons are at top, text at bottom
-                                bottom: isTopHalf ? "auto" : "65%", // If buttons are at bottom, text at top
+                                top: isTopHalf ? "65%" : "auto", // If buttons are at top, text at bottom
+                                bottom: isTopHalf ? "auto" : "55%", // If buttons are at bottom, text at top
                                 transform: "translateY(-50%)",
                                 opacity:
                                   buttonStates[dog._id]?.activeButton ===
                                   "location"
                                     ? 1
-                                    : 0.3,
+                                    : 0,
                                 transition: "opacity 0.2s ease",
                               }}>
                               TAKE ME THERE
