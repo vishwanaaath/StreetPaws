@@ -743,7 +743,7 @@ const Explore = () => {
                             }}
                             role="button"
                             aria-label="View location (press L)">
-                            <div className="p-4 bg-white rounded-full shadow-lg w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center relative">
+                            <div className="p-2 bg-white rounded-full shadow-lg w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center relative">
                               <svg
                                 className="w-8 h-8 sm:w-10 sm:h-10 text-violet-600"
                                 fill="none"
