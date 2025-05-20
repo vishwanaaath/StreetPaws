@@ -478,8 +478,6 @@ const Explore = () => {
   const calculateButtonPositions = (touchX, touchY) => {
     const screenCenter = viewportWidth.current / 2;
     const isRightSide = touchX > screenCenter;
-    const isTopSide = touchPosition.y < viewportHeight.current / 2;
-
 
     // Setup button positions based on which side of the screen the touch is on
     // For right side of screen: buttons on left side of touch
@@ -503,8 +501,12 @@ const Explore = () => {
       locationY = touchY - 60;
     }
 
+    // Determine if buttons are in top half or bottom half of screen
+    const isTopHalf = touchY < viewportHeight.current / 2;
+
     return {
       isRightSide,
+      isTopHalf,
       buttons: [
         { x: profileX, y: profileY, index: 0 }, // Profile button
         { x: locationX, y: locationY, index: 1 }, // Location button
@@ -611,7 +613,7 @@ const Explore = () => {
                 src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                 alt={dog.type || "Dog"}
                 loading="lazy"
-                className="z-0 w-full h-auto rounded-xl select-none touch-auto filter transition-all duration-500 group-hover:blur-0"
+                className="z-0 w-full h-auto rounded-xl select-none touch-auto transition-all duration-500 group-hover:blur-0"
                 style={{
                   zIndex: activeOverlay === dog._id ? 50 : 0, // Higher z-index than the blur overlay (which is 40)
                   filter: activeOverlay === dog._id ? "none" : "", // Ensure no blur on the active image
@@ -650,7 +652,7 @@ const Explore = () => {
                       style={{ zIndex: 60 }}>
                       {/* Get button positions based on touch point */}
                       {(() => {
-                        const { isRightSide, buttons } =
+                        const { isRightSide, isTopHalf, buttons } =
                           calculateButtonPositions(
                             touchPosition.x,
                             touchPosition.y
@@ -658,13 +660,14 @@ const Explore = () => {
 
                         return (
                           <>
-                            {/* Large text indicators for buttons - opposite side of screen from buttons */}
+                            {/* Large text indicators for buttons - position based on button location */}
                             <div
                               className="fixed text-black font-bold text-4xl pointer-events-none"
                               style={{
                                 left: isRightSide ? "5%" : "auto",
                                 right: isRightSide ? "auto" : "5%",
-                                top: isTopSide ? "60%" : "40%",
+                                top: isTopHalf ? "70%" : "auto", // If buttons are at top, text at bottom
+                                bottom: isTopHalf ? "auto" : "70%", // If buttons are at bottom, text at top
                                 transform: "translateY(-50%)",
                                 opacity:
                                   buttonStates[dog._id]?.activeButton ===
@@ -681,7 +684,8 @@ const Explore = () => {
                               style={{
                                 left: isRightSide ? "5%" : "auto",
                                 right: isRightSide ? "auto" : "5%",
-                                top: isTopSide ? "40%" : "60%",
+                                top: isTopHalf ? "85%" : "auto", // If buttons are at top, text at bottom
+                                bottom: isTopHalf ? "auto" : "85%", // If buttons are at bottom, text at top
                                 transform: "translateY(-50%)",
                                 opacity:
                                   buttonStates[dog._id]?.activeButton ===
