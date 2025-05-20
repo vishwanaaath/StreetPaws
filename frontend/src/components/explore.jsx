@@ -279,20 +279,22 @@ const Explore = () => {
               onTouchMove={(e) => handleTouchMove(dog._id, e)}
               onTouchEnd={() => handleTouchEnd(dog)}
               onContextMenu={(e) => e.preventDefault()}>
+              {/* Dog Image */}
               <img
                 src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                 alt={dog.type}
-                className="w-full h-auto rounded-xl select-none touch-none filter blur-sm transition-all duration-500 group-hover:blur-0"
+                className="z-0 w-full h-auto rounded-xl select-none touch-none filter blur-sm transition-all duration-500 group-hover:blur-0"
                 onLoad={(e) => {
                   e.target.classList.remove("blur-sm");
                   e.target.parentElement.style.aspectRatio = `${e.target.naturalWidth}/${e.target.naturalHeight}`;
                 }}
               />
 
+              {/* Overlay with Buttons */}
               <AnimatePresence>
                 {activeOverlay === dog._id && (
                   <motion.div
-                    className="absolute inset-0 bg-black/40 flex items-end justify-between p-3"
+                    className="z-10 absolute inset-0 bg-black/40 flex items-end justify-between p-3"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}>
