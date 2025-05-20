@@ -613,10 +613,13 @@ const Explore = () => {
                 src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                 alt={dog.type || "Dog"}
                 loading="lazy"
-                className="z-0 w-full h-auto rounded-xl select-none touch-auto transition-all duration-500 group-hover:blur-0"
+                className={`w-full h-auto rounded-xl select-none touch-auto transition-all duration-500 group-hover:blur-0 ${
+                  activeOverlay === dog._id ? "relative" : ""
+                }`}
                 style={{
                   zIndex: activeOverlay === dog._id ? 50 : 0, // Higher z-index than the blur overlay (which is 40)
                   filter: activeOverlay === dog._id ? "none" : "", // Ensure no blur on the active image
+                  position: activeOverlay === dog._id ? "relative" : "static", // Make it positioned so z-index works
                 }}
                 onLoad={(e) => {
                   e.target.classList.remove("blur-sm");
