@@ -10,12 +10,18 @@
 
 
   /* In Profile.css */
+/* Update your CSS to include */
 .scroll-container {
-  touch-action: pan-y; /* Allow vertical scroll */
+  touch-action: pan-y;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  height: calc(100vh - 120px); /* Adjust based on your header height */
 }
 
 .swipe-container {
-  touch-action: pan-x; /* Allow horizontal swipe */
+  touch-action: pan-x;
+  overflow-x: auto;
 }
 
   .blur-sm {

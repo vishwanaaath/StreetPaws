@@ -230,9 +230,9 @@ const Explore = () => {
   );
 
   return (
-    <div {...handlers} className="p-2 sm:p-4">
+    <div className="p-2 sm:p-4">
       {/* Filter Header */}
-      <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4">
+      <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4" {...handlers}>
         <div
           ref={containerRef}
           className="relative flex space-x-4 overflow-x-auto hide-scrollbar swipe-container">
@@ -267,7 +267,7 @@ const Explore = () => {
 
       {/* Content Area */}
       {loading ? (
-        <div className="columns-2 sm:columns-3 lg:columns-3 custom-column-gap">
+        <div className="columns-2 sm:columns-3 lg:columns-3 custom-column-gap scroll-container">
           {[...Array(9)].map((_, i) => (
             <div
               key={i}
