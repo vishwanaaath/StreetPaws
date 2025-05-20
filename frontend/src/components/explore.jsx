@@ -45,7 +45,7 @@ const Explore = () => {
   const scrollPositionRef = useRef(0);
 
   // Constants for button positioning
-  const BUTTON_RADIUS = 200; // ~5cm in pixels (increased from 50px)
+  const BUTTON_RADIUS = 100; // ~5cm in pixels (increased from 50px)
   const NUM_BUTTONS = 2; // Number of buttons in the bow
 
   // Fetch dogs data with improved error handling
