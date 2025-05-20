@@ -162,7 +162,7 @@ const Explore = () => {
                 <div
                   className="w-full bg-gray-200 rounded-xl"
                   style={{
-                    paddingTop: `${Math.random() * 15 + 85}%`,
+                    paddingTop: `${Math.random() * 25 + 100}%`,
                   }}
                 />
               </div>
