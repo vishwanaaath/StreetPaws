@@ -164,11 +164,18 @@ const Explore = () => {
       }
     });
 
+    // 🔔 Trigger haptic feedback if newly hovering a button
+    if (activeButton && activeButton !== lastActiveButtonRef.current[dogId]) {
+      if (navigator.vibrate) navigator.vibrate(10); // Haptic feedback
+      lastActiveButtonRef.current[dogId] = activeButton;
+    }
+
     setButtonStates((prev) => ({
       ...prev,
       [dogId]: { activeButton, scale: maxScale },
     }));
   };
+  
 
   // Action handlers
   const handleProfileAction = async (listerId) => {
