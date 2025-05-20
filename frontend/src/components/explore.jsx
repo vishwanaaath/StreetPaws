@@ -707,12 +707,7 @@ const Explore = () => {
                                   id={`${
                                     isProfile ? "profile" : "location"
                                   }-btn-${dog._id}`}
-                                  className={`absolute rounded-full text-sm font-medium text-white shadow-lg pointer-events-auto
-                                      ${
-                                        isProfile
-                                          ? "bg-violet-600"
-                                          : "bg-cyan-600"
-                                      }`}
+                                  className={`absolute rounded-full text-sm font-medium text-white shadow-lg pointer-events-auto`}
                                   style={{
                                     left: btn.x,
                                     top: btn.y,
