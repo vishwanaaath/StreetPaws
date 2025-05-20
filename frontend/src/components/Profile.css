@@ -33,6 +33,12 @@
     transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
+  /* In your Profile.css */
+.scroll-container {
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
+}
+
   /* Custom column gap */
 .custom-column-gap {
   column-gap: 6px !important;

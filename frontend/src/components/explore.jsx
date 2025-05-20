@@ -111,8 +111,9 @@ const Explore = () => {
       }
     },
     delta: 50,
-    preventScrollOnSwipe: true,
-    trackTouch: true,
+    preventScrollOnSwipe: false, // Changed from true
+    trackTouch: false, // Changed from true
+    trackMouse: false,
   });
 
   // Touch interactions
@@ -287,7 +288,7 @@ const Explore = () => {
           <p>Please try again later.</p>
         </div>
       ) : (
-        <div className="columns-2 sm:columns-3 lg:columns-3 space-y-2 custom-column-gap">
+        <div className="columns-2 sm:columns-3 lg:columns-3 space-y-2 custom-column-gap scroll-container">
           {filteredDogs.map((dog) => (
             <div
               key={dog._id}
@@ -298,10 +299,11 @@ const Explore = () => {
               onTouchEnd={() => handleTouchEnd(dog)}
               onContextMenu={(e) => e.preventDefault()}>
               {/* Dog Image */}
+
               <img
                 src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                 alt={dog.type}
-                className="z-0 w-full h-auto rounded-xl select-none touch-none filter blur-sm transition-all duration-500 group-hover:blur-0"
+                className="z-0 w-full h-auto rounded-xl select-none touch-auto filter blur-sm transition-all duration-500 group-hover:blur-0"
                 onLoad={(e) => {
                   e.target.classList.remove("blur-sm");
                   e.target.parentElement.style.aspectRatio = `${e.target.naturalWidth}/${e.target.naturalHeight}`;
