@@ -485,12 +485,6 @@ const Explore = () => {
 
     let profileX, profileY, locationX, locationY;
 
-    // Constants for button positioning (in pixels)
-    const BUTTON_DISTANCE_X_PROFILE = 80; // Horizontal distance for profile button
-    const BUTTON_DISTANCE_Y_PROFILE = 10; // Vertical distance for profile button
-    const BUTTON_DISTANCE_X_LOCATE = 80; // Horizontal distance for location button
-    const BUTTON_DISTANCE_Y_LOCATE = 10; // Vertical distance for location button
-
     if (isRightSide) {
       // Right side touch - buttons appear at 10 and 11 o'clock
       profileX = touchX - 40; // 10 o'clock position
@@ -630,150 +624,160 @@ const Explore = () => {
                   e.target.src = "/default-dog.png"; // Fallback image
                   e.target.classList.remove("blur-sm");
                 }}
-                />
-                
-                {/* Overlay when long-pressed */}
-                <AnimatePresence>
-                  {activeOverlay === dog._id && (
-                    <>
-                      {/* Blur overlay - z-index 40 */}
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 0.7 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md"
-                        style={{ zIndex: 40 }}
-                      />
-                
-                      {/* Button overlay - z-index higher than blur overlay */}
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 pointer-events-none"
-                        style={{ zIndex: 60 }}
-                      >
-                        {/* Get button positions based on touch point */}
-                        {(() => {
-                          const { isRightSide, buttons } = calculateButtonPositions(
+              />
+
+              {/* Overlay when long-pressed */}
+              <AnimatePresence>
+                {activeOverlay === dog._id && (
+                  <>
+                    {/* Blur overlay - z-index 40 */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 0.7 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md"
+                      style={{ zIndex: 40 }}
+                    />
+
+                    {/* Button overlay - z-index higher than blur overlay */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 pointer-events-none"
+                      style={{ zIndex: 60 }}>
+                      {/* Get button positions based on touch point */}
+                      {(() => {
+                        const { isRightSide, buttons } =
+                          calculateButtonPositions(
                             touchPosition.x,
                             touchPosition.y
                           );
-                
-                          return (
-                            <>
-                              {/* Large text indicators for buttons - opposite side of screen from buttons */}
-                              <div 
-                                className="fixed text-white font-bold text-4xl pointer-events-none"
-                                style={{
-                                  left: isRightSide ? '5%' : 'auto',
-                                  right: isRightSide ? 'auto' : '5%',
-                                  top: '40%',
-                                  transform: 'translateY(-50%)',
-                                  opacity: buttonStates[dog._id]?.activeButton === 'profile' ? 1 : 0.3,
-                                  transition: 'opacity 0.2s ease'
-                                }}
-                              >
-                                LISTER'S PROFILE
-                              </div>
-                              
-                              <div 
-                                className="fixed text-white font-bold text-4xl pointer-events-none"
-                                style={{
-                                  left: isRightSide ? '5%' : 'auto',
-                                  right: isRightSide ? 'auto' : '5%',
-                                  top: '60%',
-                                  transform: 'translateY(-50%)',
-                                  opacity: buttonStates[dog._id]?.activeButton === 'location' ? 1 : 0.3,
-                                  transition: 'opacity 0.2s ease'
-                                }}
-                              >
-                                TAKE ME THERE
-                              </div>
-                
-                              {/* Buttons */}
-                              {buttons.map((btn, index) => {
-                                const isProfile = index === 0;
-                                const isActive = buttonStates[dog._id]?.activeButton === (isProfile ? "profile" : "location");
-                                const buttonScale = isActive ? (buttonStates[dog._id]?.scale || 1) : 1;
-                                
-                                return (
-                                  <motion.button
-                                    key={`${dog._id}-${index}`}
-                                    id={`${isProfile ? "profile" : "location"}-btn-${dog._id}`}
-                                    className={`absolute rounded-full text-sm font-medium text-white shadow-lg pointer-events-auto
-                                      ${isProfile ? "bg-violet-600" : "bg-cyan-600"}`}
-                                    style={{
-                                      left: btn.x,
-                                      top: btn.y,
-                                      width: 60,
-                                      height: 60,
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "center",
-                                      transform: `scale(${buttonScale})`,
-                                      transition: "transform 0.2s ease",
-                                    }}
-                                    initial={{ opacity: 0, scale: 0 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0 }}
-                                    transition={{ delay: index * 0.05 }}
-                                  >
-                                    <span className="sr-only">
-                                      {isProfile ? "View Lister's Profile" : "View Location"}
-                                    </span>
-                                    {isProfile ? (
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={1.5}
-                                        stroke="currentColor"
-                                        className="w-6 h-6"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                                        />
-                                      </svg>
-                                    ) : (
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={1.5}
-                                        stroke="currentColor"
-                                        className="w-6 h-6"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                                        />
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                                        />
-                                      </svg>
-                                    )}
-                                  </motion.button>
-                                );
-                              })}
-                            </>
-                          );
-                        })()}
-                      </motion.div>
-                    </>
-                  )}
-                </AnimatePresence>
+
+                        return (
+                          <>
+                            {/* Large text indicators for buttons - opposite side of screen from buttons */}
+                            <div
+                              className="fixed text-white font-bold text-4xl pointer-events-none"
+                              style={{
+                                left: isRightSide ? "5%" : "auto",
+                                right: isRightSide ? "auto" : "5%",
+                                top: "40%",
+                                transform: "translateY(-50%)",
+                                opacity:
+                                  buttonStates[dog._id]?.activeButton ===
+                                  "profile"
+                                    ? 1
+                                    : 0.3,
+                                transition: "opacity 0.2s ease",
+                              }}>
+                              LISTER'S PROFILE
                             </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  );
-                };
-                
-                export default Explore;
+
+                            <div
+                              className="fixed text-white font-bold text-4xl pointer-events-none"
+                              style={{
+                                left: isRightSide ? "5%" : "auto",
+                                right: isRightSide ? "auto" : "5%",
+                                top: "60%",
+                                transform: "translateY(-50%)",
+                                opacity:
+                                  buttonStates[dog._id]?.activeButton ===
+                                  "location"
+                                    ? 1
+                                    : 0.3,
+                                transition: "opacity 0.2s ease",
+                              }}>
+                              TAKE ME THERE
+                            </div>
+
+                            {/* Buttons */}
+                            {buttons.map((btn, index) => {
+                              const isProfile = index === 0;
+                              const isActive =
+                                buttonStates[dog._id]?.activeButton ===
+                                (isProfile ? "profile" : "location");
+                              const buttonScale = isActive
+                                ? buttonStates[dog._id]?.scale || 1
+                                : 1;
+
+                              return (
+                                <motion.button
+                                  key={`${dog._id}-${index}`}
+                                  id={`${
+                                    isProfile ? "profile" : "location"
+                                  }-btn-${dog._id}`}
+                                  className={`absolute rounded-full text-sm font-medium text-white shadow-lg pointer-events-auto
+                                      ${
+                                        isProfile
+                                          ? "bg-violet-600"
+                                          : "bg-cyan-600"
+                                      }`}
+                                  style={{
+                                    left: btn.x,
+                                    top: btn.y,
+                                    width: 60,
+                                    height: 60,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    transform: `scale(${buttonScale})`,
+                                    transition: "transform 0.2s ease",
+                                  }}
+                                  initial={{ opacity: 0, scale: 0 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  exit={{ opacity: 0, scale: 0 }}
+                                  transition={{ delay: index * 0.05 }}>
+                                  <span className="sr-only">
+                                    {isProfile
+                                      ? "View Lister's Profile"
+                                      : "View Location"}
+                                  </span>
+                                  {isProfile ? (
+                                    <img
+                                      src={
+                                        dog.lister?.dp_url ||
+                                        "/default-profile.png"
+                                      }
+                                      alt="User DP"
+                                      className="w-full h-full object-cover rounded-full"
+                                    />
+                                  ) : (
+                                    <svg
+                                      className="w-5 h-5 text-violet-600"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24">
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                      />
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                      />
+                                    </svg>
+                                  )}
+                                </motion.button>
+                              );
+                            })}
+                          </>
+                        );
+                      })()}
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Explore;
