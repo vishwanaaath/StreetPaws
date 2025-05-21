@@ -1,10 +1,39 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import { X, Heart, Share2, MoreHorizontal, MapPin } from "lucide-react";
+import { useSwipeable } from "react-swipeable";
 
-const DogDetailModal = ({ isOpen, onClose, dog, onLike }) => {
+const DogDetailModal = ({ isOpen, onClose, dog, onLike, filteredDogs }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const modalRef = useRef(null);
+  const startIndex = filteredDogs.findIndex((d) => d._id === dog?._id);
+
+  // Initialize current index when dog changes
+  useEffect(() => {
+    if (dog && filteredDogs) {
+      const index = filteredDogs.findIndex((d) => d._id === dog._id);
+      setCurrentIndex(index >= 0 ? index : 0);
+    }
+  }, [dog, filteredDogs]);
+
+  // Swipe handlers
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      if (currentIndex < filteredDogs.length - 1) {
+        setCurrentIndex((prev) => prev + 1);
+      }
+    },
+    onSwipedRight: () => {
+      if (currentIndex > 0) {
+        setCurrentIndex((prev) => prev - 1);
+      }
+    },
+    preventScrollOnSwipe: true,
+    trackTouch: true,
+    trackMouse: false,
+    delta: 30,
+  });
 
   // Close modal when clicking outside
   useEffect(() => {
@@ -16,7 +45,6 @@ const DogDetailModal = ({ isOpen, onClose, dog, onLike }) => {
 
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
-      // Prevent body scrolling when modal is open
       document.body.style.overflow = "hidden";
     }
 
@@ -26,138 +54,152 @@ const DogDetailModal = ({ isOpen, onClose, dog, onLike }) => {
     };
   }, [isOpen, onClose]);
 
-  // Format date to be more readable
-  const formatDate = (dateString) => {
-    try {
-      return format(new Date(dateString), "MMM dd, yyyy");
-    } catch (error) {
-      return "Unknown date";
-    }
-  };
+  if (!dog || !filteredDogs || filteredDogs.length === 0) return null;
 
-  if (!dog) return null;
+  const currentDog = filteredDogs[currentIndex];
 
   return (
-    <AnimatePresence>
+    <AnimatePresence initial={false}>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 p-4"
+          className="fixed inset-0 z-50 bg-black bg-opacity-90"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}>
-          <motion.div
-            ref={modalRef}
-            className="relative w-full max-w-3xl max-h-[90vh] bg-white rounded-xl overflow-hidden flex flex-col md:flex-row"
-            initial={{ scale: 0.9, y: 20 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.9, y: 20 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}>
-            {/* Close button */}
+          <div
+            {...handlers}
+            className="h-full w-full relative overflow-hidden"
+            ref={modalRef}>
+            {/* Navigation Dots */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+              {filteredDogs.map((_, index) => (
+                <div
+                  key={index}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    index === currentIndex ? "bg-white" : "bg-gray-500"
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-3 left-3 z-10 bg-white rounded-full p-2 shadow-md"
+              className="absolute top-4 right-4 z-10 text-white p-2 rounded-full hover:bg-white/10"
               aria-label="Close modal">
-              <X size={20} />
+              <X size={24} />
             </button>
 
-            {/* Image section */}
-            <div className="w-full md:w-1/2 h-72 md:h-auto relative">
-              <img
-                src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
-                alt={dog.type || "Dog"}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.target.src = "/default-dog.png"; // Fallback image
-                }}
-              />
-            </div>
-
-            {/* Details section */}
-            <div className="w-full md:w-1/2 p-4 md:p-6 overflow-y-auto flex flex-col">
-              {/* User info */}
-              <div className="flex items-center gap-3 mb-4">
-                <img
-                  src={dog.lister?.dp_url || "/default-avatar.png"}
-                  alt={dog.lister?.username || "User"}
-                  className="w-10 h-10 rounded-full object-cover"
-                  onError={(e) => {
-                    e.target.src = "/default-avatar.png";
+            {/* Content Container */}
+            <div className="h-full w-full flex">
+              <AnimatePresence initial={false} custom={currentIndex}>
+                <motion.div
+                  key={currentIndex}
+                  custom={currentIndex}
+                  initial={{
+                    opacity: 0,
+                    x: currentIndex > startIndex ? 100 : -100,
                   }}
-                />
-                <div>
-                  <p className="font-semibold">
-                    {dog.lister?.username || "Unknown user"}
-                  </p>
-                  {dog.location && dog.location.coordinates && (
-                    <div className="flex items-center text-sm text-gray-500">
-                      <MapPin size={14} className="mr-1" />
-                      <span>Location available</span>
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{
+                    opacity: 0,
+                    x: currentIndex > startIndex ? -100 : 100,
+                  }}
+                  transition={{ duration: 0.3 }}
+                  className="h-full w-full flex flex-col md:flex-row">
+                  {/* Image Section */}
+                  <div className="w-full md:w-1/2 h-1/2 md:h-full bg-black relative">
+                    <img
+                      src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${currentDog.imageUrl}`}
+                      alt={currentDog.type}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+
+                  {/* Details Section */}
+                  <div className="w-full md:w-1/2 h-1/2 md:h-full bg-white p-4 md:p-6 overflow-y-auto">
+                    {/* User Info */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <img
+                        src={currentDog.lister?.dp_url || "/default-avatar.png"}
+                        alt="Lister"
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                      <div>
+                        <p className="font-semibold">
+                          {currentDog.lister?.username || "Unknown user"}
+                        </p>
+                        {currentDog.location?.coordinates && (
+                          <div className="flex items-center text-sm text-gray-500">
+                            <MapPin size={14} className="mr-1" />
+                            <span>Location available</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  )}
-                </div>
-              </div>
 
-              {/* Dog content - title or "boop" */}
-              <h2 className="text-2xl font-bold mb-1">boop</h2>
+                    {/* Dog Details */}
+                    <div className="space-y-4">
+                      <h2 className="text-2xl font-bold">
+                        {currentDog.name || "Unnamed Dog"}
+                      </h2>
 
-              {/* Dog details */}
-              <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <p className="text-gray-500 text-sm">Type</p>
-                    <p className="font-medium">{dog.type || "Unknown"}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-sm">Age</p>
-                    <p className="font-medium">{dog.age || "Unknown"}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-sm">Gender</p>
-                    <p className="font-medium">{dog.gender || "Unknown"}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-sm">Adoption Status</p>
-                    <p className="font-medium">
-                      {dog.adopted ? "Adopted" : "Available"}
-                    </p>
-                  </div>
-                </div>
-              </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <DetailItem label="Type" value={currentDog.type} />
+                        <DetailItem label="Age" value={currentDog.age} />
+                        <DetailItem label="Gender" value={currentDog.gender} />
+                        <DetailItem label="Size" value={currentDog.size} />
+                      </div>
 
-              {/* Posted date */}
-              <p className="text-gray-500 text-sm mb-4">
-                Posted {formatDate(dog.createdAt)}
-              </p>
+                      {currentDog.description && (
+                        <p className="text-gray-700">
+                          {currentDog.description}
+                        </p>
+                      )}
 
-              {/* Action buttons */}
-              <div className="flex justify-between mt-auto pt-4 border-t border-gray-200">
-                <button
-                  onClick={() => onLike(dog._id)}
-                  className="flex items-center gap-2 hover:text-violet-600">
-                  <Heart
-                    size={20}
-                    className={
-                      dog.isLiked ? "fill-violet-600 text-violet-600" : ""
-                    }
-                  />
-                  <span>Like</span>
-                </button>
-                <button className="flex items-center gap-2 hover:text-violet-600">
-                  <Share2 size={20} />
-                  <span>Share</span>
-                </button>
-                <button className="flex items-center gap-2 hover:text-violet-600">
-                  <MoreHorizontal size={20} />
-                  <span>More</span>
-                </button>
-              </div>
+                      <p className="text-sm text-gray-500">
+                        Posted{" "}
+                        {format(new Date(currentDog.createdAt), "MMM dd, yyyy")}
+                      </p>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-4 mt-6 pt-4 border-t border-gray-200">
+                      <button
+                        onClick={() => onLike(currentDog._id)}
+                        className="flex items-center gap-2 hover:text-violet-600">
+                        <Heart
+                          size={20}
+                          className={
+                            currentDog.isLiked
+                              ? "fill-violet-600 text-violet-600"
+                              : ""
+                          }
+                        />
+                        Like
+                      </button>
+                      <button className="flex items-center gap-2 hover:text-violet-600">
+                        <Share2 size={20} />
+                        Share
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
-          </motion.div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
   );
 };
+
+const DetailItem = ({ label, value }) => (
+  <div className="py-2">
+    <p className="text-sm text-gray-500">{label}</p>
+    <p className="font-medium">{value || "Unknown"}</p>
+  </div>
+);
 
 export default DogDetailModal;
