@@ -214,6 +214,41 @@ const DogDetailModal = ({
                 />
               </div>
 
+              <div className="flex gap-4 items-center justify-center mt-6">
+                {/* Gold Badge */}
+                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-600 shadow-md text-white text-sm font-semibold">
+                  <svg
+                    className="w-4 h-4 text-yellow-100"
+                    fill="currentColor"
+                    viewBox="0 0 20 20">
+                    <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z" />
+                  </svg>
+                  Gold Badge
+                </div>
+
+                {/* Silver Badge */}
+                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-gray-300 to-gray-500 shadow-md text-white text-sm font-semibold">
+                  <svg
+                    className="w-4 h-4 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20">
+                    <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z" />
+                  </svg>
+                  Silver Badge
+                </div>
+
+                {/* Bronze Badge */}
+                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-orange-300 to-orange-600 shadow-md text-white text-sm font-semibold">
+                  <svg
+                    className="w-4 h-4 text-orange-100"
+                    fill="currentColor"
+                    viewBox="0 0 20 20">
+                    <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z" />
+                  </svg>
+                  Bronze Badge
+                </div>
+              </div>
+
               {/* Removed redundant content section */}
             </div>
           </div>
