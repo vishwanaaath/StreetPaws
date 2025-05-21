@@ -330,12 +330,13 @@ const Explore = () => {
         </div>
       )}
 
-      {/* Dog Detail Modal */}
+      {/* Dog Detail Modal - FIXED: Added filteredDogs prop */}
       <DogDetailModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         dog={selectedDog}
         onLike={handleLike}
+        filteredDogs={filteredDogs} // Pass filtered dogs to the modal
       />
     </div>
   );
