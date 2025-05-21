@@ -29,7 +29,7 @@ const Explore = () => {
 
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedDog, setSelectedDog] = useState(null);
+  const [currentDogIndex, setCurrentDogIndex] = useState(0);
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -189,8 +189,12 @@ const Explore = () => {
 
   // Handle dog click to open modal
   const handleDogClick = (dog) => {
-    setSelectedDog(dog);
-    setIsModalOpen(true);
+    // Find the index of the clicked dog in the filtered array
+    const index = filteredDogs.findIndex((d) => d._id === dog._id);
+    if (index !== -1) {
+      setCurrentDogIndex(index);
+      setIsModalOpen(true);
+    }
   };
 
   // Handle modal close
@@ -210,19 +214,14 @@ const Explore = () => {
           dog._id === dogId ? { ...dog, isLiked: !dog.isLiked } : dog
         )
       );
-
-      // Also update selected dog if it's the one being liked
-      if (selectedDog && selectedDog._id === dogId) {
-        setSelectedDog((prev) => ({
-          ...prev,
-          isLiked: !prev.isLiked,
-        }));
-      }
     } catch (error) {
       setErrorMessage("Failed to like dog. Please try again.");
       setTimeout(() => setErrorMessage(null), 3000);
     }
   };
+
+  // Get the current dog from filtered dogs array
+  const currentDog = filteredDogs[currentDogIndex];
 
   return (
     <div className="p-2 sm:p-4">
@@ -319,7 +318,7 @@ const Explore = () => {
                       e.target.parentElement.style.aspectRatio = `${e.target.naturalWidth}/${e.target.naturalHeight}`;
                     }
                   }}
-                  onError={(e) => {
+                  onError={(e) => { 
                     e.target.src = "/default-dog.png"; // Fallback image
                     e.target.classList.remove("blur-sm");
                   }}
