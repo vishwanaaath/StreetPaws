@@ -174,11 +174,11 @@ const DogDetailModal = ({
                       size={24}
                       className={
                         currentDog.isLiked
-                          ? "fill-violet-600 text-violet-600"
+                          ? "fill-pink-500 text-pink-500"
                           : ""
                       }
                     />
-                    <span className="font-medium">Like</span>
+                    <span className="font-medium">2</span>
                   </button>
 
                   <button
@@ -211,8 +211,7 @@ const DogDetailModal = ({
                         strokeWidth="2"
                         d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                       />
-                    </svg>
-                    <span className="font-medium">Location</span>
+                    </svg> 
                   </button>
                 </div>
               </div>
