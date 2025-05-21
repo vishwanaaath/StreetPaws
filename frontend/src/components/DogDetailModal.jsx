@@ -166,54 +166,28 @@ const DogDetailModal = ({
 
               {/* Like and Location buttons below image */}
               {/* Like and Location buttons + DP */}
-              <div className="flex justify-between items-center px-4 py-1 pt-2">
-                {/* Left section: Like & Locate */}
+               {/* Top Action Bar */}
+               <div className="flex justify-between items-center px-4 py-1 pt-2">
                 <div className="flex items-center gap-4">
                   <button
                     onClick={() => onLike(currentDog._id)}
                     className="flex items-center gap-2 text-black hover:text-pink-500 transition">
                     <Heart
                       size={24}
-                      className={
-                        currentDog.isLiked ? "fill-pink-500 text-pink-500" : ""
-                      }
+                      className={currentDog.isLiked ? "fill-pink-500 text-pink-500" : ""}
                     />
-                    {/* <span className="font-semibold text-sm">2</span> */}
                   </button>
 
-                  <button
-                    onClick={() => {
-                      if (currentDog?.location?.coordinates) {
-                        console.log("Navigate to map with coordinates:", {
-                          id: currentDog._id,
-                          lat: currentDog.location.coordinates[1],
-                          lng: currentDog.location.coordinates[0],
-                        });
-                      }
-                    }}
-                    className="flex items-center gap-2 text-black hover:text-violet-600 transition">
-                    <svg
-                      className="w-6 h-6 text-inherit"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                  </button>
+                  {/* Location with text */}
+                  <div className="flex items-center gap-2 text-black">
+                    <MapPin size={20} className="text-violet-600" />
+                    <span className="font-semibold text-sm">
+                      {placeName || "Nearby area"}
+                    </span>
+                  </div>
                 </div>
 
-                {/* Right section: Lister DP */}
+                {/* Profile Picture */}
                 <img
                   src={currentDog.lister?.dp_url || "/default-avatar.png"}
                   alt="Lister"
@@ -221,7 +195,7 @@ const DogDetailModal = ({
                 />
               </div>
 
-              {/* Main Content - Enhanced with premium styling */}
+              {/* Main Content */}
               <div className="pb-4 px-4 max-w-2xl mx-auto">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-1 space-y-1.5">
@@ -234,17 +208,7 @@ const DogDetailModal = ({
                       <span className="text-black">{currentDog.gender}</span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-sm">
-                      <MapPin size={15} className="text-black" />
-                      <span className="font-bold text-black">
-                        {placeName || "Nearby area"}
-                      </span>
-                      {distance && (
-                        <span className="text-sm font-bold text-black ml-1">
-                          • {distance} km
-                        </span>
-                      )}
-                    </div>
+                    {/* Removed location section from here */}
                   </div>
                 </div>
               </div>
