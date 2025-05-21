@@ -166,7 +166,7 @@ const DogDetailModal = ({
 
               {/* Like and Location buttons below image */}
               {/* Like and Location buttons + DP */}
-              <div className="flex justify-between items-center px-4 py-1">
+              <div className="flex justify-between items-center px-4 py-1 pt-2">
                 {/* Left section: Like & Locate */}
                 <div className="flex items-center gap-4">
                   <button
@@ -217,7 +217,7 @@ const DogDetailModal = ({
                 <img
                   src={currentDog.lister?.dp_url || "/default-avatar.png"}
                   alt="Lister"
-                  className="w-10 h-10 rounded-full object-cover shadow"
+                  className="w-12 h-12 rounded-full object-cover shadow"
                 />
               </div>
 
