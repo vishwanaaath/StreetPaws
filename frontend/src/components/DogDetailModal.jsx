@@ -221,26 +221,26 @@ const DogDetailModal = ({
                 />
               </div>
 
-              {/* Main Content */}
-              <div className="pb-4 px-4  max-w-2xl mx-auto">
+              {/* Main Content - Enhanced with premium styling */}
+              <div className="pb-4 px-4 max-w-2xl mx-auto">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-1 space-y-1.5">
-                    <h2 className="text-lg font-bold text-black capitalize leading-snug tracking-tight">
+                    <h2 className="text-xl font-extrabold text-black capitalize leading-snug tracking-tight">
                       {currentDog.type}
                     </h2>
 
-                    <div className="flex gap-3 text-sm text-gray-600 font-medium">
+                    <div className="flex gap-3 text-sm font-bold text-black">
                       <span>{currentDog.age}</span>
-                      <span className="text-gray-500">{currentDog.gender}</span>
+                      <span className="text-black">{currentDog.gender}</span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2 text-sm">
                       <MapPin size={15} className="text-black" />
-                      <span className="font-semibold text-gray-800">
+                      <span className="font-bold text-black">
                         {placeName || "Nearby area"}
                       </span>
                       {distance && (
-                        <span className="text-sm text-gray-500 ml-1">
+                        <span className="text-sm font-bold text-black ml-1">
                           • {distance} km
                         </span>
                       )}
@@ -258,8 +258,8 @@ const DogDetailModal = ({
 
 const DetailItem = ({ label, value }) => (
   <div className="space-y-1">
-    <p className="text-sm text-gray-500">{label}</p>
-    <p className="font-medium">{value || "Unknown"}</p>
+    <p className="text-sm font-semibold text-gray-800">{label}</p>
+    <p className="font-bold text-black">{value || "Unknown"}</p>
   </div>
 );
 
