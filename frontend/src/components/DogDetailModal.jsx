@@ -206,7 +206,7 @@ const DogDetailModal = ({
                   </div>
                 </div>
 
-                {/* Right DP */}
+                {/* Right DP done */}
                 <img
                   src={currentDog.lister?.dp_url || "/default-avatar.png"}
                   alt="Lister"
