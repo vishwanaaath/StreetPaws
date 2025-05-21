@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { format } from "date-fns";
-import { X, Heart, Share2, MapPin } from "lucide-react";
+import { X, Heart, MapPin } from "lucide-react";
 import { useSwipeable } from "react-swipeable";
 import axios from "axios";
 
@@ -165,50 +164,9 @@ const DogDetailModal = ({
                 </div>
               </div>
 
-              {/* Main Content */}
-              <div className="p-4 max-w-2xl mx-auto">
-                {/* Top Layout: Place + DP */}
-                <div className="flex justify-between items-start mb-6">
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-center gap-2 text-gray-600 text-sm">
-                      <MapPin size={18} />
-                      <span className="font-semibold text-gray-800">
-                        {placeName || "Nearby area"}
-                      </span>
-                      {distance && (
-                        <span className="text-sm text-gray-500 ml-2">
-                          • {distance} km
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="text-2xl font-bold text-black capitalize">
-                      {currentDog.type}
-                    </div>
-
-                    <div className="flex gap-4 text-gray-600 text-sm">
-                      <span>{currentDog.gender}</span>
-                      <span>{currentDog.age}</span>
-                    </div>
-                  </div>
-
-                  {/* DP */}
-                  <img
-                    src={currentDog.lister?.dp_url || "/default-avatar.png"}
-                    alt="Lister"
-                    className="w-12 h-12 rounded-full object-cover shadow-sm"
-                  />
-                </div>
-
-                {/* Description */}
-                {currentDog.description && (
-                  <p className="text-gray-700 mb-6 text-base leading-relaxed">
-                    {currentDog.description}
-                  </p>
-                )}
-
-                {/* Action Buttons */}
-                <div className="flex gap-6 border-t pt-6 pb-12">
+              {/* Like and Location buttons below image */}
+              <div className="flex justify-between items-center px-4 py-3 border-b">
+                <div className="flex items-center gap-3">
                   <button
                     onClick={() => onLike(currentDog._id)}
                     className="flex items-center gap-2 text-gray-600 hover:text-violet-600">
@@ -222,11 +180,84 @@ const DogDetailModal = ({
                     />
                     <span className="font-medium">Like</span>
                   </button>
-                  <button className="flex items-center gap-2 text-gray-600 hover:text-violet-600">
-                    <Share2 size={24} />
-                    <span className="font-medium">Share</span>
+
+                  <button
+                    className="flex items-center gap-2 text-gray-600 hover:text-violet-600"
+                    onClick={() => {
+                      if (currentDog?.location?.coordinates) {
+                        // Using the SVG you provided as a component
+                        // This would typically be wrapped in a navigation function
+                        console.log("Navigate to map with coordinates:", {
+                          id: currentDog._id,
+                          lat: currentDog.location.coordinates[1],
+                          lng: currentDog.location.coordinates[0],
+                        });
+                      }
+                    }}>
+                    <svg
+                      className="w-5 h-5 text-gray-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                    <span className="font-medium">Location</span>
                   </button>
                 </div>
+              </div>
+
+              {/* Main Content */}
+              <div className="p-4 max-w-2xl mx-auto">
+                {/* Top Layout: Info + Profile Picture */}
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex-1 space-y-2">
+                    <div className="text-2xl font-bold text-black capitalize">
+                      {currentDog.type}
+                    </div>
+
+                    <div className="flex gap-4 text-gray-600 text-sm">
+                      <span>{currentDog.gender}</span>
+                      <span>{currentDog.age}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-gray-600 text-sm mt-2">
+                      <MapPin size={18} />
+                      <span className="font-semibold text-gray-800">
+                        {placeName || "Nearby area"}
+                      </span>
+                      {distance && (
+                        <span className="text-sm text-gray-500 ml-2">
+                          • {distance} km
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Profile Picture */}
+                  <img
+                    src={currentDog.lister?.dp_url || "/default-avatar.png"}
+                    alt="Lister"
+                    className="w-12 h-12 rounded-full object-cover shadow-sm"
+                  />
+                </div>
+
+                {/* Description */}
+                {currentDog.description && (
+                  <p className="text-gray-700 mb-6 text-base leading-relaxed">
+                    {currentDog.description}
+                  </p>
+                )}
               </div>
             </div>
           </div>
