@@ -173,14 +173,14 @@ const DogDetailModal = ({
                     onClick={() => onLike(currentDog._id)}
                     className="flex items-center gap-2 text-black hover:text-pink-500 transition">
                     <Heart
-                      size={24}
+                      size={25}
                       className={currentDog.isLiked ? "fill-pink-500 text-pink-500" : ""}
                     />
                   </button>
 
                   {/* Location with text */}
                   <div className="flex items-center gap-2 text-black">
-                    <MapPin size={20} className="text-violet-600" />
+                    <MapPin size={22} className="text-violet-600" />
                     <span className="font-semibold text-sm">
                       {placeName || "Nearby area"}
                     </span>
@@ -191,7 +191,7 @@ const DogDetailModal = ({
                 <img
                   src={currentDog.lister?.dp_url || "/default-avatar.png"}
                   alt="Lister"
-                  className="w-12 h-12 rounded-full mt-1 object-cover shadow"
+                  className="w-12 h-12 rounded-full mt-2 object-cover shadow"
                 />
               </div>
 
