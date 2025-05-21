@@ -195,12 +195,12 @@ const DogDetailModal = ({
                   </div>
 
                   {/* Dog Info - All in one line */}
-                  <div className="flex items-center gap-3 text-black font-extrabold text-[16px] capitalize">
+                  <div className="flex items-center gap-2 text-black font-extrabold text-[16px] capitalize">
                     <h2>{currentDog.type}</h2>
-                    <span className="text-[13px] font-bold text-black/70">
+                    <span className="text-[14px] font-bold text-black/70">
                       {currentDog.gender}
                     </span>
-                    <span className="text-[13px] font-bold text-black/70">
+                    <span className="text-[12px] font-bold text-black/70">
                       {currentDog.age}
                     </span>
                   </div>
