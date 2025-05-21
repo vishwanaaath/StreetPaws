@@ -172,7 +172,7 @@ const DogDetailModal = ({
                 {/* Left Content Group */}
                 <div className="flex flex-col gap-1 flex-1">
                   {/* Like and Location Row */}
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
                     <button
                       onClick={() => onLike(currentDog._id)}
                       className="flex items-center gap-2 text-black hover:text-pink-500 transition">
