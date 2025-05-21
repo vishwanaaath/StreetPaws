@@ -166,7 +166,7 @@ const DogDetailModal = ({
 
               {/* Like and Location buttons below image */}
               {/* Like and Location buttons + DP */}
-              <div className="flex justify-between items-center pt-2 py-3">
+              <div className="flex justify-between items-center px-4 py-3">
                 {/* Left section: Like & Locate */}
                 <div className="flex items-center gap-4">
                   <button
@@ -222,7 +222,7 @@ const DogDetailModal = ({
               </div>
 
               {/* Main Content */}
-              <div className="p-4 max-w-2xl mx-auto">
+              <div className="pb-4 px-4 py-4 max-w-2xl mx-auto">
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex-1 space-y-2">
                     <h2 className="text-[1.75rem] font-semibold text-gray-900 capitalize">
