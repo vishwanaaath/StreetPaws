@@ -194,15 +194,15 @@ const DogDetailModal = ({
                     </div>
                   </div>
 
-                  {/* Dog Info */}
-                  <div className="space-y-1">
-                    <h2 className="text-[18px] font-extrabold text-black capitalize">
-                      {currentDog.type}
-                    </h2>
-                    <div className="flex gap-2 text-[12px] font-bold text-black">
-                      <span>{currentDog.gender}</span>
-                      <span>{currentDog.age}</span>
-                    </div>
+                  {/* Dog Info - All in one line */}
+                  <div className="flex items-center gap-3 text-black font-extrabold text-[16px] capitalize">
+                    <h2>{currentDog.type}</h2>
+                    <span className="text-[13px] font-bold text-black/70">
+                      {currentDog.gender}
+                    </span>
+                    <span className="text-[13px] font-bold text-black/70">
+                      {currentDog.age}
+                    </span>
                   </div>
                 </div>
 
