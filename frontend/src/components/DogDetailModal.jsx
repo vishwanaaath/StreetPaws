@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import { X, Heart, Share2, MapPin } from "lucide-react";
 import { useSwipeable } from "react-swipeable";
+import axios from "axios";
 
 const DogDetailModal = ({
   isOpen,
@@ -14,18 +15,18 @@ const DogDetailModal = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const modalRef = useRef(null);
   const contentRef = useRef(null);
+  const [placeName, setPlaceName] = useState("");
+  const [distance, setDistance] = useState(null); // Optional distance calculation
 
-  // Fix: Move currentDog definition here so it's available throughout the component
   const currentDog = filteredDogs[currentIndex];
 
-  // Enhanced swipe handlers with better configuration
   const handlers = useSwipeable({
     onSwipedLeft: () => navigateToDog("next"),
     onSwipedRight: () => navigateToDog("prev"),
     preventDefaultTouchmoveEvent: true,
     trackTouch: true,
     trackMouse: true,
-    delta: 50, // Increased threshold to prevent accidental swipes
+    delta: 50,
     swipeDuration: 500,
   });
 
@@ -56,7 +57,43 @@ const DogDetailModal = ({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  // Debug function to verify swipe works
+  useEffect(() => {
+    const fetchPlace = async () => {
+      if (currentDog?.location?.coordinates) {
+        const [lng, lat] = currentDog.location.coordinates;
+        const name = await getPlaceName(lat, lng);
+        setPlaceName(name);
+        // Optional: Calculate distance from a fixed point or user location here
+      }
+    };
+    fetchPlace();
+  }, [currentDog]);
+
+  const getPlaceName = async (lat, lng) => {
+    try {
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=16&addressdetails=1`,
+        {
+          headers: {
+            "User-Agent": "StreetPaws/1.0 (vishwanathgowda951@gmail.com)",
+          },
+        }
+      );
+
+      const address = response.data.address;
+      return (
+        address.neighbourhood ||
+        address.suburb ||
+        address.village ||
+        address.city_district ||
+        " "
+      );
+    } catch (error) {
+      console.error("Error fetching place name:", error);
+      return "Nearby area";
+    }
+  };
+
   const logSwipe = (direction) => {
     console.log(`Swiped ${direction}`);
     navigateToDog(direction);
@@ -74,18 +111,15 @@ const DogDetailModal = ({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           ref={modalRef}>
-          {/* Single scrollable container for the entire modal */}
           <div className="min-h-full w-full" ref={contentRef} {...handlers}>
-            {/* Close Button - Fixed position */}
             <button
               onClick={onClose}
               className="fixed top-4 right-4 z-50 p-2 bg-white rounded-full shadow-lg">
               <X size={28} />
             </button>
 
-            {/* Content wrapper */}
             <div className="w-full">
-              {/* Image Container - Normal flow, will scroll with content */}
+              {/* Image Section */}
               <div className="w-full h-[70vh] relative bg-gray-100">
                 <motion.img
                   key={currentDog._id}
@@ -99,7 +133,6 @@ const DogDetailModal = ({
                   style={{ objectPosition: "center" }}
                 />
 
-                {/* Debug swipe overlay - transparent buttons for testing */}
                 <div className="absolute inset-0 flex pointer-events-none">
                   <button
                     className="w-1/2 h-full opacity-0 pointer-events-auto"
@@ -114,38 +147,33 @@ const DogDetailModal = ({
                 </div>
               </div>
 
-              {/* Content Section */}
+              {/* Main Content */}
               <div className="p-6 max-w-2xl mx-auto">
-                {/* User Info */}
-                <div className="flex items-center gap-4 mb-6">
+                {/* Top Layout: Place + DP */}
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex-1 space-y-3">
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <MapPin size={18} />
+                      <span>{placeName || "Nearby area"}</span>
+                      {distance && (
+                        <span className="text-sm text-gray-500 ml-2">
+                          • {distance} km
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex gap-4 text-gray-800 text-sm">
+                      <span className="font-medium">{currentDog.type}</span>
+                      <span>{currentDog.gender}</span>
+                      <span>{currentDog.age}</span>
+                    </div>
+                  </div>
+
+                  {/* DP */}
                   <img
                     src={currentDog.lister?.dp_url || "/default-avatar.png"}
                     alt="Lister"
                     className="w-12 h-12 rounded-full object-cover"
                   />
-                  <div>
-                    <p className="font-bold text-lg">
-                      {currentDog.lister?.username || "Unknown user"}
-                    </p>
-                    <p className="text-gray-500 text-sm">
-                      {format(new Date(currentDog.createdAt), "MMM dd, yyyy")}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Dog Details */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <DetailItem label="Name" value={currentDog.name} />
-                  <DetailItem label="Type" value={currentDog.type} />
-                  <DetailItem label="Age" value={currentDog.age} />
-                  <DetailItem label="Gender" value={currentDog.gender} />
-                  <DetailItem label="Size" value={currentDog.size} />
-                  {currentDog.location?.coordinates && (
-                    <div className="col-span-2 flex items-center gap-2 text-gray-600">
-                      <MapPin size={18} />
-                      <span>Location available</span>
-                    </div>
-                  )}
                 </div>
 
                 {/* Description */}
