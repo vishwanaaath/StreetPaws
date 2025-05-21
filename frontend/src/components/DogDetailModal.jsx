@@ -165,37 +165,35 @@ const DogDetailModal = ({
               </div>
 
               {/* Like and Location buttons below image */}
-              <div className="flex justify-between items-center px-4 py-3 ">
-                <div className="flex items-center gap-3">
+              {/* Like and Location buttons + DP */}
+              <div className="flex justify-between items-center px-4 py-3">
+                {/* Left section: Like & Locate */}
+                <div className="flex items-center gap-4">
                   <button
                     onClick={() => onLike(currentDog._id)}
-                    className="flex items-center gap-2 text-gray-600 hover:text-violet-600">
+                    className="flex items-center gap-2 text-gray-500 hover:text-pink-500 transition">
                     <Heart
-                      size={24}
+                      size={22}
                       className={
-                        currentDog.isLiked
-                          ? "fill-pink-500 text-pink-500"
-                          : ""
+                        currentDog.isLiked ? "fill-pink-500 text-pink-500" : ""
                       }
                     />
-                    <span className="font-medium">2</span>
+                    <span className="font-semibold text-sm">2</span>
                   </button>
 
                   <button
-                    className="flex items-center gap-2 text-gray-600 hover:text-violet-600"
                     onClick={() => {
                       if (currentDog?.location?.coordinates) {
-                        // Using the SVG you provided as a component
-                        // This would typically be wrapped in a navigation function
                         console.log("Navigate to map with coordinates:", {
                           id: currentDog._id,
                           lat: currentDog.location.coordinates[1],
                           lng: currentDog.location.coordinates[0],
                         });
                       }
-                    }}>
+                    }}
+                    className="flex items-center gap-2 text-gray-500 hover:text-violet-600 transition">
                     <svg
-                      className="w-5 h-5 text-gray-600"
+                      className="w-5 h-5 text-inherit"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24">
@@ -211,49 +209,50 @@ const DogDetailModal = ({
                         strokeWidth="2"
                         d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                       />
-                    </svg> 
+                    </svg>
                   </button>
                 </div>
+
+                {/* Right section: Lister DP */}
+                <img
+                  src={currentDog.lister?.dp_url || "/default-avatar.png"}
+                  alt="Lister"
+                  className="w-10 h-10 rounded-full object-cover shadow"
+                />
               </div>
 
               {/* Main Content */}
               <div className="p-4 max-w-2xl mx-auto">
-                {/* Top Layout: Info + Profile Picture */}
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex-1 space-y-2">
-                    <div className="text-2xl font-bold text-black capitalize">
+                    <h2 className="text-[1.75rem] font-semibold text-gray-900 capitalize">
                       {currentDog.type}
+                    </h2>
+
+                    <div className="flex gap-4 text-sm text-gray-500">
+                      <span className="text-base font-medium">
+                        {currentDog.age}
+                      </span>
+                      <span className="text-xs">{currentDog.gender}</span>
                     </div>
 
-                    <div className="flex gap-4 text-gray-600 text-sm">
-                      <span>{currentDog.gender}</span>
-                      <span>{currentDog.age}</span>
-                    </div>
-
-                    <div className="flex items-center gap-2 text-gray-600 text-sm mt-2">
-                      <MapPin size={18} />
-                      <span className="font-semibold text-gray-800">
+                    <div className="flex items-center gap-2 text-gray-600 text-sm mt-1">
+                      <MapPin size={16} />
+                      <span className="font-medium text-gray-800">
                         {placeName || "Nearby area"}
                       </span>
                       {distance && (
-                        <span className="text-sm text-gray-500 ml-2">
+                        <span className="text-xs text-gray-500 ml-2">
                           • {distance} km
                         </span>
                       )}
                     </div>
                   </div>
-
-                  {/* Profile Picture */}
-                  <img
-                    src={currentDog.lister?.dp_url || "/default-avatar.png"}
-                    alt="Lister"
-                    className="w-12 h-12 rounded-full object-cover shadow-sm"
-                  />
                 </div>
 
                 {/* Description */}
                 {currentDog.description && (
-                  <p className="text-gray-700 mb-6 text-base leading-relaxed">
+                  <p className="text-gray-700 text-[15px] leading-relaxed tracking-tight">
                     {currentDog.description}
                   </p>
                 )}
