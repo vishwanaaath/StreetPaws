@@ -223,39 +223,30 @@ const DogDetailModal = ({
 
               {/* Main Content */}
               <div className="pb-4 px-4 py-4 max-w-2xl mx-auto">
-                <div className="flex justify-between items-start mb-6">
-                  <div className="flex-1 space-y-2">
-                    <h2 className="text-[1.75rem] font-semibold text-gray-900 capitalize">
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex-1 space-y-1.5">
+                    <h2 className="text-lg font-bold text-black capitalize leading-snug tracking-tight">
                       {currentDog.type}
                     </h2>
 
-                    <div className="flex gap-4 text-sm text-gray-500">
-                      <span className="text-base font-medium">
-                        {currentDog.age}
-                      </span>
-                      <span className="text-xs">{currentDog.gender}</span>
+                    <div className="flex gap-3 text-sm text-gray-600 font-medium">
+                      <span>{currentDog.age}</span>
+                      <span className="text-gray-500">{currentDog.gender}</span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-gray-600 text-sm mt-1">
-                      <MapPin size={16} />
-                      <span className="font-medium text-gray-800">
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <MapPin size={15} className="text-gray-500" />
+                      <span className="font-semibold text-gray-800">
                         {placeName || "Nearby area"}
                       </span>
                       {distance && (
-                        <span className="text-xs text-gray-500 ml-2">
+                        <span className="text-sm text-gray-500 ml-1">
                           • {distance} km
                         </span>
                       )}
                     </div>
                   </div>
                 </div>
-
-                {/* Description */}
-                {currentDog.description && (
-                  <p className="text-gray-700 text-[15px] leading-relaxed tracking-tight">
-                    {currentDog.description}
-                  </p>
-                )}
               </div>
             </div>
           </div>
