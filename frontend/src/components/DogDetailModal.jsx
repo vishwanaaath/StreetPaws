@@ -16,7 +16,8 @@ const DogDetailModal = ({
   const modalRef = useRef(null);
   const contentRef = useRef(null);
   const [placeName, setPlaceName] = useState("");
-  const [distance, setDistance] = useState(null); // Optional distance calculation
+  const [distance, setDistance] = useState(null);
+  const [imageAspectRatio, setImageAspectRatio] = useState(null);
 
   const currentDog = filteredDogs[currentIndex];
 
@@ -63,10 +64,21 @@ const DogDetailModal = ({
         const [lng, lat] = currentDog.location.coordinates;
         const name = await getPlaceName(lat, lng);
         setPlaceName(name);
-        // Optional: Calculate distance from a fixed point or user location here
       }
     };
     fetchPlace();
+  }, [currentDog]);
+
+  // Add effect to check image dimensions
+  useEffect(() => {
+    if (currentDog?.imageUrl) {
+      const img = new Image();
+      img.onload = () => {
+        const ratio = img.width / img.height;
+        setImageAspectRatio(ratio);
+      };
+      img.src = `https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${currentDog.imageUrl}`;
+    }
   }, [currentDog]);
 
   const getPlaceName = async (lat, lng) => {
@@ -101,6 +113,9 @@ const DogDetailModal = ({
 
   if (!currentDog) return null;
 
+  // Determine if image is tall (aspect ratio < 1 means height > width)
+  const isTallImage = imageAspectRatio !== null && imageAspectRatio < 1;
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -114,18 +129,21 @@ const DogDetailModal = ({
           <div className="min-h-full w-full" ref={contentRef} {...handlers}>
             <button
               onClick={onClose}
-              className="fixed top-4 right-4 z-50 p-2 bg-white rounded-full shadow-lg">
-              <X size={28} />
+              className="fixed top-4 left-4 z-50 p-2 bg-white rounded-full shadow-lg">
+              <X size={22} />
             </button>
 
             <div className="w-full">
-              {/* Image Section */}
-              <div className="w-full h-[70vh] relative bg-gray-100">
+              {/* Image Section with conditional height based on aspect ratio */}
+              <div
+                className={`w-full ${
+                  isTallImage ? "h-[70vh]" : "h-auto"
+                } relative bg-gray-100`}>
                 <motion.img
                   key={currentDog._id}
                   src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${currentDog.imageUrl}`}
                   alt={currentDog.type}
-                  className="w-full h-full rounded-4xl object-cover"
+                  className="w-full h-full rounded-2xl object-cover"
                   initial={{ scale: 0.95 }}
                   animate={{ scale: 1 }}
                   exit={{ scale: 0.95 }}
@@ -151,20 +169,27 @@ const DogDetailModal = ({
               <div className="p-6 max-w-2xl mx-auto">
                 {/* Top Layout: Place + DP */}
                 <div className="flex justify-between items-start mb-6">
-                  <div className="flex-1 space-y-3">
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <MapPin size={18} />
-                      <span>{placeName || "Nearby area"}</span>
+                  <div className="flex-1 space-y-4">
+                    <div className="flex items-center gap-2">
+                      <MapPin size={18} className="text-gray-600" />
+                      <span className="font-bold text-black">
+                        {placeName || "Nearby area"}
+                      </span>
                       {distance && (
                         <span className="text-sm text-gray-500 ml-2">
                           • {distance} km
                         </span>
                       )}
                     </div>
-                    <div className="flex gap-4 text-gray-800 text-sm">
-                      <span className="font-medium">{currentDog.type}</span>
-                      <span>{currentDog.gender}</span>
-                      <span>{currentDog.age}</span>
+
+                    <div className="space-y-1">
+                      <div className="font-bold text-black">
+                        {currentDog.type}
+                      </div>
+                      <div className="flex gap-4 text-gray-800 text-sm">
+                        <span>{currentDog.gender}</span>
+                        <span>{currentDog.age}</span>
+                      </div>
                     </div>
                   </div>
 
