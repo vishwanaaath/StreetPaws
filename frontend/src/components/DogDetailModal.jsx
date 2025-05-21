@@ -165,9 +165,9 @@ const DogDetailModal = ({
               </div>
 
               {/* Combined Content Section */}
-              <div className="flex justify-between items-start px-4 pt-4 pb-2">
+              <div className="flex justify-between items-start px-4 pt-3 pb-2">
                 {/* Left Content Group */}
-                <div className="flex flex-col gap-3 flex-1">
+                <div className="flex flex-col gap-1 flex-1">
                   {/* Like and Location Row */}
                   <div className="flex items-center gap-4">
                     <button
