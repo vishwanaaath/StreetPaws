@@ -178,7 +178,7 @@ const DogDetailModal = ({
                         currentDog.isLiked ? "fill-pink-500 text-pink-500" : ""
                       }
                     />
-                    <span className="font-semibold text-sm">2</span>
+                    {/* <span className="font-semibold text-sm">2</span> */}
                   </button>
 
                   <button
