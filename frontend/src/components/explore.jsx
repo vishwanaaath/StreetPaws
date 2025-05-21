@@ -18,7 +18,7 @@ const colorFilters = [
 ];
 
 const Explore = () => {
-  // State management
+  // State 
   const [dogsData, setDogsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
