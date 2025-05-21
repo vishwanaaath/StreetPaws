@@ -129,7 +129,7 @@ const DogDetailModal = ({
             <button
               onClick={onClose}
               className="fixed top-4 left-4 z-50 p-2 bg-white rounded-full shadow-lg">
-              <X size={22} />
+              <X size={20} />
             </button>
 
             <div className="w-full">
