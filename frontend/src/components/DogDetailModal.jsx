@@ -33,6 +33,12 @@ const DogDetailModal = ({
     }
   }, [dog, filteredDogs]);
 
+  // Make sure currentIndex is valid
+  const safeCurrentIndex = Math.min(
+    Math.max(0, currentIndex),
+    filteredDogs.length - 1
+  );
+
   // Navigate to next/previous dog
   const navigateToDog = (direction) => {
     if (!Array.isArray(filteredDogs) || filteredDogs.length === 0) return;
@@ -67,7 +73,7 @@ const DogDetailModal = ({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, safeCurrentIndex, filteredDogs]);
+  }, [isOpen, safeCurrentIndex, filteredDogs, onClose]);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -84,11 +90,6 @@ const DogDetailModal = ({
   if (!dog || !Array.isArray(filteredDogs) || filteredDogs.length === 0)
     return null;
 
-  // Make sure currentIndex is valid
-  const safeCurrentIndex = Math.min(
-    Math.max(0, currentIndex),
-    filteredDogs.length - 1
-  );
   const currentDog = filteredDogs[safeCurrentIndex];
   if (!currentDog) return null;
 
