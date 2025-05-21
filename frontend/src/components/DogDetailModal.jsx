@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
-import { X, Heart, Share2, MoreHorizontal, MapPin } from "lucide-react";
+import { X, Heart, Share2, MapPin } from "lucide-react";
 import { useSwipeable } from "react-swipeable";
 
 const DogDetailModal = ({
@@ -14,88 +14,79 @@ const DogDetailModal = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const modalRef = useRef(null);
 
-  useEffect(() => {
-    if (dog && Array.isArray(filteredDogs) && filteredDogs.length > 0) {
-      const index = filteredDogs.findIndex((d) => d?._id === dog?._id);
-      setCurrentIndex(index >= 0 ? index : 0);
-    }
-  }, [dog, filteredDogs]);
-
-  // Fixed swipe handlers with better configuration
+  // Swipe handlers with better configuration
   const handlers = useSwipeable({
     onSwipedLeft: () => navigateToDog("next"),
     onSwipedRight: () => navigateToDog("prev"),
-    preventScrollOnSwipe: true,
+    preventDefaultTouchmoveEvent: true,
     trackTouch: true,
-    delta: 30, // More sensitive swipe
-    touchEventOptions: { passive: true },
+    trackMouse: false,
+    delta: 30,
   });
 
-  const navigateToDog = (direction) => {
-    if (!Array.isArray(filteredDogs) || filteredDogs.length === 0) return;
+  useEffect(() => {
+    if (dog && filteredDogs?.length) {
+      const index = filteredDogs.findIndex((d) => d?._id === dog?._id);
+      setCurrentIndex(Math.max(index, 0));
+    }
+  }, [dog, filteredDogs]);
 
+  const navigateToDog = (direction) => {
     setCurrentIndex((prev) => {
-      if (direction === "next" && prev < filteredDogs.length - 1)
-        return prev + 1;
-      if (direction === "prev" && prev > 0) return prev - 1;
+      if (direction === "next")
+        return Math.min(prev + 1, filteredDogs.length - 1);
+      if (direction === "prev") return Math.max(prev - 1, 0);
       return prev;
     });
   };
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (isOpen) {
-        if (e.key === "ArrowRight") navigateToDog("next");
-        else if (e.key === "ArrowLeft") navigateToDog("prev");
-        else if (e.key === "Escape") onClose();
-      }
+      if (e.key === "ArrowRight") navigateToDog("next");
+      if (e.key === "ArrowLeft") navigateToDog("prev");
+      if (e.key === "Escape") onClose();
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    if (isOpen) window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, currentIndex, filteredDogs, onClose]);
+  }, [isOpen, onClose]);
 
-  if (!dog || !Array.isArray(filteredDogs) || filteredDogs.length === 0)
-    return null;
-
-  const currentDog = filteredDogs[currentIndex];
   if (!currentDog) return null;
+  const currentDog = filteredDogs[currentIndex];
 
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 bg-white overflow-y-auto"
+          className="fixed inset-0 z-50 bg-white"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}>
-          {/* Swipe container needs to be full height */}
-          <div
-            {...handlers}
-            className="h-full w-full"
-            ref={modalRef}
-            style={{ touchAction: "pan-y" }} // Allow vertical scrolling
-          >
+          transition={{ duration: 0.2 }}>
+          <div {...handlers} className="h-full w-full overflow-hidden">
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="fixed top-4 right-4 z-20 p-2 hover:bg-gray-100 rounded-full bg-white shadow-lg"
-              aria-label="Close modal">
+              className="fixed top-4 right-4 z-30 p-2 bg-white rounded-full shadow-lg">
               <X size={28} />
             </button>
 
-            {/* Image Section with max height */}
-            <div className="w-full flex justify-center items-start max-h-[70vh] overflow-hidden">
-              <img
+            {/* Image Container */}
+            <div className="w-full h-[70vh] relative overflow-hidden bg-gray-100">
+              <motion.img
+                key={currentDog._id}
                 src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${currentDog.imageUrl}`}
                 alt={currentDog.type}
-                className="w-auto h-auto max-w-full object-contain max-h-[70vh]"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain"
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.95 }}
+                transition={{ duration: 0.2 }}
               />
             </div>
 
             {/* Content Section */}
-            <div className="p-6 max-w-2xl mx-auto w-full">
+            <div className="p-6 max-w-2xl mx-auto overflow-y-auto h-[calc(30vh-56px)]">
               {/* User Info */}
               <div className="flex items-center gap-4 mb-6">
                 <img
