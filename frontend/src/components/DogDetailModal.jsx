@@ -166,9 +166,9 @@ const DogDetailModal = ({
               </div>
 
               {/* Main Content */}
-              <div className="p-6 max-w-2xl mx-auto">
+              <div className="p-4 max-w-2xl mx-auto">
                 {/* Top Layout: Place + DP */}
-                <div className="flex justify-between items-start mb-6">
+                <div className="flex justify-between items-start mb-4">
                   <div className="flex-1 space-y-4">
                     <div className="flex items-center gap-2">
                       <MapPin size={18} className="text-gray-600" />
@@ -201,12 +201,7 @@ const DogDetailModal = ({
                   />
                 </div>
 
-                {/* Description */}
-                {currentDog.description && (
-                  <p className="text-gray-700 mb-6 leading-relaxed">
-                    {currentDog.description}
-                  </p>
-                )}
+             
 
                 {/* Action Buttons */}
                 <div className="flex gap-4 border-t pt-6 pb-12">
