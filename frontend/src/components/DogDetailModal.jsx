@@ -168,11 +168,11 @@ const DogDetailModal = ({
               {/* Main Content */}
               <div className="p-4 max-w-2xl mx-auto">
                 {/* Top Layout: Place + DP */}
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex-1 space-y-4">
-                    <div className="flex items-center gap-2">
-                      <MapPin size={18} className="text-gray-600" />
-                      <span className="font-bold text-black">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center gap-2 text-gray-600 text-sm">
+                      <MapPin size={18} />
+                      <span className="font-semibold text-gray-800">
                         {placeName || "Nearby area"}
                       </span>
                       {distance && (
@@ -182,14 +182,13 @@ const DogDetailModal = ({
                       )}
                     </div>
 
-                    <div className="space-y-1">
-                      <div className="font-bold text-black">
-                        {currentDog.type}
-                      </div>
-                      <div className="flex gap-4 text-gray-800 text-sm">
-                        <span>{currentDog.gender}</span>
-                        <span>{currentDog.age}</span>
-                      </div>
+                    <div className="text-2xl font-bold text-black capitalize">
+                      {currentDog.type}
+                    </div>
+
+                    <div className="flex gap-4 text-gray-600 text-sm">
+                      <span>{currentDog.gender}</span>
+                      <span>{currentDog.age}</span>
                     </div>
                   </div>
 
@@ -197,14 +196,19 @@ const DogDetailModal = ({
                   <img
                     src={currentDog.lister?.dp_url || "/default-avatar.png"}
                     alt="Lister"
-                    className="w-12 h-12 rounded-full object-cover"
+                    className="w-12 h-12 rounded-full object-cover shadow-sm"
                   />
                 </div>
 
-             
+                {/* Description */}
+                {currentDog.description && (
+                  <p className="text-gray-700 mb-6 text-base leading-relaxed">
+                    {currentDog.description}
+                  </p>
+                )}
 
                 {/* Action Buttons */}
-                <div className="flex gap-4 border-t pt-6 pb-12">
+                <div className="flex gap-6 border-t pt-6 pb-12">
                   <button
                     onClick={() => onLike(currentDog._id)}
                     className="flex items-center gap-2 text-gray-600 hover:text-violet-600">
@@ -216,11 +220,11 @@ const DogDetailModal = ({
                           : ""
                       }
                     />
-                    Like
+                    <span className="font-medium">Like</span>
                   </button>
                   <button className="flex items-center gap-2 text-gray-600 hover:text-violet-600">
                     <Share2 size={24} />
-                    Share
+                    <span className="font-medium">Share</span>
                   </button>
                 </div>
               </div>
