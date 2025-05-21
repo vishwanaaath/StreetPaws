@@ -173,7 +173,7 @@ const DogDetailModal = ({
                     onClick={() => onLike(currentDog._id)}
                     className="flex items-center gap-2 text-black hover:text-pink-500 transition">
                     <Heart
-                      size={22}
+                      size={28}
                       className={
                         currentDog.isLiked ? "fill-pink-500 text-pink-500" : ""
                       }
@@ -193,7 +193,7 @@ const DogDetailModal = ({
                     }}
                     className="flex items-center gap-2 text-black hover:text-violet-600 transition">
                     <svg
-                      className="w-5 h-5 text-inherit"
+                      className="w-8 h-8 text-inherit"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24">
