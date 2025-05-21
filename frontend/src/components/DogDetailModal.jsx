@@ -188,7 +188,7 @@ const DogDetailModal = ({
 
                     <div className="flex items-center gap-2 text-black">
                       <MapPin size={23} className="text-violet-600" />
-                      <span className="font-semibold text-base">
+                      <span className="font-semibold text-[20px">
                         {placeName || "Nearby area"}
                       </span>
                     </div>
