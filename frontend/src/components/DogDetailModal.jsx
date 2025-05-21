@@ -187,8 +187,8 @@ const DogDetailModal = ({
                     </button>
 
                     <div className="flex items-center gap-1 text-black">
-                      <MapPin size={20} className="text-violet-600" />
-                      <span className="font-semibold text-[20px">
+                      <MapPin size={21} className="text-violet-600" />
+                      <span className="font-semibold text-[18px]">
                         {placeName || "Nearby area"}
                       </span>
                     </div>
@@ -199,7 +199,7 @@ const DogDetailModal = ({
                     <h2 className="text-[18px] font-extrabold text-black capitalize">
                       {currentDog.type}
                     </h2>
-                    <div className="flex gap-3 text-[12px] font-bold text-black">
+                    <div className="flex gap-2 text-[12px] font-bold text-black">
                       <span>{currentDog.gender}</span>
                       <span>{currentDog.age}</span>
                     </div>
