@@ -248,6 +248,40 @@ const DogDetailModal = ({
                   Bronze Badge
                 </div>
               </div>
+              <div className="flex gap-3 items-center">
+                {/* Gold */}
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-lg"
+                  style={{
+                    background: "linear-gradient(135deg, #FFD700, #FFA500)",
+                    boxShadow: "0 0 8px rgba(255, 215, 0, 0.7)",
+                    border: "2px solid #fff",
+                  }}>
+                  Gold
+                </div>
+
+                {/* Silver */}
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-md"
+                  style={{
+                    background: "linear-gradient(135deg, #C0C0C0, #A9A9A9)",
+                    boxShadow: "0 0 6px rgba(192,192,192, 0.6)",
+                    border: "2px solid #fff",
+                  }}>
+                  Silver
+                </div>
+
+                {/* Bronze */}
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-white shadow"
+                  style={{
+                    background: "linear-gradient(135deg, #CD7F32, #8B4513)",
+                    boxShadow: "0 0 4px rgba(205, 127, 50, 0.5)",
+                    border: "2px solid #fff",
+                  }}>
+                  Bronze
+                </div>
+              </div>
 
               {/* Removed redundant content section */}
             </div>
