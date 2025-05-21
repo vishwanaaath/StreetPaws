@@ -12,21 +12,31 @@ import {
 } from "lucide-react";
 import { useSwipeable } from "react-swipeable";
 
-const DogDetailModal = ({ isOpen, onClose, dog, onLike, filteredDogs }) => {
+const DogDetailModal = ({
+  isOpen,
+  onClose,
+  dog,
+  onLike,
+  filteredDogs = [],
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const modalRef = useRef(null);
-  const startIndex = filteredDogs.findIndex((d) => d._id === dog?._id);
+  const startIndex = Array.isArray(filteredDogs)
+    ? filteredDogs.findIndex((d) => d?._id === dog?._id)
+    : -1;
 
   // Initialize current index when dog changes
   useEffect(() => {
-    if (dog && filteredDogs) {
-      const index = filteredDogs.findIndex((d) => d._id === dog._id);
+    if (dog && Array.isArray(filteredDogs) && filteredDogs.length > 0) {
+      const index = filteredDogs.findIndex((d) => d?._id === dog?._id);
       setCurrentIndex(index >= 0 ? index : 0);
     }
   }, [dog, filteredDogs]);
 
   // Navigate to next/previous dog
   const navigateToDog = (direction) => {
+    if (!Array.isArray(filteredDogs) || filteredDogs.length === 0) return;
+
     if (direction === "next" && currentIndex < filteredDogs.length - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else if (direction === "prev" && currentIndex > 0) {
@@ -57,7 +67,7 @@ const DogDetailModal = ({ isOpen, onClose, dog, onLike, filteredDogs }) => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, currentIndex]);
+  }, [isOpen, safeCurrentIndex, filteredDogs]);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -71,11 +81,19 @@ const DogDetailModal = ({ isOpen, onClose, dog, onLike, filteredDogs }) => {
     };
   }, [isOpen]);
 
-  if (!dog || !filteredDogs || filteredDogs.length === 0) return null;
+  if (!dog || !Array.isArray(filteredDogs) || filteredDogs.length === 0)
+    return null;
 
-  const currentDog = filteredDogs[currentIndex];
-  const hasNext = currentIndex < filteredDogs.length - 1;
-  const hasPrev = currentIndex > 0;
+  // Make sure currentIndex is valid
+  const safeCurrentIndex = Math.min(
+    Math.max(0, currentIndex),
+    filteredDogs.length - 1
+  );
+  const currentDog = filteredDogs[safeCurrentIndex];
+  if (!currentDog) return null;
+
+  const hasNext = safeCurrentIndex < filteredDogs.length - 1;
+  const hasPrev = safeCurrentIndex > 0;
 
   return (
     <AnimatePresence initial={false}>
@@ -124,30 +142,31 @@ const DogDetailModal = ({ isOpen, onClose, dog, onLike, filteredDogs }) => {
 
             {/* Navigation Dots */}
             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
-              {filteredDogs.map((_, index) => (
-                <div
-                  key={index}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    index === currentIndex ? "bg-white" : "bg-gray-500"
-                  }`}
-                />
-              ))}
+              {Array.isArray(filteredDogs) &&
+                filteredDogs.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      index === safeCurrentIndex ? "bg-white" : "bg-gray-500"
+                    }`}
+                  />
+                ))}
             </div>
 
             {/* Content Container */}
             <div className="h-full w-full flex flex-col">
               <AnimatePresence initial={false} custom={currentIndex}>
                 <motion.div
-                  key={currentIndex}
-                  custom={currentIndex}
+                  key={safeCurrentIndex}
+                  custom={safeCurrentIndex}
                   initial={{
                     opacity: 0,
-                    x: currentIndex > startIndex ? 100 : -100,
+                    x: safeCurrentIndex > startIndex ? 100 : -100,
                   }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{
                     opacity: 0,
-                    x: currentIndex > startIndex ? -100 : 100,
+                    x: safeCurrentIndex > startIndex ? -100 : 100,
                   }}
                   transition={{ duration: 0.3 }}
                   className="h-full w-full flex flex-col">
