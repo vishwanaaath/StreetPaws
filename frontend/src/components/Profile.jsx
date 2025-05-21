@@ -174,7 +174,7 @@ const DogDetailModal = ({
                       size={24}
                       className={
                         currentDog.isLiked
-                          ? "fill-violet-600 text-violet-600"
+                          ? "fill-pink-500 text-pink-500"
                           : ""
                       }
                     />
