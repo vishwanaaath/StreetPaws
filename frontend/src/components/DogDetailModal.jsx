@@ -14,14 +14,18 @@ const DogDetailModal = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const modalRef = useRef(null);
 
-  // Swipe handlers with better configuration
+  // Fix: Move currentDog definition here so it's available throughout the component
+  const currentDog = filteredDogs[currentIndex];
+
+  // Improved swipe handlers with better configuration
   const handlers = useSwipeable({
     onSwipedLeft: () => navigateToDog("next"),
     onSwipedRight: () => navigateToDog("prev"),
     preventDefaultTouchmoveEvent: true,
     trackTouch: true,
-    trackMouse: false,
-    delta: 30,
+    trackMouse: true, // Enable mouse tracking for better testing
+    delta: 10, // Lower threshold to make swipes more responsive
+    swipeDuration: 500, // Maximum time in ms to detect a swipe
   });
 
   useEffect(() => {
@@ -52,7 +56,6 @@ const DogDetailModal = ({
   }, [isOpen, onClose]);
 
   if (!currentDog) return null;
-  const currentDog = filteredDogs[currentIndex];
 
   return (
     <AnimatePresence>
@@ -63,7 +66,10 @@ const DogDetailModal = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}>
-          <div {...handlers} className="h-full w-full overflow-hidden">
+          <div
+            {...handlers}
+            className="h-full w-full overflow-hidden"
+            ref={modalRef}>
             {/* Close Button */}
             <button
               onClick={onClose}
@@ -71,17 +77,18 @@ const DogDetailModal = ({
               <X size={28} />
             </button>
 
-            {/* Image Container */}
+            {/* Image Container - Fixed to display center portion and max height */}
             <div className="w-full h-[70vh] relative overflow-hidden bg-gray-100">
               <motion.img
                 key={currentDog._id}
                 src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${currentDog.imageUrl}`}
                 alt={currentDog.type}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-full max-h-full object-contain"
+                className="w-full h-full object-cover"
                 initial={{ scale: 0.95 }}
                 animate={{ scale: 1 }}
                 exit={{ scale: 0.95 }}
                 transition={{ duration: 0.2 }}
+                style={{ objectPosition: "center" }}
               />
             </div>
 
