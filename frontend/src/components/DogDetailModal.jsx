@@ -21,12 +21,14 @@ const DogDetailModal = ({
     }
   }, [dog, filteredDogs]);
 
+  // Fixed swipe handlers with better configuration
   const handlers = useSwipeable({
     onSwipedLeft: () => navigateToDog("next"),
     onSwipedRight: () => navigateToDog("prev"),
     preventScrollOnSwipe: true,
     trackTouch: true,
-    delta: 50,
+    delta: 30, // More sensitive swipe
+    touchEventOptions: { passive: true },
   });
 
   const navigateToDog = (direction) => {
@@ -68,7 +70,13 @@ const DogDetailModal = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}>
-          <div {...handlers} className="min-h-full w-full" ref={modalRef}>
+          {/* Swipe container needs to be full height */}
+          <div
+            {...handlers}
+            className="h-full w-full"
+            ref={modalRef}
+            style={{ touchAction: "pan-y" }} // Allow vertical scrolling
+          >
             {/* Close Button */}
             <button
               onClick={onClose}
@@ -77,12 +85,12 @@ const DogDetailModal = ({
               <X size={28} />
             </button>
 
-            {/* Image Section - Original Size */}
-            <div className="w-full flex justify-center items-start">
+            {/* Image Section with max height */}
+            <div className="w-full flex justify-center items-start max-h-[70vh] overflow-hidden">
               <img
                 src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${currentDog.imageUrl}`}
                 alt={currentDog.type}
-                className="w-auto h-auto max-w-full object-contain"
+                className="w-auto h-auto max-w-full object-contain max-h-[70vh]"
               />
             </div>
 
