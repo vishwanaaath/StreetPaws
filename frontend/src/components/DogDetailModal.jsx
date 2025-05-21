@@ -165,7 +165,7 @@ const DogDetailModal = ({
               </div>
 
               {/* Like and Location buttons below image */}
-              <div className="flex justify-between items-center px-4 py-3 border-b">
+              <div className="flex justify-between items-center px-4 py-3 ">
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => onLike(currentDog._id)}
