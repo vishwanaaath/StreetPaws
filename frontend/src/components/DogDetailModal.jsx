@@ -114,7 +114,6 @@ const DogDetailModal = ({
 
   // Determine if image is tall (aspect ratio < 1 means height > width)
   const isTallImage = imageAspectRatio !== null && imageAspectRatio < 1;
-
   return (
     <AnimatePresence>
       {isOpen && (
@@ -133,7 +132,8 @@ const DogDetailModal = ({
             </button>
 
             <div className="w-full">
-              {/* Image Section with conditional height based on aspect ratio */}
+              {/* Image Section */}
+
               <div
                 className={`w-full ${
                   isTallImage ? "h-[70vh]" : "h-auto"
@@ -164,67 +164,60 @@ const DogDetailModal = ({
                 </div>
               </div>
 
-              {/* Like and Location buttons below image */}
-              {/* Like and Location buttons + DP */}
-               {/* Top Action Bar */}
-               <div className="flex justify-between items-center px-4 py-1 pt-2">
-                <div className="flex items-center gap-4">
-                  <button
-                    onClick={() => onLike(currentDog._id)}
-                    className="flex items-center gap-2 text-black hover:text-pink-500 transition">
-                    <Heart
-                      size={25}
-                      className={currentDog.isLiked ? "fill-pink-500 text-pink-500" : ""}
-                    />
-                  </button>
+              {/* Combined Content Section */}
+              <div className="flex justify-between items-start px-4 pt-4 pb-2">
+                {/* Left Content Group */}
+                <div className="flex flex-col gap-3 flex-1">
+                  {/* Like and Location Row */}
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={() => onLike(currentDog._id)}
+                      className="flex items-center gap-2 text-black hover:text-pink-500 transition">
+                      <Heart
+                        size={25}
+                        className={
+                          currentDog.isLiked
+                            ? "fill-pink-500 text-pink-500"
+                            : ""
+                        }
+                      />
+                    </button>
 
-                  {/* Location with text */}
-                  <div className="flex items-center gap-2 text-black">
-                    <MapPin size={22} className="text-violet-600" />
-                    <span className="font-semibold text-sm">
-                      {placeName || "Nearby area"}
-                    </span>
+                    <div className="flex items-center gap-2 text-black">
+                      <MapPin size={22} className="text-violet-600" />
+                      <span className="font-semibold text-sm">
+                        {placeName || "Nearby area"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Dog Info */}
+                  <div className="space-y-1">
+                    <h2 className="text-xl font-extrabold text-black capitalize">
+                      {currentDog.type}
+                    </h2>
+                    <div className="flex gap-3 text-sm font-bold text-black">
+                      <span>{currentDog.age}</span>
+                      <span>{currentDog.gender}</span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Profile Picture */}
+                {/* Right DP */}
                 <img
                   src={currentDog.lister?.dp_url || "/default-avatar.png"}
                   alt="Lister"
-                  className="w-12 h-12 rounded-full mt-2 object-cover shadow"
+                  className="w-14 h-14 rounded-full object-cover shadow ml-4"
                 />
               </div>
 
-              {/* Main Content */}
-              <div className="pb-4 px-4 max-w-2xl mx-auto">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex-1 space-y-1.5">
-                    <h2 className="text-xl font-extrabold text-black capitalize leading-snug tracking-tight">
-                      {currentDog.type}
-                    </h2>
-
-                    <div className="flex gap-3 text-sm font-bold text-black">
-                      <span>{currentDog.age}</span>
-                      <span className="text-black">{currentDog.gender}</span>
-                    </div>
-
-                    {/* Removed location section from here */}
-                  </div>
-                </div>
-              </div>
+              {/* Removed redundant content section */}
             </div>
           </div>
         </motion.div>
       )}
     </AnimatePresence>
   );
-};
-
-const DetailItem = ({ label, value }) => (
-  <div className="space-y-1">
-    <p className="text-sm font-semibold text-gray-800">{label}</p>
-    <p className="font-bold text-black">{value || "Unknown"}</p>
-  </div>
-);
+}
 
 export default DogDetailModal;
