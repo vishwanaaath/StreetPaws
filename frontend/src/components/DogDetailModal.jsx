@@ -177,7 +177,7 @@ const DogDetailModal = ({
                       onClick={() => onLike(currentDog._id)}
                       className="flex items-center gap-2 text-black hover:text-pink-500 transition">
                       <Heart
-                        size={23}
+                        size={22}
                         className={
                           currentDog.isLiked
                             ? "fill-pink-500 text-pink-500"
@@ -187,8 +187,8 @@ const DogDetailModal = ({
                     </button>
 
                     <div className="flex items-center gap-1 text-black">
-                      <MapPin size={21} className="text-violet-600" />
-                      <span className="font-semibold text-[18px]">
+                      <MapPin size={20} className="text-violet-600" />
+                      <span className="font-semibold text-base">
                         {placeName || "Nearby area"}
                       </span>
                     </div>
