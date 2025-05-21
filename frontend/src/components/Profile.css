@@ -8,6 +8,97 @@
   } 
 
 
+/* Add these styles to your existing Profile.css file */
+
+/* Hide scrollbar for the filter container */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom column gap for the masonry layout */
+.custom-column-gap {
+  column-gap: 0.5rem;
+}
+
+/* Image item styles */
+.image-item {
+  margin-bottom: 0.5rem;
+}
+
+/* Modal animation effects */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Modal overlay animation */
+.modal-overlay {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Modal content animation */
+.modal-content {
+  animation: scaleIn 0.2s ease-out;
+}
+
+/* Like button animation */
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.heart-beat {
+  animation: heartBeat 0.8s ease-in-out;
+}
+
+/* Transition for images */
+img.dog-image {
+  transition: all 0.2s ease-in-out;
+}
+
+img.dog-image:hover {
+  filter: brightness(95%);
+}
+
+/* Mobile optimization */
+@media (max-width: 640px) {
+  .modal-content {
+    width: 95%;
+    max-height: 90vh;
+  }
+}
+
 
   /* In Profile.css */
 /* Update your CSS to include */

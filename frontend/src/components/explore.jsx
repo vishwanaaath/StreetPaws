@@ -6,6 +6,7 @@ import { useSwipeable } from "react-swipeable";
 import { motion } from "framer-motion";
 import { throttle } from "lodash";
 import "./Profile.css";
+import DogDetailModal from "./DogDetailModal"; // Import the modal component
 
 const colorFilters = [
   "All",
@@ -25,6 +26,10 @@ const Explore = () => {
   const [selectedColor, setSelectedColor] = useState("All");
   const [underlineProps, setUnderlineProps] = useState({ left: 0, width: 0 });
   const [errorMessage, setErrorMessage] = useState(null);
+
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDog, setSelectedDog] = useState(null);
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -49,7 +54,7 @@ const Explore = () => {
           );
           setDogsData(sortedData);
           console.log(sortedData);
-          
+
           console.log(`Fetched ${sortedData.length} dogs`);
         } else {
           throw new Error("Invalid data format received from API");
@@ -182,6 +187,43 @@ const Explore = () => {
     (dog) => selectedColor === "All" || dog.type === selectedColor
   );
 
+  // Handle dog click to open modal
+  const handleDogClick = (dog) => {
+    setSelectedDog(dog);
+    setIsModalOpen(true);
+  };
+
+  // Handle modal close
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // Handle like functionality
+  const handleLike = async (dogId) => {
+    try {
+      // You can implement actual like functionality here with API call
+      console.log("Liked dog:", dogId);
+
+      // For demo purposes, let's toggle like status locally
+      setDogsData((prevDogs) =>
+        prevDogs.map((dog) =>
+          dog._id === dogId ? { ...dog, isLiked: !dog.isLiked } : dog
+        )
+      );
+
+      // Also update selected dog if it's the one being liked
+      if (selectedDog && selectedDog._id === dogId) {
+        setSelectedDog((prev) => ({
+          ...prev,
+          isLiked: !prev.isLiked,
+        }));
+      }
+    } catch (error) {
+      setErrorMessage("Failed to like dog. Please try again.");
+      setTimeout(() => setErrorMessage(null), 3000);
+    }
+  };
+
   return (
     <div className="p-2 sm:p-4">
       {/* Error Message Toast */}
@@ -263,27 +305,38 @@ const Explore = () => {
           {filteredDogs.map((dog) => (
             <div
               key={dog._id}
-              className="break-inside-avoid relative group mb-2">
-              <img
-                src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
-                alt={dog.type || "Dog"}
-                loading="lazy"
-                className="w-full h-auto rounded-xl select-none touch-auto"
-                onLoad={(e) => {
-                  e.target.classList.remove("blur-sm");
-                  if (e.target.parentElement) {
-                    e.target.parentElement.style.aspectRatio = `${e.target.naturalWidth}/${e.target.naturalHeight}`;
-                  }
-                }}
-                onError={(e) => {
-                  e.target.src = "/default-dog.png"; // Fallback image
-                  e.target.classList.remove("blur-sm");
-                }}
-              />
+              className="break-inside-avoid relative group mb-2 cursor-pointer transform transition-transform hover:scale-[0.98]"
+              onClick={() => handleDogClick(dog)}>
+              <div className="overflow-hidden rounded-xl">
+                <img
+                  src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
+                  alt={dog.type || "Dog"}
+                  loading="lazy"
+                  className="w-full h-auto rounded-xl select-none touch-auto hover:brightness-90 transition-all"
+                  onLoad={(e) => {
+                    e.target.classList.remove("blur-sm");
+                    if (e.target.parentElement) {
+                      e.target.parentElement.style.aspectRatio = `${e.target.naturalWidth}/${e.target.naturalHeight}`;
+                    }
+                  }}
+                  onError={(e) => {
+                    e.target.src = "/default-dog.png"; // Fallback image
+                    e.target.classList.remove("blur-sm");
+                  }}
+                />
+              </div>
             </div>
           ))}
         </div>
       )}
+
+      {/* Dog Detail Modal */}
+      <DogDetailModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        dog={selectedDog}
+        onLike={handleLike}
+      />
     </div>
   );
 };
