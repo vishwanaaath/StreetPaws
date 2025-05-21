@@ -48,6 +48,8 @@ const Explore = () => {
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           );
           setDogsData(sortedData);
+          console.log(sortedData);
+          
           console.log(`Fetched ${sortedData.length} dogs`);
         } else {
           throw new Error("Invalid data format received from API");
