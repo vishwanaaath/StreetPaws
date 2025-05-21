@@ -210,7 +210,7 @@ const DogDetailModal = ({
                 <img
                   src={currentDog.lister?.dp_url || "/default-avatar.png"}
                   alt="Lister"
-                  className="w-12 h-12 rounded-full object-cover mt-2 shadow ml-4"
+                  className="w-13 h-13 rounded-full object-cover mt-2.5 shadow ml-4"
                 />
               </div>
 
