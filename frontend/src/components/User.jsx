@@ -249,6 +249,7 @@ const User = () => {
                     }}>
                     {currentUser.email}
                   </p>
+                 
                 </div>
                 <button
                   onClick={() => handleCopy(currentUser.email)}
