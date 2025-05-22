@@ -182,9 +182,11 @@ const DogDetailModal = ({
                   </div>
 
                   <div
-                    className="flex items-center gap-0.5 text-[13px] mt-1 font-medium text-black/50 "
+                    role="button"
+                    tabIndex={0}
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent modal from opening
+                      onClose(); 
+                      e.stopPropagation();
                       navigate("/map", {
                         state: {
                           selectedDog: {
@@ -194,7 +196,8 @@ const DogDetailModal = ({
                           },
                         },
                       });
-                    }}>
+                    }}
+                    className="flex items-center gap-0.5 text-[13px] mt-1 font-medium text-black/50 cursor-pointer">
                     <MapPin size={16} className="text-violet-600" />
                     <span className="truncate max-w-[200px]">
                       {currentDog.placeName}
