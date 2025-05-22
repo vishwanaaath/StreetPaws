@@ -168,7 +168,7 @@ const DogDetailModal = ({
               </div>
 
               {/* Combined Content Section */}
-              <div className="flex justify-between items-start px-5 pt-4 pb-3 text-black">
+              <div className="flex justify-between items-start px-2 pt-2 pb-2 text-black">
                 {/* Left side: Dog Info */}
                 <div className="flex flex-col gap-1">
                   <h2 className="text-[18px] font-bold capitalize">
@@ -196,7 +196,7 @@ const DogDetailModal = ({
                 </div>
 
                 {/* Right side: Like & DP */}
-                <div className="flex flex-col items-end gap-2">
+                <div className="flex flex-row items-center gap-2">
                   <button
                     onClick={() => onLike(currentDog._id)}
                     className="text-black hover:text-pink-500 transition">
