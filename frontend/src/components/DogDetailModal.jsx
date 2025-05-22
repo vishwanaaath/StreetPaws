@@ -168,9 +168,9 @@ const DogDetailModal = ({
               </div>
 
               {/* Combined Content Section */}
-              <div className="flex justify-between items-start px-3 pt-2 pb-2 text-black">
+              <div className="flex justify-between items-start px-3 pt-1 pb-2 text-black">
                 {/* Left side: Dog Info */}
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-0.5">
                   <h2 className="text-[18px] font-bold capitalize">
                     {currentDog.type}
                   </h2>
@@ -181,7 +181,7 @@ const DogDetailModal = ({
                     <span>{currentDog.age}</span>
                   </div>
 
-                  <div className="flex items-center gap-1 text-[13px] font-medium text-black/50 mt-0.5">
+                  <div className="flex items-center gap-1 text-[13px] font-medium text-black/50 ">
                     <MapPin size={16} className="text-violet-600" />
                     <span className="truncate max-w-[140px]">{currentDog.placeName}</span>
                     {currentDog.createdAt && (
@@ -201,7 +201,7 @@ const DogDetailModal = ({
                     onClick={() => onLike(currentDog._id)}
                     className="text-black hover:text-pink-500 transition">
                     <Heart
-                      size={25}
+                      size={28}
                       className={
                         currentDog.isLiked ? "fill-pink-500 text-pink-500" : ""
                       }
