@@ -183,23 +183,10 @@ const DogDetailModal = ({
                       <span>{currentDog.age}</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => onLike(currentDog._id)}
-                      className="flex items-center gap-2 text-black hover:text-pink-500 transition">
-                      <Heart
-                        size={22}
-                        className={
-                          currentDog.isLiked
-                            ? "fill-pink-500 text-pink-500"
-                            : ""
-                        }
-                      />
-                    </button>
-
+                  <div className="flex items-center">
                     <div className="flex items-center gap-1 text-black">
                       <MapPin size={20} className="text-violet-600" />
-                      <span className="font-semibold text-[14px]">
+                      <span className="font-semibold text-[12px]">
                         {currentDog.placeName || " "}
                       </span>
                     </div>
@@ -207,11 +194,24 @@ const DogDetailModal = ({
                 </div>
 
                 {/* Right DP done */}
-                <img
-                  src={currentDog.lister?.dp_url || "/default-avatar.png"}
-                  alt="Lister"
-                  className="w-13 h-13 rounded-full object-cover mt-2.5 shadow ml-4"
-                />
+                <div>
+                  <button
+                    onClick={() => onLike(currentDog._id)}
+                    className="flex items-center gap-2 text-black hover:text-pink-500 transition">
+                    <Heart
+                      size={22}
+                      className={
+                        currentDog.isLiked ? "fill-pink-500 text-pink-500" : ""
+                      }
+                    />
+                  </button>
+
+                  <img
+                    src={currentDog.lister?.dp_url || "/default-avatar.png"}
+                    alt="Lister"
+                    className="w-13 h-13 rounded-full object-cover mt-2.5 shadow ml-4"
+                  />
+                </div>
               </div>
 
               {/* Removed redundant content section */}
