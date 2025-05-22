@@ -168,14 +168,14 @@ const DogDetailModal = ({
               </div>
 
               {/* Combined Content Section */}
-              <div className="flex justify-between items-start px-3 pt-1 pb-2 text-black">
+              <div className="flex justify-between items-start px-3 pt-2 pb-2 text-black">
                 {/* Left side: Dog Info */}
-                <div className="flex flex-col ml-1 not-last gap-0.5">
+                <div className="flex flex-col ml-2 not-last ">
                   <h2 className="text-[18px] font-bold capitalize">
                     {currentDog.type}
                   </h2>
 
-                  <div className="flex gap-1 text-[14px] ml-1 font-medium text-black/60">
+                  <div className="flex gap-1 text-[14px] ml-1 font-medium text-black">
                     <span>{currentDog.gender}</span>
                     <span>•</span>
                     <span>{currentDog.age}</span>
@@ -204,7 +204,7 @@ const DogDetailModal = ({
                 </div>
 
                 {/* Right side: Like & DP */}
-                <div className="flex flex-row items-center gap-2">
+                <div className="flex flex-row items-center pt-2 gap-2">
                   <button
                     onClick={() => onLike(currentDog._id)}
                     className="text-black hover:text-pink-500 transition">
