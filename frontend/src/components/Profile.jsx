@@ -246,7 +246,6 @@ const Profile = () => {
                       StreetPaws
                     </span>
                     <br />
-                    <Link to="/explore">explore</Link>
                   </p>
                 ) : (
                   <p className="text-gray-500 text-base sm:text-[17px] leading-tight mt-[2px]">
