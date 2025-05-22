@@ -1,5 +1,6 @@
 import { useMap, useMapEvents } from "react-leaflet";
 import { useState } from "react";
+import { LocateFixed } from "lucide-react";
 
 function ResetViewControl({ initialPosition, initialZoom }) {
   const map = useMap();
@@ -36,11 +37,7 @@ function ResetViewControl({ initialPosition, initialZoom }) {
           onClick={resetView}
           className=" sm:mb-15 mb-40 mr-4 sm:mr-3 backdrop-blur-sm bg-white/80 rounded-full   "
           title="Reset to original view">
-          <img
-            src="./images/locate.svg"
-            className="w-10 p-2  cursor-pointer h-10 "
-            alt="Reload"
-          />
+          <LocateFixed className="w-10 p-2  cursor-pointer h-10 " />
         </button>
       </div>
     </div>
