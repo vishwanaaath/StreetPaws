@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useState, useEffect } from "react";
+import { Pencil } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ProfileLoader from "./ProfileLoader";
 import "./Profile.css";
 import UploadDPModal from "./UploadDPModal";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import DogDetailModal from "./DogDetailModal"; // Import the DogDetailModal
 
 const User = () => {
   const [showProfilePic, setShowProfilePic] = useState(false);
@@ -23,7 +25,8 @@ const User = () => {
   const [showCopiedNotification, setShowCopiedNotification] = useState(false);
   const [copiedText, setCopiedText] = useState("");
   const [isSingleColumn, setIsSingleColumn] = useState(false);
-  const [selectedDogImage, setSelectedDogImage] = useState(null);
+
+
 
   const navigate = useNavigate();
   const isDeveloper = currentUser?.email === "vishwanathgowda951@gmail.com";
@@ -56,6 +59,24 @@ const User = () => {
     }
   };
 
+  // Handle dog selection for modal
+  const handleDogClick = (dog) => {
+    // Only open modal if not long pressing
+    if (!isLongPressing) {
+      setSelectedDogForModal(dog);
+      setShowDogModal(true);
+    }
+  };
+
+  // Handle like functionality (placeholder - implement as needed)
+  const handleLike = (dogId) => {
+    // Implement like functionality here 
+  };
+ 
+
+ 
+ 
+
   useEffect(() => {
     const fetchUserDogs = async () => {
       try {
@@ -85,6 +106,8 @@ const User = () => {
 
     fetchUserDogs();
   }, [currentUser]);
+
+
 
   const timeSinceListed = (createdAt) => {
     const listedDate = new Date(createdAt);
@@ -134,6 +157,20 @@ const User = () => {
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
       }}>
+ 
+
+      {/* Dog Detail Modal */}
+      <DogDetailModal
+        isOpen={showDogModal}
+        onClose={() => {
+          setShowDogModal(false);
+          setSelectedDogForModal(null);
+        }}
+        dog={selectedDogForModal}
+        onLike={handleLike}
+        filteredDogs={dogsData}
+      />
+
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 -z-1 pointer-events-none" />
 
       {showProfilePic && currentUser.dp_url && (
@@ -147,19 +184,6 @@ const User = () => {
               className="sm:w-88 sm:h-88 cursor-pointer object-cover special-shadow w-58 h-58 rounded-full"
               alt="Profile"
               onClick={() => setShowProfilePic(false)}
-            />
-          </div>
-        </div>
-      )}
-
-      {selectedDogImage && (
-        <div className="fixed inset-0 z-50 backdrop-blur-2xl bg-white/80 backdrop-brightness-50 flex items-center justify-center p-4">
-          <div className="relative w-full h-full flex items-center justify-center">
-            <img
-              src={selectedDogImage}
-              className="cursor-pointer object-contain rounded-lg max-w-[90vw] max-h-[90vh] m-auto"
-              alt="Dog fullscreen"
-              onClick={() => setSelectedDogImage(null)}
             />
           </div>
         </div>
@@ -182,60 +206,36 @@ const User = () => {
                   onClick={() => setShowProfilePic(true)}
                 />
               </div>
-
-              {/* Mobile-only stats - tightly next to DP */}
-              {/* <div className="md:hidden flex flex-col justify-center items-start pl-2">
-                <p className="text-xl font-bold text-violet-600 leading-tight">
-                  {currentUser.dogsListed.length}
-                </p>
-                <p className="text-xs text-gray-600 leading-tight">
-                  Dogs Listed
-                </p>
-              </div> */}
             </div>
 
             <div className="w-full md:w-auto">
-              <div className="flex items-center sm:mb-2 mt-2">
-                <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none">
+              <div className="flex flex-col mt-2">
+                <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none leading-tight">
                   {currentUser.username}
                 </h1>
-                {/* {isDeveloper && (
-                  <div className="relative">
-                    <img
-                      src="./images/developer-badge.svg"
-                      className="w-5 h-5 flex-shrink-0"
-                    />
-                  </div>
-                )} */}
+                {isDeveloper ? (
+                  <p className="text-gray-500 text-base sm:text-[17px] leading-tight mt-[2px]">
+                    Creator & Caretaker of{" "}
+                    <span className="font-bold text-[18px] text-violet-600">
+                      StreetPaws
+                    </span>
+                    <br />
+                  </p>
+                ) : (
+                  <p className="text-gray-500 text-base sm:text-[17px] leading-tight mt-[2px]">
+                    Member since{" "}
+                    <span className="text-gray-700">
+                      {new Date(currentUser.createdAt).toLocaleDateString(
+                        "en-US",
+                        {
+                          month: "long",
+                          year: "numeric",
+                        }
+                      )}
+                    </span>
+                  </p>
+                )}
               </div>
-
-              {isDeveloper ? (
-                <p className="text-gray-500 sm:mt-2 mt-0 text-base sm:text-[17px]">
-                  {/* <span className="font-medium text-gray-700">
-                    {currentUser.dogsListed.length} Posts
-                  </span> */}
-                  Creator & Caretaker of{" "}
-                  <span className="font-bold text-[18px] text-violet-600">
-                    StreetPaws
-                  </span>
-                </p>
-              ) : (
-                <p className="text-gray-500 sm:mt-2 mt-0 text-base sm:text-[17px]">
-                  {/* <span className="font-medium text-gray-700">
-                    {currentUser.dogsListed.length} Posts
-                  </span> */}
-                  Member since{" "}
-                  <span className="text-gray-700">
-                    {new Date(currentUser.createdAt).toLocaleDateString(
-                      "en-US",
-                      {
-                        month: "long",
-                        year: "numeric",
-                      }
-                    )}
-                  </span>
-                </p>
-              )}
 
               {/* Email section - simplified for mobile */}
               <div className="mt-2 md:mt-4 flex items-center group">
@@ -249,7 +249,6 @@ const User = () => {
                     }}>
                     {currentUser.email}
                   </p>
-                 
                 </div>
                 <button
                   onClick={() => handleCopy(currentUser.email)}
@@ -348,7 +347,7 @@ const User = () => {
               <div
                 className={`${
                   isSingleColumn ? "columns-1" : "columns-2"
-                } sm:columns-2 lg:columns-3 sm:gap-2 gap-1 space-y-3 sm:space-y-4`}>
+                } sm:columns-3 lg:columns-3 sm:gap-2 custom-column-gap`}>
                 {[...Array(6)].map((_, index) => {
                   const ratios = [
                     { class: "aspect-square" },
@@ -360,7 +359,7 @@ const User = () => {
                   ];
 
                   return (
-                    <div key={index} className="break-inside-avoid mb-2">
+                    <div key={index} className="break-inside-avoid image-item ">
                       <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse">
                         <div
                           className={`w-full bg-gray-200 rounded-xl ${ratios[index].class}`}
@@ -431,63 +430,24 @@ const User = () => {
               <div
                 className={`${
                   isSingleColumn ? "columns-1" : "columns-2"
-                } sm:columns-2 lg:columns-3 sm:gap-2 gap-1 space-y-2 sm:space-y-4`}>
+                } sm:columns-3 lg:columns-3 sm:gap-2 custom-column-gap`}>
                 {dogsData.map((dog) => (
-                  <div key={dog._id} className="break-inside-avoid mb-2">
+                  <div key={dog._id} className="break-inside-avoid image-item ">
                     <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
                       <img
                         src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                         alt={dog.type}
-                        className="w-full h-auto object-cover"
+                        className="w-full h-auto object-cover cursor-pointer select-none"
+                        onClick={() => handleDogClick(dog)} 
+                        onContextMenu={(e) => e.preventDefault()} // Prevent right-click menu
+                        style={{
+                          WebkitUserSelect: "none",
+                          MozUserSelect: "none",
+                          msUserSelect: "none",
+                          userSelect: "none",
+                          WebkitTouchCallout: "none",
+                        }}
                       />
-
-                      <div
-                        onClick={() =>
-                          setSelectedDogImage(
-                            `https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`
-                          )
-                        }
-                        className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70"></div>
-                      <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
-                        <div className="flex justify-between items-end">
-                          <div>
-                            <p className="sm:text-sm text-white text-[10px]">
-                              {dog.createdAt
-                                ? timeSinceListed(dog.createdAt)
-                                : "New listing"}
-                            </p>
-                          </div>
-                          <svg
-                            className="w-5 h-5 z-5 text-white cursor-pointer mb-1 mr-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            onClick={() =>
-                              navigate("/map", {
-                                state: {
-                                  selectedDog: {
-                                    id: dog._id,
-                                    lat: dog.location.coordinates[1],
-                                    lng: dog.location.coordinates[0],
-                                  },
-                                },
-                              })
-                            }>
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                            />
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                          </svg>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 ))}
