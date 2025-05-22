@@ -9,7 +9,7 @@ import UploadDPModal from "./UploadDPModal";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import DogDetailModal from "./DogDetailModal"; // Import the DogDetailModal
 
-const User = () => {
+const Profile = () => {
   const [showProfilePic, setShowProfilePic] = useState(false);
   const { isLoading, error } = useAuth0();
   const location = useLocation();
@@ -26,7 +26,14 @@ const User = () => {
   const [copiedText, setCopiedText] = useState("");
   const [isSingleColumn, setIsSingleColumn] = useState(false);
 
+  // Replace selectedDogImage with dog modal states
+  const [showDogModal, setShowDogModal] = useState(false);
+  const [selectedDogForModal, setSelectedDogForModal] = useState(null);
 
+  // Long press states
+  const [longPressTimer, setLongPressTimer] = useState(null);
+  const [isLongPressing, setIsLongPressing] = useState(false);
+  const longPressRef = useRef(null);
 
   const navigate = useNavigate();
   const isDeveloper = currentUser?.email === "vishwanathgowda951@gmail.com";
@@ -70,12 +77,47 @@ const User = () => {
 
   // Handle like functionality (placeholder - implement as needed)
   const handleLike = (dogId) => {
-    // Implement like functionality here 
+    // Implement like functionality here
   };
- 
 
- 
- 
+  // Long press handlers
+  const handleLongPressStart = (dog, event) => {
+    event.preventDefault();
+    setIsLongPressing(false);
+
+    const timer = setTimeout(() => {
+      setIsLongPressing(true);
+      setSelectedDog(dog);
+      setShowDeleteModal(true);
+
+      // Add haptic feedback for mobile devices
+      if (navigator.vibrate) {
+        navigator.vibrate(50);
+      }
+    }, 500); // 500ms for long press
+
+    setLongPressTimer(timer);
+  };
+
+  const handleLongPressEnd = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      setLongPressTimer(null);
+    }
+
+    // Reset long press state after a small delay to prevent click from firing
+    setTimeout(() => {
+      setIsLongPressing(false);
+    }, 100);
+  };
+
+  const handleLongPressCancel = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      setLongPressTimer(null);
+    }
+    setIsLongPressing(false);
+  };
 
   useEffect(() => {
     const fetchUserDogs = async () => {
@@ -107,7 +149,14 @@ const User = () => {
     fetchUserDogs();
   }, [currentUser]);
 
-
+  // Cleanup long press timer on unmount
+  useEffect(() => {
+    return () => {
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+      }
+    };
+  }, [longPressTimer]);
 
   const timeSinceListed = (createdAt) => {
     const listedDate = new Date(createdAt);
@@ -157,7 +206,28 @@ const User = () => {
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
       }}>
- 
+      {showDeleteModal && (
+        <DeleteConfirmationModal
+          dogName={selectedDog?.type}
+          isDeleting={isDeleting}
+          onConfirm={handleDeleteDog}
+          onCancel={() => {
+            setShowDeleteModal(false);
+            setSelectedDog(null);
+          }}
+        />
+      )}
+
+      {showUploadModal && (
+        <UploadDPModal
+          currentUser={currentUser}
+          onClose={() => setShowUploadModal(false)}
+          onUpdate={(updatedUser) => {
+            setCurrentUser(updatedUser);
+            setShowUploadModal(false);
+          }}
+        />
+      )}
 
       {/* Dog Detail Modal */}
       <DogDetailModal
@@ -184,6 +254,17 @@ const User = () => {
               className="sm:w-88 sm:h-88 cursor-pointer object-cover special-shadow w-58 h-58 rounded-full"
               alt="Profile"
               onClick={() => setShowProfilePic(false)}
+            />
+            <Pencil
+              onClick={() => setShowUploadModal(true)}
+              className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5
+                   w-12 h-12 sm:w-14 sm:h-14
+                   p-3 sm:p-3.5
+                   backdrop-blur-md rounded-full
+                   bg-white/90 text-gray-700 cursor-pointer
+                   hover:bg-white hover:scale-105
+                   transition-all duration-200
+                   shadow-lg border border-white/20"
             />
           </div>
         </div>
@@ -438,7 +519,13 @@ const User = () => {
                         src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                         alt={dog.type}
                         className="w-full h-auto object-cover cursor-pointer select-none"
-                        onClick={() => handleDogClick(dog)} 
+                        onClick={() => handleDogClick(dog)}
+                        onMouseDown={(e) => handleLongPressStart(dog, e)}
+                        onMouseUp={handleLongPressEnd}
+                        onMouseLeave={handleLongPressCancel}
+                        onTouchStart={(e) => handleLongPressStart(dog, e)}
+                        onTouchEnd={handleLongPressEnd}
+                        onTouchMove={handleLongPressCancel}
                         onContextMenu={(e) => e.preventDefault()} // Prevent right-click menu
                         style={{
                           WebkitUserSelect: "none",
@@ -460,4 +547,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Profile;

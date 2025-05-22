@@ -716,7 +716,9 @@ const ListDog = () => {
                         4
                       )}`}
                   </span>{" "}  */}
-                  <span>{PlaceName}</span>
+                  <span className="text-base text-black font-bold">
+                    {PlaceName}
+                  </span>
                 </p>
                 <p className="mt-1">
                   <span>Age: </span>
