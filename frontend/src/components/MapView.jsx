@@ -54,6 +54,9 @@ const MapView = () => {
   const [initialZoom, setInitialZoom] = useState(16);
   const [placeNames, setPlaceNames] = useState({}); 
 
+  const loadingMessage = Location.state?.loadingMessage;
+
+
   useEffect(() => {
     if (Location.state?.newlyListedDogId) {
       setNewlyListedDogId(Location.state.newlyListedDogId);
@@ -529,7 +532,7 @@ const MapView = () => {
           )}
         </MapContainer>
       ) : (
-        <MapViewLoader />
+        <MapViewLoader message={loadingMessage} />
       )}
     </div>
   );

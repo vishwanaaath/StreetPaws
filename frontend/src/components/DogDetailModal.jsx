@@ -192,8 +192,9 @@ const DogDetailModal = ({
                           selectedDog: {
                             id: currentDog._id,
                             lat: currentDog.location.coordinates[1],
-                            lng: currentDog.location.coordinates[0],
+                            lng: currentDog.location.coordinates[0], 
                           },
+                          loadingMessage: `Taking you to ${currentDog.placeName}...`, 
                         },
                       });
                     }}
