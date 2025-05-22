@@ -124,6 +124,7 @@ const Sidebar = ({
 
             <div className="px-2 space-y-3 animate-pulse">
               <div className="h-[42px] rounded-lg bg-violet-200 w-full" />
+              <span>still loading</span>
               <div className="h-[42px] rounded-lg bg-violet-200 w-full" />
             </div>
           </>
