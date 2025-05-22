@@ -183,7 +183,7 @@ const DogDetailModal = ({
 
                   <div className="flex items-center gap-1 text-[13px] font-medium text-black/50 mt-0.5">
                     <MapPin size={16} className="text-violet-600" />
-                    <span className="truncate max-w-[140px]">{placeName}</span>
+                    <span className="truncate max-w-[140px]">{currentDog.placeName}</span>
                     {currentDog.createdAt && (
                       <>
                         <span className="mx-1">•</span>
