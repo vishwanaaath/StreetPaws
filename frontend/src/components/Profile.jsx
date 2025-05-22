@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Pencil } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ProfileLoader from "./ProfileLoader";
@@ -171,14 +172,13 @@ const Profile = () => {
               alt="Profile"
               onClick={() => setShowProfilePic(false)}
             />
-            <img
+            <Pencil
               onClick={() => setShowUploadModal(true)}
-              src="./images/new-dp.svg"
               alt="edit"
-              className={`absolute bottom-6 right-6 backdrop-blur-2xl invert-100 p-2 rounded-full 
+              className={`absolute bottom-6 right-6 backdrop-blur-2xl p-2 rounded-full 
                w-10 h-10 sm:w-11 sm:h-11 sm:bottom-12 sm:right-12
                transform translate-x-1/4 translate-y-1/4 cursor-pointer`}
-            />
+            /> 
           </div>
         </div>
       )}
@@ -394,9 +394,7 @@ const Profile = () => {
                   ];
 
                   return (
-                    <div
-                      key={index}
-                      className="break-inside-avoid image-item ">
+                    <div key={index} className="break-inside-avoid image-item ">
                       <div className="relative overflow-hidden special-shadow-1 rounded-xl group animate-pulse">
                         <div
                           className={`w-full bg-gray-200 rounded-xl ${ratios[index].class}`}
@@ -469,9 +467,7 @@ const Profile = () => {
                   isSingleColumn ? "columns-1" : "columns-2"
                 } sm:columns-3 lg:columns-3 sm:gap-2 custom-column-gap`}>
                 {dogsData.map((dog) => (
-                  <div
-                    key={dog._id}
-                    className="break-inside-avoid image-item ">
+                  <div key={dog._id} className="break-inside-avoid image-item ">
                     <div className="relative overflow-hidden special-shadow-1 rounded-xl group">
                       <img
                         src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
