@@ -189,7 +189,7 @@ const DogDetailModal = ({
                     <div className="flex items-center gap-1 text-black">
                       <MapPin size={20} className="text-violet-600" />
                       <span className="font-semibold text-base">
-                        {placeName || "Nearby area"}
+                        {currentDog.placeName || "no place "}
                       </span>
                     </div>
                   </div>
@@ -213,7 +213,6 @@ const DogDetailModal = ({
                   className="w-13 h-13 rounded-full object-cover mt-2.5 shadow ml-4"
                 />
               </div>
-
 
               {/* Removed redundant content section */}
             </div>
