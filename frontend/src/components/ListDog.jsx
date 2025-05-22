@@ -99,7 +99,9 @@ const ListDog = () => {
         address.city || address.town || address.village || address.county;
 
       if (place && city) {
-        return `${place}, ${city}`;
+        return place.toLowerCase() === city.toLowerCase()
+          ? place
+          : `${place}, ${city}`;
       } else if (city) {
         return city;
       } else if (place) {
@@ -112,6 +114,7 @@ const ListDog = () => {
       return "Nearby area";
     }
   };
+  
 
   useEffect(() => {
     document.body.classList.remove("cursor-wait");
