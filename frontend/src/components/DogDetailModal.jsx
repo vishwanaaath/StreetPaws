@@ -31,11 +31,11 @@ const DogDetailModal = ({
   });
 
   useEffect(() => {
-    if (dog && filteredDogs?.length) {
+    if (isOpen && dog && filteredDogs?.length) {
       const index = filteredDogs.findIndex((d) => d?._id === dog?._id);
       setCurrentIndex(Math.max(index, 0));
     }
-  }, [dog, filteredDogs]);
+  }, [isOpen]); 
 
   const navigateToDog = (direction) => {
     setCurrentIndex((prev) => {
@@ -152,8 +152,6 @@ const DogDetailModal = ({
                   transition={{ duration: 0.2 }}
                   style={{ objectPosition: "center" }}
                 />
-
-               
               </div>
 
               {/* Combined Content Section */}
