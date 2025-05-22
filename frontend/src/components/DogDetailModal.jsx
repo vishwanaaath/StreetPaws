@@ -153,18 +153,7 @@ const DogDetailModal = ({
                   style={{ objectPosition: "center" }}
                 />
 
-                <div className="absolute inset-0 flex pointer-events-none">
-                  <button
-                    className="w-1/2 h-full opacity-0 pointer-events-auto"
-                    onClick={() => logSwipe("prev")}
-                    aria-label="Previous dog"
-                  />
-                  <button
-                    className="w-1/2 h-full opacity-0 pointer-events-auto"
-                    onClick={() => logSwipe("next")}
-                    aria-label="Next dog"
-                  />
-                </div>
+               
               </div>
 
               {/* Combined Content Section */}
