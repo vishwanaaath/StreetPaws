@@ -109,7 +109,6 @@ const Sidebar = ({
       <div className="h-[calc(100%-200px)] overflow-y-auto pb-4">
         {isLoading || (isAuthenticated && !userData) ? (
           <>
-            {console.log(isLoading, isAuthenticated, userData)}
             {/* Profile loader */}
             <div className="flex w-full p-3 animate-pulse">
               <div className="flex w-full items-start gap-4">
@@ -123,15 +122,15 @@ const Sidebar = ({
               </div>
             </div>
 
-            <div className="px-4 space-y-3 animate-pulse">
-              {[...Array(3)].map((_, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-2 px-4 py-2 h-[44px] rounded-lg border-2 border-violet-300 bg-violet-100">
-                  <div className="w-5 h-5 bg-violet-300 rounded-full" />
-                  <div className="flex-1 h-4 bg-violet-300 rounded" />
-                </div>
-              ))}
+            {/* Top button loader */}
+            <div className="px-2 animate-pulse">
+              <div className="h-[42px] rounded-lg bg-violet-200 w-full mb-2" />
+            </div>
+
+            {/* Bottom buttons loader */}
+            <div className="absolute bottom-16 left-0 right-0 px-4 space-y-2 animate-pulse">
+              <div className="h-[42px] rounded-lg bg-violet-200 w-full" />
+              <div className="h-[42px] rounded-lg bg-violet-200 w-full" />
             </div>
           </>
         ) : isAuthenticated && userData ? (
