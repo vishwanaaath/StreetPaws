@@ -467,51 +467,6 @@ const Profile = () => {
                         className="w-full h-auto object-cover cursor-pointer"
                         onClick={() => handleDogClick(dog)}
                       />
-
-                      <div
-                        onClick={() => handleDogClick(dog)}
-                        className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70 cursor-pointer"></div>
-                      <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
-                        <div className="flex justify-between items-end">
-                          <div>
-                            <p className="sm:text-sm text-white text-[10px]">
-                              {dog.createdAt
-                                ? timeSinceListed(dog.createdAt)
-                                : "New listing"}
-                            </p>
-                          </div>
-                          <svg
-                            className="w-5 h-5 z-5 text-white cursor-pointer mb-1 mr-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            onClick={(e) => {
-                              e.stopPropagation(); // Prevent modal from opening
-                              navigate("/map", {
-                                state: {
-                                  selectedDog: {
-                                    id: dog._id,
-                                    lat: dog.location.coordinates[1],
-                                    lng: dog.location.coordinates[0],
-                                  },
-                                },
-                              });
-                            }}>
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                            />
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                          </svg>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 ))}
