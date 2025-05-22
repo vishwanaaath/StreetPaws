@@ -124,7 +124,7 @@ const Sidebar = ({
             </div>
 
             {/* Explore button loader - larger size */}
-            <div className="px-2 animate-pulse">
+            <div className="px-2 sm:hidden animate-pulse">
               <div className="h-[50px] rounded-lg bg-violet-200 w-full mb-2" />
             </div>
 
@@ -164,7 +164,7 @@ const Sidebar = ({
               </div>
             </Link>
 
-            <div className="px-2">
+            <div className="px-2 sm:hidden">
               <Link
                 to="/explore"
                 className="flex items-center gap-3 px-5 py-3 mt-2 text-base font-semibold rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none shadow-sm">
