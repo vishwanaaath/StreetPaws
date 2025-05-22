@@ -188,8 +188,8 @@ const DogDetailModal = ({
 
                     <div className="flex items-center gap-1 text-black">
                       <MapPin size={20} className="text-violet-600" />
-                      <span className="font-semibold text-base">
-                        {currentDog.placeName || "no place "}
+                      <span className="font-semibold text-[14px]">
+                        {currentDog.placeName || " "}
                       </span>
                     </div>
                   </div>
