@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Heart, MapPin } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import axios from "axios";
 
@@ -17,7 +18,7 @@ const DogDetailModal = ({
   const [placeName, setPlaceName] = useState("");
   const [distance, setDistance] = useState(null);
   const [imageAspectRatio, setImageAspectRatio] = useState(null);
-
+  const navigate = useNavigate();
   const currentDog = React.useMemo(() => {
     return filteredDogs[currentIndex] || null;
   }, [filteredDogs, currentIndex]);
