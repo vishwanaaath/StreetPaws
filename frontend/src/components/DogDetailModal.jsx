@@ -183,12 +183,20 @@ const DogDetailModal = ({
 
                   <div className="flex items-center gap-1 text-[13px] font-medium text-black/50 ">
                     <MapPin size={16} className="text-violet-600" />
-                    <span className="truncate max-w-[140px]">{currentDog.placeName}</span>
+                    <span className="truncate max-w-[140px]">
+                      {currentDog.placeName}
+                    </span>
                     {currentDog.createdAt && (
                       <>
                         <span className="mx-1">•</span>
                         <span>
-                          {new Date(currentDog.createdAt).toLocaleDateString()}
+                          {new Date(currentDog.createdAt).toLocaleDateString(
+                            "en-GB",
+                            {
+                              day: "numeric",
+                              month: "long",
+                            }
+                          )}
                         </span>
                       </>
                     )}
