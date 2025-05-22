@@ -7,6 +7,7 @@ import ProfileLoader from "./ProfileLoader";
 import "./Profile.css";
 import UploadDPModal from "./UploadDPModal";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import DogDetailModal from "./DogDetailModal"; // Import the DogDetailModal
 
 const Profile = () => {
   const [showProfilePic, setShowProfilePic] = useState(false);
@@ -24,7 +25,10 @@ const Profile = () => {
   const [showCopiedNotification, setShowCopiedNotification] = useState(false);
   const [copiedText, setCopiedText] = useState("");
   const [isSingleColumn, setIsSingleColumn] = useState(false);
-  const [selectedDogImage, setSelectedDogImage] = useState(null);
+
+  // Replace selectedDogImage with dog modal states
+  const [showDogModal, setShowDogModal] = useState(false);
+  const [selectedDogForModal, setSelectedDogForModal] = useState(null);
 
   const navigate = useNavigate();
   const isDeveloper = currentUser?.email === "vishwanathgowda951@gmail.com";
@@ -55,6 +59,18 @@ const Profile = () => {
       console.error("Delete error:", err.response?.data);
       alert(`Delete failed: ${err.response?.data?.message || err.message}`);
     }
+  };
+
+  // Handle dog selection for modal
+  const handleDogClick = (dog) => {
+    setSelectedDogForModal(dog);
+    setShowDogModal(true);
+  };
+
+  // Handle like functionality (placeholder - implement as needed)
+  const handleLike = (dogId) => {
+    // Implement like functionality here
+    console.log("Liked dog:", dogId);
   };
 
   useEffect(() => {
@@ -158,6 +174,18 @@ const Profile = () => {
         />
       )}
 
+      {/* Dog Detail Modal */}
+      <DogDetailModal
+        isOpen={showDogModal}
+        onClose={() => {
+          setShowDogModal(false);
+          setSelectedDogForModal(null);
+        }}
+        dog={selectedDogForModal}
+        onLike={handleLike}
+        filteredDogs={dogsData}
+      />
+
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl opacity-30 -z-1 pointer-events-none" />
 
       {showProfilePic && currentUser.dp_url && (
@@ -187,36 +215,6 @@ const Profile = () => {
         </div>
       )}
 
-      {selectedDogImage && (
-        <div className="fixed inset-0 z-50 backdrop-blur-2xl bg-white/80 backdrop-brightness-50 flex items-center justify-center p-4">
-          <div className="relative w-full h-full flex items-center justify-center">
-            <img
-              src={selectedDogImage}
-              className="cursor-pointer object-contain rounded-lg max-w-[90vw] max-h-[90vh] m-auto"
-              alt="Dog fullscreen"
-              onClick={() => setSelectedDogImage(null)}
-            />
-            <img
-              className="absolute top-4 right-4 z-50 sm:w-10 sm:h-10 p-2 w-9 h-9 invert-100 rounded-full backdrop-blur-2xl opacity-90 hover:opacity-100 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center"
-              src="./images/trash.png"
-              alt="Delete"
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedDog(
-                  dogsData.find(
-                    (dog) =>
-                      `https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}` ===
-                      selectedDogImage
-                  )
-                );
-                setSelectedDogImage(null);
-                setShowDeleteModal(true);
-              }}
-            />
-          </div>
-        </div>
-      )}
-
       <div className="max-w-4xl min-h-screen mx-auto">
         <div className="bg-white rounded-xl shadow-md overflow-hidden min-h-screen sm:p-6 p-2 ">
           {/* Profile Header Section */}
@@ -234,16 +232,6 @@ const Profile = () => {
                   onClick={() => setShowProfilePic(true)}
                 />
               </div>
-
-              {/* Mobile-only stats - tightly next to DP */}
-              {/* <div className="md:hidden flex flex-col justify-center items-start pl-2">
-                <p className="text-xl font-bold text-violet-600 leading-tight">
-                  {currentUser.dogsListed.length}
-                </p>
-                <p className="text-xs text-gray-600 leading-tight">
-                  Dogs Listed
-                </p>
-              </div> */}
             </div>
 
             <div className="w-full md:w-auto">
@@ -476,16 +464,13 @@ const Profile = () => {
                       <img
                         src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                         alt={dog.type}
-                        className="w-full h-auto object-cover"
+                        className="w-full h-auto object-cover cursor-pointer"
+                        onClick={() => handleDogClick(dog)}
                       />
 
                       <div
-                        onClick={() =>
-                          setSelectedDogImage(
-                            `https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`
-                          )
-                        }
-                        className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70"></div>
+                        onClick={() => handleDogClick(dog)}
+                        className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70 cursor-pointer"></div>
                       <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2">
                         <div className="flex justify-between items-end">
                           <div>
@@ -500,18 +485,18 @@ const Profile = () => {
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
-                            onClick={() =>
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent modal from opening
                               navigate("/map", {
                                 state: {
                                   selectedDog: {
-                                    // comingFrom: Profile,
                                     id: dog._id,
                                     lat: dog.location.coordinates[1],
                                     lng: dog.location.coordinates[0],
                                   },
                                 },
-                              })
-                            }>
+                              });
+                            }}>
                             <path
                               strokeLinecap="round"
                               strokeLinejoin="round"
