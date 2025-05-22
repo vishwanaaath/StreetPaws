@@ -123,15 +123,15 @@ const Sidebar = ({
               </div>
             </div>
 
-            {/* Top button loader */}
+            {/* Explore button loader - larger size */}
             <div className="px-2 animate-pulse">
-              <div className="h-[42px] rounded-lg bg-violet-200 w-full mb-2" />
+              <div className="h-[50px] rounded-lg bg-violet-200 w-full mb-2" />
             </div>
 
-            {/* Bottom buttons loader */}
+            {/* Bottom buttons loader - different widths */}
             <div className="absolute bottom-16 left-0 right-0 px-4 space-y-2 animate-pulse">
-              <div className="h-[42px] rounded-lg bg-violet-200 w-full" />
-              <div className="h-[42px] rounded-lg bg-violet-200 w-full" />
+              <div className="h-[42px] rounded-lg bg-violet-200 w-4/5" />
+              <div className="h-[42px] rounded-lg bg-violet-200 w-3/4" />
             </div>
           </>
         ) : isAuthenticated && userData ? (
@@ -167,9 +167,9 @@ const Sidebar = ({
             <div className="px-2">
               <Link
                 to="/explore"
-                className="flex items-center gap-2 px-4 py-2 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+                className="flex items-center gap-3 px-5 py-3 mt-2 text-base font-semibold rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none shadow-sm">
                 <svg
-                  className="w-5 h-5"
+                  className="w-6 h-6"
                   width="800px"
                   height="800px"
                   viewBox="0 0 512 512"
@@ -192,7 +192,7 @@ const Sidebar = ({
                   </g>
                 </svg>
 
-                <span>Explore</span>
+                <span>Explore Dogs</span>
               </Link>
             </div>
           </>
@@ -205,15 +205,15 @@ const Sidebar = ({
           <>
             <button
               onClick={handleListDog}
-              className="flex items-center gap-2 px-4 py-2 w-full text-sm sm:text-base font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
-              <DiamondPlus  />
+              className="flex items-center gap-2 px-4 py-2 w-4/5 text-sm font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+              <DiamondPlus className="w-4 h-4" />
               <span>Post a Dog</span>
             </button>
             <Link
               to="/users"
-              className="flex items-center gap-2 px-4 py-2 w-full text-sm sm:text-base font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+              className="flex items-center gap-2 px-4 py-2 w-3/4 text-sm font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
               <svg
-                className="w-5 h-5"
+                className="w-4 h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24">
