@@ -1,41 +1,25 @@
 import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
-import { Pencil } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import ProfileLoader from "./ProfileLoader";
 import "./Profile.css";
-import UploadDPModal from "./UploadDPModal";
-import DeleteConfirmationModal from "./DeleteConfirmationModal";
-import DogDetailModal from "./DogDetailModal"; // Import the DogDetailModal
+import DogDetailModal from "./DogDetailModal";
 
-const Profile = () => {
+const User = () => {
   const [showProfilePic, setShowProfilePic] = useState(false);
-  const { isLoading, error } = useAuth0();
   const location = useLocation();
   const [currentUser, setCurrentUser] = useState(location.state?.user || null);
   const [dogsData, setDogsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
-  const [showUploadModal, setShowUploadModal] = useState(false);
-  const { user } = useAuth0();
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [selectedDog, setSelectedDog] = useState(null);
   const [showCopiedNotification, setShowCopiedNotification] = useState(false);
   const [copiedText, setCopiedText] = useState("");
   const [isSingleColumn, setIsSingleColumn] = useState(false);
 
-  // Replace selectedDogImage with dog modal states
+  // Dog modal states
   const [showDogModal, setShowDogModal] = useState(false);
   const [selectedDogForModal, setSelectedDogForModal] = useState(null);
 
-  // Long press states
-  const [longPressTimer, setLongPressTimer] = useState(null);
-  const [isLongPressing, setIsLongPressing] = useState(false);
-  const longPressRef = useRef(null);
-
-  const navigate = useNavigate();
   const isDeveloper = currentUser?.email === "vishwanathgowda951@gmail.com";
 
   const handleCopy = (text) => {
@@ -45,78 +29,15 @@ const Profile = () => {
     setTimeout(() => setShowCopiedNotification(false), 1000);
   };
 
-  const handleDeleteDog = async () => {
-    setIsDeleting(true);
-    try {
-      const response = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/api/dogs/${selectedDog._id}`
-      );
-
-      setDogsData((prev) => prev.filter((d) => d._id !== selectedDog._id));
-      setCurrentUser((prevUser) => ({
-        ...prevUser,
-        dogsListed: prevUser.dogsListed.filter((id) => id !== selectedDog._id),
-      }));
-
-      setIsDeleting(false);
-      setShowDeleteModal(false);
-    } catch (err) {
-      console.error("Delete error:", err.response?.data);
-      alert(`Delete failed: ${err.response?.data?.message || err.message}`);
-    }
-  };
-
   // Handle dog selection for modal
   const handleDogClick = (dog) => {
-    // Only open modal if not long pressing
-    if (!isLongPressing) {
-      setSelectedDogForModal(dog);
-      setShowDogModal(true);
-    }
+    setSelectedDogForModal(dog);
+    setShowDogModal(true);
   };
 
   // Handle like functionality (placeholder - implement as needed)
   const handleLike = (dogId) => {
     // Implement like functionality here
-  };
-
-  // Long press handlers
-  const handleLongPressStart = (dog, event) => {
-    event.preventDefault();
-    setIsLongPressing(false);
-
-    const timer = setTimeout(() => {
-      setIsLongPressing(true);
-      setSelectedDog(dog);
-      setShowDeleteModal(true);
-
-      // Add haptic feedback for mobile devices
-      if (navigator.vibrate) {
-        navigator.vibrate(50);
-      }
-    }, 500); // 500ms for long press
-
-    setLongPressTimer(timer);
-  };
-
-  const handleLongPressEnd = () => {
-    if (longPressTimer) {
-      clearTimeout(longPressTimer);
-      setLongPressTimer(null);
-    }
-
-    // Reset long press state after a small delay to prevent click from firing
-    setTimeout(() => {
-      setIsLongPressing(false);
-    }, 100);
-  };
-
-  const handleLongPressCancel = () => {
-    if (longPressTimer) {
-      clearTimeout(longPressTimer);
-      setLongPressTimer(null);
-    }
-    setIsLongPressing(false);
   };
 
   useEffect(() => {
@@ -146,17 +67,10 @@ const Profile = () => {
       }
     };
 
-    fetchUserDogs();
+    if (currentUser?.dogsListed?.length > 0) {
+      fetchUserDogs();
+    }
   }, [currentUser]);
-
-  // Cleanup long press timer on unmount
-  useEffect(() => {
-    return () => {
-      if (longPressTimer) {
-        clearTimeout(longPressTimer);
-      }
-    };
-  }, [longPressTimer]);
 
   const timeSinceListed = (createdAt) => {
     const listedDate = new Date(createdAt);
@@ -178,24 +92,12 @@ const Profile = () => {
     return `${years}y ago`;
   };
 
-  if (isLoading) {
+  if (loading && !dogsData.length) {
     return <ProfileLoader />;
   }
 
-  if (error) {
-    return (
-      <div className="text-center p-8 text-red-500">
-        Error loading profile: {error.message}
-      </div>
-    );
-  }
-
   if (!currentUser) {
-    return (
-      <div className="text-center p-8 text-gray-600">
-        Please log in to view your profile
-      </div>
-    );
+    return <div className="text-center p-8 text-gray-600">User not found</div>;
   }
 
   return (
@@ -206,29 +108,6 @@ const Profile = () => {
         maxHeight: showProfilePic ? "100vh" : "auto",
         overflow: showProfilePic ? "hidden" : "auto",
       }}>
-      {showDeleteModal && (
-        <DeleteConfirmationModal
-          dogName={selectedDog?.type}
-          isDeleting={isDeleting}
-          onConfirm={handleDeleteDog}
-          onCancel={() => {
-            setShowDeleteModal(false);
-            setSelectedDog(null);
-          }}
-        />
-      )}
-
-      {showUploadModal && (
-        <UploadDPModal
-          currentUser={currentUser}
-          onClose={() => setShowUploadModal(false)}
-          onUpdate={(updatedUser) => {
-            setCurrentUser(updatedUser);
-            setShowUploadModal(false);
-          }}
-        />
-      )}
-
       {/* Dog Detail Modal */}
       <DogDetailModal
         isOpen={showDogModal}
@@ -255,17 +134,6 @@ const Profile = () => {
               alt="Profile"
               onClick={() => setShowProfilePic(false)}
             />
-            <Pencil
-              onClick={() => setShowUploadModal(true)}
-              className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5
-                   w-12 h-12 sm:w-14 sm:h-14
-                   p-3 sm:p-3.5
-                   backdrop-blur-md rounded-full
-                   bg-white/90 text-gray-700 cursor-pointer
-                   hover:bg-white hover:scale-105
-                   transition-all duration-200
-                   shadow-lg border border-white/20"
-            />
           </div>
         </div>
       )}
@@ -275,7 +143,7 @@ const Profile = () => {
           {/* Profile Header Section */}
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 sm:mb-8 mb-2">
             <div className="flex items-center w-full md:w-auto mt-2 gap-0">
-              {/* Profile Picture */}
+              {/* Profile Picture - Read only */}
               <div className="w-24 h-24 sm:w-26 sm:h-26 rounded-full ml-2 bg-gray-200 overflow-hidden">
                 <img
                   src={
@@ -318,11 +186,11 @@ const Profile = () => {
                 )}
               </div>
 
-              {/* Email section - simplified for mobile */}
+              {/* Email section - read only with copy functionality */}
               <div className="mt-2 md:mt-4 flex items-center group">
                 <div className="flex-1 min-w-0">
                   <p
-                    className="text-gray-600  hover:text-clip text-sm"
+                    className="text-gray-600 hover:text-clip text-sm"
                     title={currentUser.email}
                     style={{
                       maxWidth: "200px",
@@ -359,7 +227,7 @@ const Profile = () => {
                 Dogs Listed
               </h3>
               <p className="text-3xl font-bold text-violet-500">
-                {currentUser.dogsListed.length}
+                {currentUser.dogsListed?.length || 0}
               </p>
             </div>
           </div>
@@ -479,7 +347,7 @@ const Profile = () => {
                     No dogs posted yet
                   </p>
                   <p className="text-sm mt-1 text-gray-500">
-                    Your future posts will appear here
+                    This user hasn't posted any dogs yet
                   </p>
                 </div>
               </div>
@@ -503,7 +371,7 @@ const Profile = () => {
                     No dogs posted yet
                   </p>
                   <p className="text-sm mt-1 text-gray-500">
-                    Your future posts will appear here
+                    This user hasn't posted any dogs yet
                   </p>
                 </div>
               </div>
@@ -520,13 +388,6 @@ const Profile = () => {
                         alt={dog.type}
                         className="w-full h-auto object-cover cursor-pointer select-none"
                         onClick={() => handleDogClick(dog)}
-                        onMouseDown={(e) => handleLongPressStart(dog, e)}
-                        onMouseUp={handleLongPressEnd}
-                        onMouseLeave={handleLongPressCancel}
-                        onTouchStart={(e) => handleLongPressStart(dog, e)}
-                        onTouchEnd={handleLongPressEnd}
-                        onTouchMove={handleLongPressCancel}
-                        onContextMenu={(e) => e.preventDefault()} // Prevent right-click menu
                         style={{
                           WebkitUserSelect: "none",
                           MozUserSelect: "none",
@@ -543,8 +404,15 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      {/* Copy notification */}
+      {showCopiedNotification && (
+        <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+          Copied to clipboard!
+        </div>
+      )}
     </div>
   );
 };
 
-export default Profile;
+export default User;
