@@ -98,22 +98,24 @@ const ListDog = () => {
       const city =
         address.city || address.town || address.village || address.county;
 
-      if (place && city) {
-        return place.toLowerCase() === city.toLowerCase()
-          ? place
-          : `${place}, ${city}`;
+      const normalizedPlace = place?.trim().toLowerCase();
+      const normalizedCity = city?.trim().toLowerCase();
+
+      if (normalizedPlace && normalizedCity) {
+        return normalizedPlace === normalizedCity ? place : `${place}, ${city}`;
       } else if (city) {
         return city;
       } else if (place) {
         return place;
       } else {
-        return " ";
+        return "Nearby area";
       }
     } catch (error) {
       console.error("Error fetching place name:", error.message);
-      return " ";
+      return "Nearby area";
     }
   };
+  
   
 
   useEffect(() => {
