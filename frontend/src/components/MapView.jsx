@@ -323,7 +323,7 @@ const MapView = () => {
               ? "opacity-0 -translate-x-8"
               : "opacity-100 translate-x-2 hover:translate-x-3"
           }`}>
-          <ChevronsLeft className="w-5 h-5 text-black" />
+          <ChevronsLeft className="w-8 h-8 text-black" />
         </div>
       </div>
 
