@@ -106,7 +106,7 @@ const Sidebar = ({
       }`}
       onMouseEnter={() => setSidebarVisible(true)}
       onMouseLeave={handleSidebarLeave}>
-      <div className="h-[calc(100%-120px)] overflow-y-auto pb-4">
+      <div className="h-[calc(100%-200px)] overflow-y-auto pb-4">
         {isLoading || (isAuthenticated && !userData) ? (
           <>
             {console.log(isLoading, isAuthenticated, userData)}
@@ -124,7 +124,8 @@ const Sidebar = ({
             </div>
 
             <div className="px-2 space-y-3 animate-pulse">
-              <div className="h-[42px] rounded-lg bg-violet-200 w-full" /> 
+              <div className="h-[42px] rounded-lg bg-violet-200 w-full" />
+              <div className="h-[42px] rounded-lg bg-violet-200 w-full" />
               <div className="h-[42px] rounded-lg bg-violet-200 w-full" />
             </div>
           </>
@@ -159,18 +160,8 @@ const Sidebar = ({
             </Link>
 
             <div className="px-2">
-              <button
-                onClick={handleListDog}
-                className="flex items-center gap-2 px-4 py-2 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
-                <img
-                  src="./images/Sitting dog.svg"
-                  alt=""
-                  className="w-5 h-5"
-                />
-                <span>Post a Dog</span>
-              </button>
               <Link
-                to="/users"
+                to="/explore"
                 className="flex items-center gap-2 px-4 py-2 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
                 <svg
                   className="w-5 h-5"
@@ -181,18 +172,49 @@ const Sidebar = ({
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                   />
                 </svg>
-                <span>Community</span>
+                <span>Explore</span>
               </Link>
             </div>
           </>
         ) : null}
       </div>
 
-      {/* Auth Buttons */}
-      <div className="absolute bottom-4 left-0 right-0 px-4 space-y-3">
+      {/* Navigation Buttons */}
+      <div className="absolute bottom-16 left-0 right-0 px-4 space-y-2">
+        {isAuthenticated && userData && (
+          <>
+            <button
+              onClick={handleListDog}
+              className="flex items-center gap-2 px-4 py-2 w-full text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+              <img src="./images/Sitting dog.svg" alt="" className="w-5 h-5" />
+              <span>Post a Dog</span>
+            </button>
+            <Link
+              to="/users"
+              className="flex items-center gap-2 px-4 py-2 w-full text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              <span>Community</span>
+            </Link>
+          </>
+        )}
+      </div>
+
+      {/* Auth Button */}
+      <div className="absolute bottom-4 left-0 right-0 px-4">
         {isAuthenticated ? (
           <button
             onClick={handleLogout}
