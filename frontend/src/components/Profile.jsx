@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Pencil } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ProfileLoader from "./ProfileLoader";
 import "./Profile.css";
@@ -29,6 +29,11 @@ const Profile = () => {
   // Replace selectedDogImage with dog modal states
   const [showDogModal, setShowDogModal] = useState(false);
   const [selectedDogForModal, setSelectedDogForModal] = useState(null);
+
+  // Long press states
+  const [longPressTimer, setLongPressTimer] = useState(null);
+  const [isLongPressing, setIsLongPressing] = useState(false);
+  const longPressRef = useRef(null);
 
   const navigate = useNavigate();
   const isDeveloper = currentUser?.email === "vishwanathgowda951@gmail.com";
@@ -63,14 +68,56 @@ const Profile = () => {
 
   // Handle dog selection for modal
   const handleDogClick = (dog) => {
-    setSelectedDogForModal(dog);
-    setShowDogModal(true);
+    // Only open modal if not long pressing
+    if (!isLongPressing) {
+      setSelectedDogForModal(dog);
+      setShowDogModal(true);
+    }
   };
 
   // Handle like functionality (placeholder - implement as needed)
   const handleLike = (dogId) => {
     // Implement like functionality here
     console.log("Liked dog:", dogId);
+  };
+
+  // Long press handlers
+  const handleLongPressStart = (dog, event) => {
+    event.preventDefault();
+    setIsLongPressing(false);
+
+    const timer = setTimeout(() => {
+      setIsLongPressing(true);
+      setSelectedDog(dog);
+      setShowDeleteModal(true);
+
+      // Add haptic feedback for mobile devices
+      if (navigator.vibrate) {
+        navigator.vibrate(50);
+      }
+    }, 500); // 500ms for long press
+
+    setLongPressTimer(timer);
+  };
+
+  const handleLongPressEnd = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      setLongPressTimer(null);
+    }
+
+    // Reset long press state after a small delay to prevent click from firing
+    setTimeout(() => {
+      setIsLongPressing(false);
+    }, 100);
+  };
+
+  const handleLongPressCancel = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      setLongPressTimer(null);
+    }
+    setIsLongPressing(false);
   };
 
   useEffect(() => {
@@ -102,6 +149,15 @@ const Profile = () => {
 
     fetchUserDogs();
   }, [currentUser]);
+
+  // Cleanup long press timer on unmount
+  useEffect(() => {
+    return () => {
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+      }
+    };
+  }, [longPressTimer]);
 
   const timeSinceListed = (createdAt) => {
     const listedDate = new Date(createdAt);
@@ -463,8 +519,22 @@ const Profile = () => {
                       <img
                         src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
                         alt={dog.type}
-                        className="w-full h-auto object-cover cursor-pointer"
+                        className="w-full h-auto object-cover cursor-pointer select-none"
                         onClick={() => handleDogClick(dog)}
+                        onMouseDown={(e) => handleLongPressStart(dog, e)}
+                        onMouseUp={handleLongPressEnd}
+                        onMouseLeave={handleLongPressCancel}
+                        onTouchStart={(e) => handleLongPressStart(dog, e)}
+                        onTouchEnd={handleLongPressEnd}
+                        onTouchMove={handleLongPressCancel}
+                        onContextMenu={(e) => e.preventDefault()} // Prevent right-click menu
+                        style={{
+                          WebkitUserSelect: "none",
+                          MozUserSelect: "none",
+                          msUserSelect: "none",
+                          userSelect: "none",
+                          WebkitTouchCallout: "none",
+                        }}
                       />
                     </div>
                   </div>
