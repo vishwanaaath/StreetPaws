@@ -201,7 +201,7 @@ const DogDetailModal = ({
                     onClick={() => onLike(currentDog._id)}
                     className="text-black hover:text-pink-500 transition">
                     <Heart
-                      size={24}
+                      size={25}
                       className={
                         currentDog.isLiked ? "fill-pink-500 text-pink-500" : ""
                       }
@@ -210,7 +210,7 @@ const DogDetailModal = ({
                   <img
                     src={currentDog.lister?.dp_url || "/default-avatar.png"}
                     alt="Lister"
-                    className="w-11 h-11 rounded-full object-cover shadow"
+                    className="w-8 h-8 rounded-full object-cover shadow"
                   />
                 </div>
               </div>
