@@ -167,7 +167,7 @@ const Sidebar = ({
             <div className="px-2">
               <Link
                 to="/explore"
-                className="flex items-center gap-2 px-4 py-2 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+                className="flex items-center gap-2 px-4 py-2 mt-2 text-sm sm:text-base font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
                 <svg
                   className="w-5 h-5"
                   width="800px"
@@ -205,13 +205,13 @@ const Sidebar = ({
           <>
             <button
               onClick={handleListDog}
-              className="flex items-center gap-2 px-4 py-2 w-full text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+              className="flex items-center gap-2 px-4 py-2 w-full text-sm sm:text-base font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
               <DiamondPlus  />
               <span>Post a Dog</span>
             </button>
             <Link
               to="/users"
-              className="flex items-center gap-2 px-4 py-2 w-full text-sm sm:text-base font-medium rounded-lg border-2 border-violet-400 bg-white text-violet-600 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+              className="flex items-center gap-2 px-4 py-2 w-full text-sm sm:text-base font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
               <svg
                 className="w-5 h-5"
                 fill="none"
