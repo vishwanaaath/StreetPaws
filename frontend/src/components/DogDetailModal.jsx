@@ -168,7 +168,7 @@ const DogDetailModal = ({
                     <span>{currentDog.age}</span>
                   </div>
 
-                  <div className="flex items-center gap-1 text-[13px] font-medium text-black/50 ">
+                  <div className="flex items-center gap-0.5 text-[13px] font-medium text-black/50 ">
                     <MapPin size={16} className="text-violet-600" />
                     <span className="truncate max-w-[200px]">
                       {currentDog.placeName}
