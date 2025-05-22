@@ -174,11 +174,13 @@ const Profile = () => {
             />
             <Pencil
               onClick={() => setShowUploadModal(true)}
-              alt="edit"
-              className={`absolute bottom-6 right-6 backdrop-blur-2xl p-2 rounded-full 
-               w-10 h-10 sm:w-11 sm:h-11 sm:bottom-12 sm:right-12
-               transform translate-x-1/4 translate-y-1/4 cursor-pointer`}
-            /> 
+              className={`
+          absolute bottom-2 right-2 sm:bottom-4 sm:right-4
+          w-8 h-8 sm:w-10 sm:h-10
+          backdrop-blur-2xl p-1.5 rounded-full
+          bg-white/60 text-black cursor-pointer
+        `}
+            />
           </div>
         </div>
       )}
