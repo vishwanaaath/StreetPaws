@@ -727,8 +727,7 @@ const ListDog = () => {
                       `${geoLocation.lat.toFixed(4)}, ${geoLocation.lng.toFixed(
                         4
                       )}`}
-                  </span>{" "}
-                  <span>{PlaceName}</span>
+                  </span>{" "} 
                 </p>
                 <p className="mt-1">
                   <span>Age: </span>
