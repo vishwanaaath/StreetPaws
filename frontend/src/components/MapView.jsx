@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import L from "leaflet";
 import axios from "axios";
+import { ChevronsLeft } from "lucide-react";
 import Sidebar from "./Sidebar";
 import { useLocation } from "react-router-dom";
 import Notification from "./Notification";
@@ -313,26 +314,11 @@ const MapView = () => {
         />
       )}
 
+
       <div
-        className="edge-detector fixed left-0 top-0 h-full w-4 z-[1000] transition-all duration-200"
-        onMouseEnter={() => setSidebarVisible(true)}
-        onMouseLeave={handleSidebarLeave}>
-        <div
-          className={`absolute top-1/2 -translate-y-1/2 left-1 w-8 h-8 invert-0 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300 ${
-            sidebarVisible
-              ? "opacity-0 -translate-x-8"
-              : "opacity-100 translate-x-2 hover:translate-x-3"
-          }`}>
-          {!imgLoaded && (
-            <span className="text-black text-xl select-none">{`  `}</span>
-          )}
-          <img
-            src="./images/left.svg"
-            alt="<"
-            className={`${imgLoaded ? "block" : "hidden"} w-15 h-15`}
-            onLoad={() => setImgLoaded(true)}
-          />
-        </div>
+        className="absolute top-1/2 -translate-y-1/2 left-1 w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300
+    ${sidebarVisible ? 'opacity-0 -translate-x-8' : 'opacity-100 translate-x-2 hover:translate-x-3'}">
+        <ChevronsLeft className="w-5 h-5 text-black" />
       </div>
 
       <Sidebar
