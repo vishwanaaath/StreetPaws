@@ -107,11 +107,11 @@ const ListDog = () => {
       } else if (place) {
         return place;
       } else {
-        return "Nearby area";
+        return " ";
       }
     } catch (error) {
       console.error("Error fetching place name:", error.message);
-      return "Nearby area";
+      return " ";
     }
   };
   
