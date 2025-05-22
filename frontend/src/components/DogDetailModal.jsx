@@ -204,7 +204,7 @@ const DogDetailModal = ({
 
                 {/* Right side: Like & DP */}
                 <div className="flex flex-row items-center pt-2 gap-2">
-                  <button
+                  {/* <button
                     onClick={() => onLike(currentDog._id)}
                     className="text-black hover:text-pink-500 transition">
                     <Heart
@@ -213,7 +213,7 @@ const DogDetailModal = ({
                         currentDog.isLiked ? "fill-pink-500 text-pink-500" : ""
                       }
                     />
-                  </button>
+                  </button> */}
                   <img
                     src={currentDog.lister?.dp_url || "/default-avatar.png"}
                     alt="Lister"
