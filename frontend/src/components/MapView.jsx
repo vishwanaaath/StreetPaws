@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import L from "leaflet";
+import {ChevronsLeft} from "lucide-react"
 import axios from "axios";
 import Sidebar from "./Sidebar";
 import { useLocation } from "react-router-dom";
