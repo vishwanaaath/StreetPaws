@@ -206,14 +206,14 @@ const Sidebar = ({
             <button
               onClick={handleListDog}
               className="flex items-center gap-2 px-4 py-2 w-4/5 text-sm font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
-              <DiamondPlus className="w-4 h-4" />
+              <DiamondPlus className="w-5 h-5" />
               <span>Post a Dog</span>
             </button>
             <Link
               to="/users"
               className="flex items-center gap-2 px-4 py-2 w-3/4 text-sm font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
               <svg
-                className="w-4 h-4"
+                className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24">
