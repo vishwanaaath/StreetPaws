@@ -33,9 +33,9 @@ const DogDetailModal = ({
   useEffect(() => {
     if (isOpen && dog && filteredDogs?.length) {
       const index = filteredDogs.findIndex((d) => d?._id === dog?._id);
-      setCurrentIndex(Math.max(index, 0));
+      setCurrentIndex(index >= 0 ? index : 0);
     }
-  }, [isOpen]); 
+  }, [isOpen, dog, filteredDogs]);
 
   const navigateToDog = (direction) => {
     setCurrentIndex((prev) => {
