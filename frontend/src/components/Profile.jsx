@@ -77,8 +77,7 @@ const Profile = () => {
 
   // Handle like functionality (placeholder - implement as needed)
   const handleLike = (dogId) => {
-    // Implement like functionality here
-    console.log("Liked dog:", dogId);
+    // Implement like functionality here 
   };
 
   // Long press handlers

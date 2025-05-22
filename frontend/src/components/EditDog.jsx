@@ -18,8 +18,7 @@ const EditDog = () => {
     "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/"
   );
   const navigate = useNavigate();
-  const [dogData, Setdogdata] = useState(location.state?.Data || null);
-  console.log(dogData);
+  const [dogData, Setdogdata] = useState(location.state?.Data || null); 
   
   const [currentUser, setCurrentUser] = useState(location.state?.user || null);
   const [step, setStep] = useState(1);
@@ -28,8 +27,7 @@ const EditDog = () => {
     `${prefix}${dogData.imageUrl}`
   );
   const [type, settype] = useState(dogData.type);
-  const [geoLocation, setGeoLocation] = useState(dogData.location.coordinates);
-  console.log(geoLocation);
+  const [geoLocation, setGeoLocation] = useState(dogData.location.coordinates); 
   
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
   const [showManualInput, setShowManualInput] = useState(false);
@@ -224,9 +222,7 @@ const handleSubmit = async (e) => {
 
   if (!validateContactInfo()) return;
 
-  try { 
-    console.log("Access token:", token);
-
+  try {  
     let imageUrl = dogData.imageUrl; // Default to existing image
 
     // Only upload new image if user selected one

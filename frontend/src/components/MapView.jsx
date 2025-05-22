@@ -214,8 +214,7 @@ const MapView = () => {
   setInterval(() => {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        const userLocation = [pos.coords.latitude, pos.coords.longitude];
-        console.log(userLocation);
+        const userLocation = [pos.coords.latitude, pos.coords.longitude]; 
 
         setLocation(userLocation);
         setInitialPosition(userLocation);
@@ -282,8 +281,7 @@ const MapView = () => {
     }
   };
 
-  const handleListerProfileClick = async (listerId) => {
-    console.log(listerId);
+  const handleListerProfileClick = async (listerId) => { 
 
     try {
       const token = await getAccessTokenSilently();

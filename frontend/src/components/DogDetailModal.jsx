@@ -118,10 +118,7 @@ const DogDetailModal = ({
     }
   };
 
-  const logSwipe = (direction) => {
-    console.log(`Swiped ${direction}`);
-    navigateToDog(direction);
-  };
+ 
 
   if (!currentDog) return null;
 

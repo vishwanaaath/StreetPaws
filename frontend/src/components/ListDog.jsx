@@ -128,8 +128,7 @@ const ListDog = () => {
 
       try {
         if (location.state?.user) {
-          setCurrentUser(location.state.user);
-          console.log(currentUser);
+          setCurrentUser(location.state.user); 
 
           setIsCheckingUser(false);
           return;
@@ -245,21 +244,7 @@ const ListDog = () => {
       };
       
 
-      console.log(
-        "Submitting:",
-        JSON.stringify(
-          {
-            ...dogData,
-            location: {
-              lat: typeof dogData.location.lat,
-              lng: typeof dogData.location.lng,
-              getLocation,
-            },
-          },
-          null,
-          2
-        )
-      );
+     
 
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/dogs`,
@@ -276,13 +261,11 @@ const ListDog = () => {
         ...prev,
         dogsListed: [...prev.dogsListed, response.data.dog._id],
       }));
-
-      console.log(uploadResponse);
+ 
 
       setNotificationImage(uploadResponse.data.downloadUrl);
       setNotificationMessage("Dog posted successfully!");
-      setIsSubmitting(false);
-      console.log("Dog Data:", JSON.stringify(dogData, null, 2));
+      setIsSubmitting(false); 
       resetForm();
       navigate("/map", {
         state: {
