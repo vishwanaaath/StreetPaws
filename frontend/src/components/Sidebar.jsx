@@ -109,6 +109,7 @@ const Sidebar = ({
       <div className="h-[calc(100%-120px)] overflow-y-auto pb-4">
         {isLoading || (isAuthenticated && !userData) ? (
           <>
+            {console.log(isLoading, isAuthenticated, userData)}
             {/* Profile loader */}
             <div className="flex w-full p-3 animate-pulse">
               <div className="flex w-full items-start gap-4">
