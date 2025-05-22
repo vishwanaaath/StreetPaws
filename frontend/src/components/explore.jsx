@@ -183,9 +183,12 @@ const Explore = () => {
   });
 
   // Filter dogs based on selected color with fallback
-  const filteredDogs = dogsData.filter(
-    (dog) => selectedColor === "All" || dog.type === selectedColor
-  );
+  
+  const filteredDogs = React.useMemo(() => {
+    return dogsData.filter(
+      (dog) => selectedColor === "All" || dog.type === selectedColor
+    );
+  }, [dogsData, selectedColor]); 
 
   // Handle dog click to open modal
   const handleDogClick = (dog) => {
@@ -199,25 +202,26 @@ const Explore = () => {
   };
 
   // Handle like functionality
+  // In your Explore component's handleLike function, make these changes:
+
+
+
   const handleLike = async (dogId) => {
     try {
-      // You can implement actual like functionality here with API call
-      console.log("Liked dog:", dogId);
-
-      // For demo purposes, let's toggle like status locally
+      // Update main dogs data
       setDogsData((prevDogs) =>
         prevDogs.map((dog) =>
           dog._id === dogId ? { ...dog, isLiked: !dog.isLiked } : dog
         )
       );
 
-      // Also update selected dog if it's the one being liked
-      if (selectedDog && selectedDog._id === dogId) {
-        setSelectedDog((prev) => ({
-          ...prev,
-          isLiked: !prev.isLiked,
-        }));
-      }
+      // Update selected dog if it's the current one
+      setSelectedDog((prev) => {
+        if (prev?._id === dogId) {
+          return { ...prev, isLiked: !prev.isLiked };
+        }
+        return prev;
+      });
     } catch (error) {
       setErrorMessage("Failed to like dog. Please try again.");
       setTimeout(() => setErrorMessage(null), 3000);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Heart, MapPin } from "lucide-react";
 import { useSwipeable } from "react-swipeable";
@@ -18,7 +18,17 @@ const DogDetailModal = ({
   const [distance, setDistance] = useState(null);
   const [imageAspectRatio, setImageAspectRatio] = useState(null);
 
-  const currentDog = filteredDogs[currentIndex];
+  const currentDog = React.useMemo(() => {
+    return filteredDogs[currentIndex] || null;
+  }, [filteredDogs, currentIndex]);
+
+  useEffect(() => {
+    if (isOpen && dog && filteredDogs?.length) {
+      const index = filteredDogs.findIndex((d) => d?._id === dog?._id);
+      // Add bounds checking
+      setCurrentIndex(Math.max(0, Math.min(index, filteredDogs.length - 1)));
+    }
+  }, [isOpen, dog, filteredDogs]);
 
   const handlers = useSwipeable({
     onSwipedLeft: () => navigateToDog("next"),
@@ -46,6 +56,8 @@ const DogDetailModal = ({
     });
   };
 
+  // In DogDetailModal component, add this useEffect:
+ 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "ArrowRight") navigateToDog("next");
@@ -168,7 +180,7 @@ const DogDetailModal = ({
                     <span>{currentDog.age}</span>
                   </div>
 
-                  <div className="flex items-center gap-0.5 text-[13px] font-medium text-black/50 ">
+                  <div className="flex items-center gap-0.5 text-[13px] mt-1 font-medium text-black/50 ">
                     <MapPin size={16} className="text-violet-600" />
                     <span className="truncate max-w-[200px]">
                       {currentDog.placeName}
