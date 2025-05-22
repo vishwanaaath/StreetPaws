@@ -21,26 +21,30 @@ const dogSchema = new mongoose.Schema(
     location: {
       type: {
         type: String,
-        enum: ["Point"], 
+        enum: ["Point"],
         required: true,
-        default: "Point", 
+        default: "Point",
       },
       coordinates: {
-        type: [Number], 
+        type: [Number],
         required: true,
         validate: {
           validator: function (v) {
             return (
               v.length === 2 &&
               v[0] >= -180 &&
-              v[0] <= 180 && 
+              v[0] <= 180 &&
               v[1] >= -90 &&
               v[1] <= 90
-            ); 
+            );
           },
           message: (props) => `Invalid coordinates: ${props.value}`,
         },
       },
+    },
+    placeName: {
+      type: String,
+      trim: true,
     },
     age: {
       type: String,
@@ -57,7 +61,7 @@ const dogSchema = new mongoose.Schema(
       type: String,
       required: [true, "Gender is required"],
       enum: ["Male", "Female", "Unknown"],
-    }, 
+    },
     listerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -67,17 +71,18 @@ const dogSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    adoptedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
+    saved: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     timestamps: true,
     collection: "dogs",
   }
 );
-
 
 dogSchema.index({ location: "2dsphere" });
 

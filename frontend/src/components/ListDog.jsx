@@ -39,9 +39,11 @@ const ListDog = () => {
   const [notificationImage, setNotificationImage] = useState(null);
   const [istypeDropdownOpen, setIstypeDropdownOpen] = useState(false);
   const [isAgeDropdownOpen, setIsAgeDropdownOpen] = useState(false);
+  const [isManualLoading, setIsManualLoading] = useState(false);
+  const [PlaceName, setPlaceName] = useState(""); // or your existing state
 
-  const [errors, setErrors] = useState({}); 
-  const genders = ["Male", "Female", "Unknown"]; 
+  const [errors, setErrors] = useState({});
+  const genders = ["Male", "Female", "Unknown"];
 
   const dogType = [
     {
@@ -75,7 +77,42 @@ const ListDog = () => {
         "https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/1745406502654-spotted-dog.jpg",
     },
   ];
- 
+
+  const getPlaceName = async (lat, lng) => {
+    try {
+      const response = await axios.get(
+        `https://us1.locationiq.com/v1/reverse?key=pk.f04a78df8cf53448ed596db5cb8ff97a&lat=${lat}&lon=${lng}&format=json`
+      );
+
+      const address = response.data.address;
+
+      const place =
+        address.neighbourhood ||
+        address.suburb ||
+        address.village ||
+        address.locality ||
+        address.hamlet ||
+        address.town ||
+        address.city_district;
+
+      const city =
+        address.city || address.town || address.village || address.county;
+
+      if (place && city) {
+        return `${place}, ${city}`;
+      } else if (city) {
+        return city;
+      } else if (place) {
+        return place;
+      } else {
+        return "Nearby area";
+      }
+    } catch (error) {
+      console.error("Error fetching place name:", error.message);
+      return "Nearby area";
+    }
+  };
+
   useEffect(() => {
     document.body.classList.remove("cursor-wait");
     const checkUserExists = async () => {
@@ -84,7 +121,7 @@ const ListDog = () => {
         return;
       }
 
-      try { 
+      try {
         if (location.state?.user) {
           setCurrentUser(location.state.user);
           console.log(currentUser);
@@ -92,7 +129,7 @@ const ListDog = () => {
           setIsCheckingUser(false);
           return;
         }
- 
+
         const token = await getAccessTokenSilently();
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/users/${auth0User.sub}`,
@@ -116,7 +153,7 @@ const ListDog = () => {
       checkUserExists();
     }
   }, [isAuthenticated, auth0User?.sub]);
- 
+
   if (isCheckingUser) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -134,9 +171,7 @@ const ListDog = () => {
     "3-5 years",
     "More than 5 years",
   ];
- 
 
- 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -145,36 +180,41 @@ const ListDog = () => {
       setPreviewImage(URL.createObjectURL(file));
     }
   };
- 
+
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setGeoLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-          setlat(position.coords.latitude);
-          setlon(position.coords.longitude);
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+
+          setGeoLocation({ lat, lng });
+          setlat(lat);
+          setlon(lng);
+
+          const placeName = await getPlaceName(lat, lng);
+          setPlaceName(placeName);
+
           setStep(4);
           setIsLoadingLocation(false);
         },
         (error) => {
           alert("Error getting location: " + error.message);
+          setIsLoadingLocation(false);
         }
       );
     } else {
       alert("Geolocation is not supported by this browser.");
     }
   };
- 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    try { 
+    try {
       const token = await getAccessTokenSilently();
- 
+
       const formData = new FormData();
       formData.append("file", dogImage);
 
@@ -183,22 +223,22 @@ const ListDog = () => {
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
- 
+
       const dogData = {
         imageUrl: uploadResponse.data.downloadUrl.split("uploads/")[1],
         type,
         location: {
-          type: "Point",  
-          coordinates: [
-            geoLocation.lng,  
-            geoLocation.lat, 
-          ],
+          type: "Point",
+          coordinates: [geoLocation.lng, geoLocation.lat],
         },
+        placeName: PlaceName, 
         age,
         gender,
         listerId: currentUser._id,
         adopted: false,
+        saved: [],  
       };
+      
 
       console.log(
         "Submitting:",
@@ -208,6 +248,7 @@ const ListDog = () => {
             location: {
               lat: typeof dogData.location.lat,
               lng: typeof dogData.location.lng,
+              getLocation,
             },
           },
           null,
@@ -226,7 +267,6 @@ const ListDog = () => {
         }
       );
 
-      
       setCurrentUser((prev) => ({
         ...prev,
         dogsListed: [...prev.dogsListed, response.data.dog._id],
@@ -238,15 +278,15 @@ const ListDog = () => {
       setNotificationMessage("Dog posted successfully!");
       setIsSubmitting(false);
       console.log("Dog Data:", JSON.stringify(dogData, null, 2));
-      resetForm(); 
-        navigate("/map", {
-          state: {
-            selectedDog: {
-              lat: Lat, 
-              lng: Lon,
-            },
+      resetForm();
+      navigate("/map", {
+        state: {
+          selectedDog: {
+            lat: Lat,
+            lng: Lon,
           },
-        }); 
+        },
+      });
     } catch (error) {
       setIsSubmitting(false);
       console.error("Submission error:", error);
@@ -256,7 +296,6 @@ const ListDog = () => {
     }
   };
 
-  
   const resetForm = () => {
     setStep(1);
     setDogImage(null);
@@ -278,8 +317,6 @@ const ListDog = () => {
       <div className="fixed inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 animate-gradient-x blur-2xl  opacity-30 -z-10 pointer-events-none" />
 
       <div className="max-w-md mx-auto min-h-screen bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl   p-8">
-        
-
         {/* Progress indicator */}
         <div className="mb-8">
           <div className="flex justify-between">
@@ -506,7 +543,7 @@ const ListDog = () => {
                   )}
                   <button
                     type="button"
-                    onClick={() => {
+                    onClick={async () => {
                       if (!manualLat || !manualLng) {
                         setManualError(
                           "Please enter both latitude and longitude"
@@ -521,16 +558,47 @@ const ListDog = () => {
                         setManualError("Longitude must be a number");
                         return;
                       }
+
                       setManualError("");
-                      setGeoLocation({
-                        lat: parseFloat(manualLat),
-                        lng: parseFloat(manualLng),
-                      });
+                      const lat = parseFloat(manualLat);
+                      const lng = parseFloat(manualLng);
+
+                      setGeoLocation({ lat, lng });
+                      setIsManualLoading(true); // 🌀 Start manual loader
+
+                      const place = await getPlaceName(lat, lng);
+                      setPlaceName(place);
+
+                      setIsManualLoading(false); // ✅ Done
                       setShowManualInput(false);
                       setStep(4);
                     }}
-                    className="px-4 py-2 bg-gray-200 cursor-pointer text-gray-700 rounded-lg hover:bg-gray-300">
-                    Set Manual Location
+                    className="px-4 py-2 bg-gray-200 cursor-pointer text-gray-700 rounded-lg hover:bg-gray-300"
+                    disabled={isManualLoading}>
+                    {isManualLoading ? (
+                      <div className="flex items-center justify-center">
+                        <svg
+                          className="animate-spin h-4 w-4 mr-2 text-gray-700"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24">
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Fetching...
+                      </div>
+                    ) : (
+                      "Set Manual Location"
+                    )}
                   </button>
                 </div>
               )}
@@ -660,6 +728,7 @@ const ListDog = () => {
                         4
                       )}`}
                   </span>{" "}
+                  <span>{PlaceName}</span>
                 </p>
                 <p className="mt-1">
                   <span>Age: </span>
