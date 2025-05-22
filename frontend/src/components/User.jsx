@@ -262,7 +262,7 @@ const User = () => {
 
       <div className="max-w-4xl min-h-screen mx-auto">
         <div className="bg-white rounded-xl shadow-md overflow-hidden min-h-screen sm:p-6 p-2 ">
-          {/* Profile Header Section */}
+          {/* Profile Header Section .*/}
           <div className="flex flex-col md:flex-row items-start md:items-center sm:gap-6 sm:mb-8 mb-2">
             <div className="flex items-center w-full md:w-auto mt-2 gap-0">
               {/* Profile Picture */}
