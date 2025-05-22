@@ -175,7 +175,7 @@ const DogDetailModal = ({
                     {currentDog.type}
                   </h2>
 
-                  <div className="flex gap-2 text-[14px] font-medium text-black/60">
+                  <div className="flex gap-1 text-[14px] font-medium text-black/60">
                     <span>{currentDog.gender}</span>
                     <span>•</span>
                     <span>{currentDog.age}</span>
