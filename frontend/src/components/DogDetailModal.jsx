@@ -168,7 +168,7 @@ const DogDetailModal = ({
               </div>
 
               {/* Combined Content Section */}
-              <div className="flex justify-between items-start px-2 pt-2 pb-2 text-black">
+              <div className="flex justify-between items-start px-3 pt-2 pb-2 text-black">
                 {/* Left side: Dog Info */}
                 <div className="flex flex-col gap-1">
                   <h2 className="text-[18px] font-bold capitalize">
