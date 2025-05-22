@@ -168,48 +168,49 @@ const DogDetailModal = ({
               </div>
 
               {/* Combined Content Section */}
-              <div className="flex justify-between items-start px-4 pt-3 pb-2">
-                {/* Left Content Group */}
-                <div className="flex flex-col gap-1 flex-1">
-                  {/* Like and Location Row */}
+              <div className="flex justify-between items-start px-5 pt-4 pb-3 text-black">
+                {/* Left side: Dog Info */}
+                <div className="flex flex-col gap-1">
+                  <h2 className="text-[18px] font-bold capitalize">
+                    {currentDog.type}
+                  </h2>
 
-                  {/* Dog Info - Type on top, gender & age below */}
-                  <div className="text-black capitalize">
-                    <h2 className="text-[16px] font-extrabold">
-                      {currentDog.type}
-                    </h2>
-                    <div className="flex gap-2 text-[14px] font-bold text-black/70 mt-0.5">
-                      <span>{currentDog.gender}</span>
-                      <span>{currentDog.age}</span>
-                    </div>
+                  <div className="flex gap-2 text-[14px] font-medium text-black/60">
+                    <span>{currentDog.gender}</span>
+                    <span>•</span>
+                    <span>{currentDog.age}</span>
                   </div>
-                  <div className="flex items-center">
-                    <div className="flex items-center gap-1 text-black">
-                      <MapPin size={20} className="text-violet-600" />
-                      <span className="font-semibold text-[12px]">
-                        {currentDog.placeName || " "}
-                      </span>
-                    </div>
+
+                  <div className="flex items-center gap-1 text-[13px] font-medium text-black/50 mt-0.5">
+                    <MapPin size={16} className="text-violet-600" />
+                    <span className="truncate max-w-[140px]">{placeName}</span>
+                    {currentDog.createdAt && (
+                      <>
+                        <span className="mx-1">•</span>
+                        <span>
+                          {new Date(currentDog.createdAt).toLocaleDateString()}
+                        </span>
+                      </>
+                    )}
                   </div>
                 </div>
 
-                {/* Right DP done */}
-                <div>
+                {/* Right side: Like & DP */}
+                <div className="flex flex-col items-end gap-2">
                   <button
                     onClick={() => onLike(currentDog._id)}
-                    className="flex items-center gap-2 text-black hover:text-pink-500 transition">
+                    className="text-black hover:text-pink-500 transition">
                     <Heart
-                      size={22}
+                      size={24}
                       className={
                         currentDog.isLiked ? "fill-pink-500 text-pink-500" : ""
                       }
                     />
                   </button>
-
                   <img
                     src={currentDog.lister?.dp_url || "/default-avatar.png"}
                     alt="Lister"
-                    className="w-13 h-13 rounded-full object-cover mt-2.5 shadow ml-4"
+                    className="w-11 h-11 rounded-full object-cover shadow"
                   />
                 </div>
               </div>
