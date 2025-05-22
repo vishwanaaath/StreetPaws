@@ -172,6 +172,17 @@ const DogDetailModal = ({
                 {/* Left Content Group */}
                 <div className="flex flex-col gap-1 flex-1">
                   {/* Like and Location Row */}
+
+                  {/* Dog Info - Type on top, gender & age below */}
+                  <div className="text-black capitalize">
+                    <h2 className="text-[16px] font-extrabold">
+                      {currentDog.type}
+                    </h2>
+                    <div className="flex gap-2 text-[14px] font-bold text-black/70 mt-0.5">
+                      <span>{currentDog.gender}</span>
+                      <span>{currentDog.age}</span>
+                    </div>
+                  </div>
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => onLike(currentDog._id)}
@@ -191,17 +202,6 @@ const DogDetailModal = ({
                       <span className="font-semibold text-[14px]">
                         {currentDog.placeName || " "}
                       </span>
-                    </div>
-                  </div>
-
-                  {/* Dog Info - Type on top, gender & age below */}
-                  <div className="text-black capitalize">
-                    <h2 className="text-[16px] font-extrabold">
-                      {currentDog.type}
-                    </h2>
-                    <div className="flex gap-2 text-[14px] font-bold text-black/70 mt-0.5">
-                      <span>{currentDog.gender}</span>
-                      <span>{currentDog.age}</span>
                     </div>
                   </div>
                 </div>
