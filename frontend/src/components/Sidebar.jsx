@@ -2,7 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { DiamondPlus, Compass, Users, LogOut, LogIn } from "lucide-react";
+import { DiamondPlus } from "lucide-react";
 
 const Sidebar = ({
   sidebarVisible,
@@ -42,9 +42,10 @@ const Sidebar = ({
           if (error.response?.status === 404) {
             navigate("/PostDP");
           }
-          setUserDataLoaded(true);
+          setUserDataLoaded(true); // Set as loaded even on error
         }
       } else if (!isAuthenticated && !isLoading) {
+        // Clear user data when not authenticated
         setUserData(null);
         setUserDataLoaded(true);
       }
@@ -96,60 +97,7 @@ const Sidebar = ({
     navigate("/list-dog", { state: { user: userData } });
   };
 
-  // Button component with consistent styling
-  const AnimatedButton = ({
-    onClick,
-    children,
-    icon: Icon,
-    gradient = "from-violet-600 to-fuchsia-500",
-    hoverGradient = "from-violet-700 to-fuchsia-600",
-    className = "",
-  }) => (
-    <button
-      onClick={onClick}
-      className={`group relative flex items-center justify-center gap-2 px-4 py-2.5 w-full text-sm font-medium rounded-lg bg-gradient-to-br ${gradient} text-white hover:${hoverGradient} transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] focus:ring-2 focus:ring-violet-400 focus:outline-none ${className}`}>
-      {/* Animated shine effect */}
-      <div className="absolute inset-0 overflow-hidden rounded-lg">
-        <div className="absolute -inset-[100px] opacity-0 group-hover:opacity-30 transition-opacity duration-300 bg-[linear-gradient(45deg,_transparent_25%,_rgba(255,255,255,0.3)_50%,_transparent_75%)] group-hover:animate-shine" />
-      </div>
-
-      {/* Icon with subtle bounce animation */}
-      {Icon && (
-        <Icon className="w-5 h-5 transform group-hover:-translate-y-0.5 transition-transform duration-300" />
-      )}
-
-      <span className="relative font-medium">{children}</span>
-    </button>
-  );
-
-  // Link component with consistent styling
-  const AnimatedLink = ({
-    to,
-    state,
-    children,
-    icon: Icon,
-    gradient = "from-violet-600 to-fuchsia-500",
-    hoverGradient = "from-violet-700 to-fuchsia-600",
-    className = "",
-  }) => (
-    <Link
-      to={to}
-      state={state}
-      className={`group relative flex items-center justify-center gap-2 px-4 py-2.5 w-full text-sm font-medium rounded-lg bg-gradient-to-br ${gradient} text-white hover:${hoverGradient} transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] focus:ring-2 focus:ring-violet-400 focus:outline-none ${className}`}>
-      {/* Animated shine effect */}
-      <div className="absolute inset-0 overflow-hidden rounded-lg">
-        <div className="absolute -inset-[100px] opacity-0 group-hover:opacity-30 transition-opacity duration-300 bg-[linear-gradient(45deg,_transparent_25%,_rgba(255,255,255,0.3)_50%,_transparent_75%)] group-hover:animate-shine" />
-      </div>
-
-      {/* Icon with subtle bounce animation */}
-      {Icon && (
-        <Icon className="w-5 h-5 transform group-hover:-translate-y-0.5 transition-transform duration-300" />
-      )}
-
-      <span className="relative font-medium">{children}</span>
-    </Link>
-  );
-
+  // Show loading state while auth is loading or user data is being fetched
   const isLoadingState = isLoading || (isAuthenticated && !userDataLoaded);
 
   return (
@@ -160,7 +108,7 @@ const Sidebar = ({
       onMouseEnter={() => setSidebarVisible(true)}
       onMouseLeave={handleSidebarLeave}>
       {/* Top profile section */}
-      <div className="h-[calc(100%-260px)] overflow-y-auto pb-4">
+      <div className="h-[calc(100%-200px)] overflow-y-auto pb-4">
         {isLoadingState ? (
           // Show skeleton for profile while loading
           <div className="flex w-full p-3 animate-pulse">
@@ -180,10 +128,10 @@ const Sidebar = ({
             <Link
               to="/profile"
               state={{ user: userData }}
-              className="flex w-full p-3 transition-colors hover:bg-violet-50 rounded-lg mx-2 my-2">
+              className="flex w-full p-3 transition-colors hover:bg-violet-50">
               <div className="flex w-full items-start gap-4">
                 <div className="flex-shrink-0">
-                  <div className="w-16 h-16 rounded-full overflow-hidden ring-2 ring-violet-200">
+                  <div className="w-16 h-16 rounded-full overflow-hidden">
                     <img
                       src={userData.dp_url || auth0User.picture}
                       alt="Profile"
@@ -195,7 +143,7 @@ const Sidebar = ({
                   <p className="text-[16px] font-bold text-gray-800">
                     {userData.username}
                   </p>
-                  <p className="text-[13px] text-gray-600 mt-1">
+                  <p className="text-[13px] text-gray-900 mt-1">
                     {userData.dogsListed?.length || 0}{" "}
                     {userData.dogsListed?.length === 1
                       ? "dog listed"
@@ -206,83 +154,88 @@ const Sidebar = ({
             </Link>
 
             {/* Explore Button - Below Profile */}
-            <div className="px-3 mt-4">
-              <AnimatedLink
+            <div className="px-3 mt-2">
+              <Link
                 to="/explore"
-                icon={Compass}
-                gradient="from-blue-600 to-purple-500"
-                hoverGradient="from-blue-700 to-purple-600">
-                Explore Dogs
-              </AnimatedLink>
+                className="flex items-center gap-3 px-4 py-2 w-full text-sm font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+                <svg
+                  className="w-5 h-5"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="#7c3aed"
+                  stroke="#7c3aed">
+                  <path d="M231.6 16.18l16.7 120.02 73.8 20.5c37.3-11.2 78.5-18.2 102.3-43.6 9.7-10.3 17.2-24.78 9.1-37.92l-75.3 2.22-14.6-31.79h-74.7c-7.7-11.71-22.8-20.46-37.3-29.43zm5.7 145.22c-46.9 19.8-110.1 146.3-111.8 276.5-34.02-58.1-24.9-122.6-2.9-202.6C55.31 287 4.732 448.4 133.1 486.9H346s-6.3-21.5-14.1-28.9c-12.7-12-48.2-20.2-48.2-20.2 27.8-39.2 33.5-71.7 38.6-103.9 4.5 59.8 40.7 126.8 57.4 153h76.5s4.6-15.9.2-21.5c-10.9-13.8-51.3-11.9-51.3-11.9-31.1-107.2-46.3-260.2-90-273.2-21.7-6.5-54.3-14.1-77.8-18.9z" />
+                </svg>
+                <span>Explore Dogs</span>
+              </Link>
             </div>
           </>
         ) : null}
       </div>
 
       {/* Bottom Buttons incl. login/logout + others */}
-      <div className="absolute bottom-4 left-0 right-0 px-4 space-y-3">
+      <div className="absolute bottom-4 left-0 right-0 px-4 space-y-2">
         {isLoadingState ? (
           // Skeleton while loading
-          <div className="space-y-3">
-            <div className="h-[42px] rounded-lg bg-violet-200 w-full animate-pulse" />
-            <div className="h-[42px] rounded-lg bg-violet-200 w-full animate-pulse" />
-            <div className="h-[42px] rounded-lg bg-violet-200 w-full animate-pulse" />
-          </div>
+          <div className="h-[42px] rounded-lg bg-violet-200 w-full animate-pulse" />
         ) : isAuthenticated && userData ? (
-          <>
-            {/* Post a Dog Button */}
-            <AnimatedButton
+          <>  <button
               onClick={handleListDog}
-              icon={DiamondPlus}
-              gradient="from-violet-600 to-fuchsia-500"
-              hoverGradient="from-violet-700 to-fuchsia-600">
-              Post a Dog
-            </AnimatedButton>
+              className="group relative flex items-center justify-center gap-2 px-4 py-2.5 w-full text-sm font-medium rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-500 text-white hover:from-violet-700 hover:to-fuchsia-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] focus:ring-2 focus:ring-violet-400 focus:outline-none">
+              {/* Animated shine effect */}
+              <div className="absolute inset-0 overflow-hidden rounded-lg">
+                <div className="absolute -inset-[100px] opacity-0 group-hover:opacity-30 transition-opacity duration-300 bg-[linear-gradient(45deg,_transparent_25%,_rgba(255,255,255,0.3)_50%,_transparent_75%)] group-hover:animate-shine" />
+              </div>
 
-            {/* Community Button */}
-            <AnimatedLink
+              {/* Icon with subtle bounce animation */}
+              <DiamondPlus className="w-5 h-5 transform group-hover:-translate-y-0.5 transition-transform duration-300" />
+
+              <span className="relative">
+                Post a Dog
+              </span>
+            </button>
+            <Link
               to="/users"
-              icon={Users}
-              gradient="from-emerald-600 to-teal-500"
-              hoverGradient="from-emerald-700 to-teal-600">
-              Community
-            </AnimatedLink>
-
-            {/* Logout Button */}
-            <AnimatedButton
+              className="flex items-center gap-2 px-4 py-2 w-full text-sm font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              <span>Community</span>
+            </Link>
+            <button
               onClick={handleLogout}
-              icon={LogOut}
-              gradient="from-red-600 to-pink-500"
-              hoverGradient="from-red-700 to-pink-600">
-              Logout
-            </AnimatedButton>
+              className="flex items-center justify-center gap-2 w-full sm:px-4 sm:py-3 px-3 py-2 bg-violet-500 text-white rounded-lg hover:bg-red-500 transition-colors duration-300 shadow-md focus:ring-2 focus:ring-red-300 focus:outline-none">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M3 4a1 1 0 011-1h6a1 1 0 110 2H5v10h5a1 1 0 110 2H4a1 1 0 01-1-1V4zm9.293 1.293a1 1 0 011.414 0L17 8.586a1 1 0 010 1.414l-3.293 3.293a1 1 0 01-1.414-1.414L13.586 10H9a1 1 0 110-2h4.586l-1.293-1.293a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <span className="font-medium text-[16px]">Logout</span>
+            </button>
           </>
         ) : (
-          // Login Button
-          <AnimatedButton
+          <button
             onClick={handleLogin}
-            icon={LogIn}
-            gradient="from-indigo-600 to-blue-500"
-            hoverGradient="from-indigo-700 to-blue-600">
+            className="w-full px-4 py-2 border-2 border-violet-400 cursor-pointer text-violet-500 rounded-lg hover:bg-violet-50 transition-colors">
             Login
-          </AnimatedButton>
+          </button>
         )}
       </div>
-
-      {/* Add custom shine animation to the CSS */}
-      <style jsx>{`
-        @keyframes shine {
-          from {
-            transform: translateX(-100%);
-          }
-          to {
-            transform: translateX(100%);
-          }
-        }
-        .animate-shine {
-          animation: shine 1s ease-out;
-        }
-      `}</style>
     </div>
   );
 };
