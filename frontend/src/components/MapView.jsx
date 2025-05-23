@@ -53,9 +53,10 @@ const MapView = () => {
   const [initialPosition, setInitialPosition] = useState(null);
   const [initialZoom, setInitialZoom] = useState(16);
   const [placeNames, setPlaceNames] = useState({}); 
+  const [userData, setUserData] = useState(null);
+  const [userDataLoaded, setUserDataLoaded] = useState(false);
 
   const loadingMessage = Location.state?.loadingMessage;
-
 
   useEffect(() => {
     if (Location.state?.newlyListedDogId) {
@@ -198,8 +199,7 @@ const MapView = () => {
         setDogs(dogsWithLocation);
         const names = {};
         for (const dog of dogsWithLocation) {
-          names[dog._id] =
-            (await getPlaceName(dog.lat, dog.lng)) || " "; 
+          names[dog._id] = (await getPlaceName(dog.lat, dog.lng)) || " ";
         }
         setPlaceNames(names);
       } catch (error) {
@@ -211,27 +211,22 @@ const MapView = () => {
       }
     };
 
-  setInterval(() => {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const userLocation = [pos.coords.latitude, pos.coords.longitude]; 
+    setInterval(() => {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const userLocation = [pos.coords.latitude, pos.coords.longitude];
 
-        setLocation(userLocation);
-        setInitialPosition(userLocation);
-      },
-      (error) => {
-        console.error("Geolocation error:", error);
-        setNotificationMessage(
-          "Could not get your location. "
-        );
-      }
-    );
-    
-  }, 1000);
+          setLocation(userLocation);
+          setInitialPosition(userLocation);
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          setNotificationMessage("Could not get your location. ");
+        }
+      );
+    }, 1000);
 
-  
-  fetchDogs();
-
+    fetchDogs();
   }, []);
 
   const handleViewportChanged = (e) => {
@@ -281,8 +276,7 @@ const MapView = () => {
     }
   };
 
-  const handleListerProfileClick = async (listerId) => { 
-
+  const handleListerProfileClick = async (listerId) => {
     try {
       const token = await getAccessTokenSilently();
       const response = await axios.get(
@@ -333,8 +327,10 @@ const MapView = () => {
         setSidebarVisible={setSidebarVisible}
         setNotificationMessage={setNotificationMessage}
         setNotificationImage={setNotificationImage}
-        selectedColor={selectedColor}
-        handleColorSelect={handleColorSelect}
+        userData={userData}
+        setUserData={setUserData}
+        userDataLoaded={userDataLoaded}
+        setUserDataLoaded={setUserDataLoaded}
       />
 
       {location ? (
@@ -420,11 +416,11 @@ const MapView = () => {
                       <div className="flex items-center  justify-between">
                         <div className="text-gray-800 ml-2">
                           <div className="flex flex-col">
-                            {placeNames[dog._id] && (
+                           
                               <span className="text-[14px] font-semibold text-gray-600 mb-1">
                                 {dog.placeName}
                               </span>
-                            )}
+                            
                             <span className="text-[12px]  text-gray-800">
                               {distance}
                             </span>
