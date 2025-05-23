@@ -180,13 +180,29 @@ const Sidebar = ({
           <div className="h-[42px] rounded-lg bg-violet-200 w-full animate-pulse" />
         ) : isAuthenticated && userData ? (
           <>
+            // Replace the existing "Post a Dog" button with this code
             <button
               onClick={handleListDog}
-              className="flex items-center gap-2 px-4 py-2 w-full text-sm font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
-              <DiamondPlus className="w-5 h-5" />
-              <span>Post a Dog</span>
-            </button>
+              className="group relative flex items-center justify-center gap-2 px-4 py-2.5 w-full text-sm font-medium rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-500 text-white hover:from-violet-700 hover:to-fuchsia-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] focus:ring-2 focus:ring-violet-400 focus:outline-none">
+              {/* Animated shine effect */}
+              <div className="absolute inset-0 overflow-hidden rounded-lg">
+                <div className="absolute -inset-[100px] opacity-0 group-hover:opacity-30 transition-opacity duration-300 bg-[linear-gradient(45deg,_transparent_25%,_rgba(255,255,255,0.3)_50%,_transparent_75%)] group-hover:animate-shine" />
+              </div>
 
+              {/* Icon with subtle bounce animation */}
+              <DiamondPlus className="w-5 h-5 transform group-hover:-translate-y-0.5 transition-transform duration-300" />
+
+              <span className="relative">
+                Premium Listing
+                <svg
+                  className="w-4 h-4 ml-1.5 inline-block transform group-hover:rotate-12 transition-transform duration-300"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  stroke="currentColor">
+                  <path d="M5 16L3 5l8.5 5L12 4l1.5 6L22 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1s.4-1 1-1h12c.6 0 1 .4 1 1z" />
+                </svg>
+              </span>
+            </button>
             <Link
               to="/users"
               className="flex items-center gap-2 px-4 py-2 w-full text-sm font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
@@ -204,7 +220,6 @@ const Sidebar = ({
               </svg>
               <span>Community</span>
             </Link>
-
             <button
               onClick={handleLogout}
               className="flex items-center justify-center gap-2 w-full sm:px-4 sm:py-3 px-3 py-2 bg-violet-500 text-white rounded-lg hover:bg-red-500 transition-colors duration-300 shadow-md focus:ring-2 focus:ring-red-300 focus:outline-none">
