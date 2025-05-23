@@ -730,14 +730,14 @@ const ListDog = () => {
                     {gender}
                   </span>
                 </p>
-                {email && (
+                {/* {email && (
                   <p className="mt-1">
                     <span>Email: </span>
                     <span className="text-base text-black font-bold">
                       {email}
                     </span>{" "}
                   </p>
-                )}
+                )} */}
               </div>
             </div>
             <button

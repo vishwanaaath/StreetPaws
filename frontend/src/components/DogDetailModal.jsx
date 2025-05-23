@@ -150,7 +150,7 @@ const DogDetailModal = ({
               <div
                 className={`w-full ${
                   isTallImage ? "h-[60vh]" : "h-auto"
-                } relative bg-gray-100`}>
+                } relative bg-white`}>
                 <motion.img
                   key={currentDog._id}
                   src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${currentDog.imageUrl}`}
