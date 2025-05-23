@@ -40,7 +40,7 @@ const MapViewLoader = ({message}) => {
           <div className="space-y-4">
             <div className="flex items-center justify-center space-x-3">
               <h2 className="sm:text-2xl text-lg font-gilroy font-bold bg-gradient-to-r from-violet-600 to-purple-400 bg-clip-text text-transparent p-5">
-                <p>{message || "Sniffing out teh best bois and gals in your area..."}</p>{" "}
+                <p>{message || "Sniffing out the best bois and gals"}</p>{" "}
               </h2>
             </div>
           </div>
