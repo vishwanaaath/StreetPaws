@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import L from "leaflet";
-import { ChevronsLeft } from "lucide-react";
+import {ChevronsLeft} from "lucide-react"
 import axios from "axios";
 import Sidebar from "./Sidebar";
 import { useLocation } from "react-router-dom";
@@ -48,9 +48,9 @@ const MapView = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [isContactAsked, setIsContactAsked] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState(null);
-  const [notificationImage, setNotificationImage] = useState(null);
+  const [notificationImage, setNotificationImage] = useState(null); 
   const [initialPosition, setInitialPosition] = useState(null);
-  const [initialZoom, setInitialZoom] = useState(16);
+  const [initialZoom, setInitialZoom] = useState(16); 
   const [userData, setUserData] = useState(null);
   const [userDataLoaded, setUserDataLoaded] = useState(false);
 
@@ -103,6 +103,8 @@ const MapView = () => {
     handleNewDogNavigation();
   }, [dogs, newlyListedDogId, map]);
 
+
+
   useEffect(() => {
     const fetchDogs = async () => {
       try {
@@ -110,8 +112,55 @@ const MapView = () => {
           `${import.meta.env.VITE_API_URL}/api/dogs`,
           { timeout: 10000 }
         );
+
+        if (!Array.isArray(response.data)) {
+          throw new Error("Invalid response format");
+        }
+
         const dogsWithLocation = response.data
           .map((dog) => {
+            if (!dog.location) {
+              console.warn("Missing location for dog:", dog._id);
+              return null;
+            }
+
+            let lat, lng;
+
+            if (
+              dog.location.coordinates &&
+              Array.isArray(dog.location.coordinates)
+            ) {
+              if (dog.location.coordinates.length !== 2) {
+                console.warn(
+                  "Invalid coordinates array length for dog:",
+                  dog._id
+                );
+                return null;
+              }
+              [lng, lat] = dog.location.coordinates;
+            } else if (
+              typeof dog.location.lat === "number" &&
+              typeof dog.location.lng === "number"
+            ) {
+              lat = dog.location.lat;
+              lng = dog.location.lng;
+            } else {
+              console.warn("Invalid location data for dog:", dog._id);
+              return null;
+            }
+
+            if (
+              isNaN(lat) ||
+              isNaN(lng) ||
+              lat < -90 ||
+              lat > 90 ||
+              lng < -180 ||
+              lng > 180
+            ) {
+              console.warn("Invalid coordinate values for dog:", dog._id);
+              return null;
+            }
+
             return {
               ...dog,
               lat,
@@ -131,19 +180,19 @@ const MapView = () => {
         setIsLoadingDogs(false);
       }
     };
+ 
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const userLocation = [pos.coords.latitude, pos.coords.longitude];
 
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const userLocation = [pos.coords.latitude, pos.coords.longitude];
-
-        setLocation(userLocation);
-        setInitialPosition(userLocation);
-      },
-      (error) => {
-        console.error("Geolocation error:", error);
-        setNotificationMessage("Could not get your location. ");
-      }
-    );
+          setLocation(userLocation);
+          setInitialPosition(userLocation);
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          setNotificationMessage("Could not get your location. ");
+        }
+      ); 
 
     fetchDogs();
   }, []);
@@ -252,129 +301,105 @@ const MapView = () => {
         setUserDataLoaded={setUserDataLoaded}
       />
 
-      <MapContainer
-        center={viewDogLocation || location}
-        zoom={16}
-        className="w-full h-full"
-        whenCreated={(mapInstance) => {
-          setMap(mapInstance); // Store the map instance
-          setInitialZoom(mapInstance.getZoom());
-          setMapBounds(mapInstance.getBounds());
-        }}
-        onMoveEnd={handleViewportChanged}>
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-
-        {initialPosition && (
-          <ResetViewControl
-            initialPosition={initialPosition}
-            initialZoom={initialZoom}
+      {location ? (
+        <MapContainer
+          center={viewDogLocation || location}
+          zoom={16}
+          className="w-full h-full"
+          whenCreated={(mapInstance) => {
+            setMap(mapInstance); // Store the map instance
+            setInitialZoom(mapInstance.getZoom());
+            setMapBounds(mapInstance.getBounds());
+          }}
+          onMoveEnd={handleViewportChanged}>
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
-        )}
 
-        <Marker position={location}>
-          <Popup>You are here</Popup>
-        </Marker>
+          {initialPosition && (
+            <ResetViewControl
+              initialPosition={initialPosition}
+              initialZoom={initialZoom}
+            />
+          )}
 
-        {visibleDogs.map((dog) => {
-          let lat, lng;
+          <Marker position={location}>
+            <Popup>You are here</Popup>
+          </Marker>
 
-          if (dog.location?.coordinates) {
-            [lng, lat] = dog.location.coordinates;
-          } else {
-            lat = dog.location?.lat;
-            lng = dog.location?.lng;
-          }
+          {visibleDogs.map((dog) => {
+            let lat, lng;
 
-          const distance = calculateDistance(
-            location[0],
-            location[1],
-            lat,
-            lng
-          );
+            if (dog.location?.coordinates) {
+              [lng, lat] = dog.location.coordinates;
+            } else {
+              lat = dog.location?.lat;
+              lng = dog.location?.lng;
+            }
 
-          return (
-            <Marker
-              key={dog._id}
-              ref={(ref) => {
-                if (ref) {
-                  markerRefs.current[dog._id] = ref;
-                } else {
-                  delete markerRefs.current[dog._id];
-                }
-              }}
-              position={[dog.lat, dog.lng]}
-              icon={dogIcon}>
-              <Popup>
-                <div className="relative max-h-[380px] duration-100 w-64 max-w-[260px] rounded-2xl overflow-hidden">
-                  <div className="relative z-10   backdrop-blur-lg rounded-lg shadow-2xl space-y-4 text-gray-800">
-                    <div
-                      className={`overflow-hidden rounded-xl relative bg-gray-100 ${
-                        isContactAsked ? "min-h-60" : "h-55"
-                      }`}>
-                      {dog.imageUrl ? (
-                        <img
-                          className="absolute inset-0 w-full h-full object-cover transition-all duration-300 hover:scale-105"
-                          src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
-                          alt={dog.type}
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-violet-400 animate-pulse" />
-                      )}
-                    </div>
+            const distance = calculateDistance(
+              location[0],
+              location[1],
+              lat,
+              lng
+            );
 
-                    <div className="flex items-center  justify-between">
-                      <div className="text-gray-800 ml-2">
-                        <div className="flex flex-col">
-                          <span className="text-[14px] font-semibold text-gray-600 mb-1">
-                            {dog.placeName}
-                          </span>
+            return (
+              <Marker
+                key={dog._id}
+                ref={(ref) => {
+                  if (ref) {
+                    markerRefs.current[dog._id] = ref;
+                  } else {
+                    delete markerRefs.current[dog._id];
+                  }
+                }}
+                position={[dog.lat, dog.lng]}
+                icon={dogIcon}>
+                <Popup>
+                  <div className="relative max-h-[380px] duration-100 w-64 max-w-[260px] rounded-2xl overflow-hidden">
 
-                          <span className="text-[12px]  text-gray-800">
-                            {distance}
-                          </span>
-                        </div>
+                    <div className="relative z-10   backdrop-blur-lg rounded-lg shadow-2xl space-y-4 text-gray-800">
+                      <div
+                        className={`overflow-hidden rounded-xl relative bg-gray-100 ${
+                          isContactAsked ? "min-h-60" : "h-55"
+                        }`}>
+                        {dog.imageUrl ? (
+                          <img
+                            className="absolute inset-0 w-full h-full object-cover transition-all duration-300 hover:scale-105"
+                            src={`https://svoxpghpsuritltipmqb.supabase.co/storage/v1/object/public/bucket1/uploads/${dog.imageUrl}`}
+                            alt={dog.type}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 bg-violet-400 animate-pulse" />
+                        )}
                       </div>
 
-                      <div className="flex gap-2 items-center">
-                        <a
-                          onClick={() => setIsContactAsked(!isContactAsked)}
-                          href={`https://www.google.com/maps/dir/?api=1&destination=${dog.lat},${dog.lng}&travelmode=driving`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="cursor-pointer rounded-full transition-colors w-7 h-7 flex items-center justify-center">
-                          <svg
-                            className="w-5 h-5 text-violet-600"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                            />
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                          </svg>
-                        </a>
+                      <div className="flex items-center  justify-between">
+                        <div className="text-gray-800 ml-2">
+                          <div className="flex flex-col">
+                           
+                              <span className="text-[14px] font-semibold text-gray-600 mb-1">
+                                {dog.placeName}
+                              </span>
+                            
+                            <span className="text-[12px]  text-gray-800">
+                              {distance}
+                            </span>
+                          </div>
+                        </div>
 
-                        <div
-                          className="flex flex-col items-center cursor-pointer"
-                          onClick={() => setIsContactAsked(!isContactAsked)}>
-                          <div
-                            className={`pt-1 mr-2 rounded-full  w-7 h-7 flex items-center justify-center transform transition-transform duration-400 ${
-                              isContactAsked ? "rotate-180" : "rotate-0"
-                            }`}>
+                        <div className="flex gap-2 items-center">
+                          <a
+                            onClick={() => setIsContactAsked(!isContactAsked)}
+                            href={`https://www.google.com/maps/dir/?api=1&destination=${dog.lat},${dog.lng}&travelmode=driving`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="cursor-pointer rounded-full transition-colors w-7 h-7 flex items-center justify-center">
                             <svg
-                              className="w-4 h-4 text-violet-600"
+                              className="w-5 h-5 text-violet-600"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24">
@@ -382,61 +407,91 @@ const MapView = () => {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 strokeWidth="2"
-                                d="M19 9l-7 7-7-7"
+                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                              />
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                               />
                             </svg>
+                          </a>
+
+                          <div
+                            className="flex flex-col items-center cursor-pointer"
+                            onClick={() => setIsContactAsked(!isContactAsked)}>
+                            <div
+                              className={`pt-1 mr-2 rounded-full  w-7 h-7 flex items-center justify-center transform transition-transform duration-400 ${
+                                isContactAsked ? "rotate-180" : "rotate-0"
+                              }`}>
+                              <svg
+                                className="w-4 h-4 text-violet-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M19 9l-7 7-7-7"
+                                />
+                              </svg>
+                            </div>
                           </div>
                         </div>
                       </div>
+
+                      {isContactAsked && (
+                        <div className="flex justify-between items-center">
+                          <div className="ml-1">
+                            {dog.type && (
+                              <div className="text-[16px] mb-1 font-bold text-gray-700">
+                                {dog.type}
+                              </div>
+                            )}
+                            {dog.age && (
+                              <div className="text-[14px] text-gray-700">
+                                {dog.gender}, {dog.age}
+                              </div>
+                            )}
+                          </div>
+                          <div className="relative rounded-full w-12 h-12 mr-2">
+                            {dog.lister ? (
+                              <img
+                                src={
+                                  dog.lister.dp_url ||
+                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                }
+                                className="w-full h-full rounded-full cursor-pointer object-cover"
+                                alt="Lister"
+                                onClick={() =>
+                                  handleListerProfileClick(dog.listerId)
+                                }
+                              />
+                            ) : (
+                              <div className="absolute inset-0 rounded-full bg-gray-200 animate-pulse" />
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
-
-                    {isContactAsked && (
-                      <div className="flex justify-between items-center">
-                        <div className="ml-1">
-                          {dog.type && (
-                            <div className="text-[16px] mb-1 font-bold text-gray-700">
-                              {dog.type}
-                            </div>
-                          )}
-                          {dog.age && (
-                            <div className="text-[14px] text-gray-700">
-                              {dog.gender}, {dog.age}
-                            </div>
-                          )}
-                        </div>
-                        <div className="relative rounded-full w-12 h-12 mr-2">
-                          {dog.lister ? (
-                            <img
-                              src={
-                                dog.lister.dp_url ||
-                                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                              }
-                              className="w-full h-full rounded-full cursor-pointer object-cover"
-                              alt="Lister"
-                              onClick={() =>
-                                handleListerProfileClick(dog.listerId)
-                              }
-                            />
-                          ) : (
-                            <div className="absolute inset-0 rounded-full bg-gray-200 animate-pulse" />
-                          )}
-                        </div>
-                      </div>
-                    )}
                   </div>
-                </div>
-              </Popup>
-            </Marker>
-          );
-        })}
+                </Popup>
+              </Marker>
+            );
+          })}
 
-        {isLoadingDogs && (
-          <div className="map-loading-overlay">
-            <div className="loading-spinner"></div>
-            <p>Loading dogs in your area...</p>
-          </div>
-        )}
-      </MapContainer>
+          {isLoadingDogs && (
+            <div className="map-loading-overlay">
+              <div className="loading-spinner"></div>
+              <p>Loading dogs in your area...</p>
+            </div>
+          )}
+        </MapContainer>
+      ) : (
+        <MapViewLoader message={loadingMessage} />
+      )}
     </div>
   );
 };
