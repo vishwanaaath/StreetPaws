@@ -301,7 +301,6 @@ const MapView = () => {
         setUserDataLoaded={setUserDataLoaded}
       />
 
-      {/* {location ? ( */}
         <MapContainer
           center={viewDogLocation || location}
           zoom={16}
@@ -489,9 +488,7 @@ const MapView = () => {
             </div>
           )}
         </MapContainer>
-      {/* // ) : (
-      //   <MapViewLoader message={loadingMessage} />
-      // )} */}
+ 
     </div>
   );
 };
