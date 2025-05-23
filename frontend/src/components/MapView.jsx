@@ -48,11 +48,9 @@ const MapView = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [isContactAsked, setIsContactAsked] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState(null);
-  const [notificationImage, setNotificationImage] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null);
+  const [notificationImage, setNotificationImage] = useState(null); 
   const [initialPosition, setInitialPosition] = useState(null);
-  const [initialZoom, setInitialZoom] = useState(16);
-  const [placeNames, setPlaceNames] = useState({}); 
+  const [initialZoom, setInitialZoom] = useState(16); 
   const [userData, setUserData] = useState(null);
   const [userDataLoaded, setUserDataLoaded] = useState(false);
 
@@ -105,30 +103,7 @@ const MapView = () => {
     handleNewDogNavigation();
   }, [dogs, newlyListedDogId, map]);
 
-  const getPlaceName = async (lat, lng) => {
-    try {
-      const response = await axios.get(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=16&addressdetails=1`,
-        {
-          headers: {
-            "User-Agent": "StreetPaws/1.0 (vishwanathgowda951@gmail.com)",
-          },
-        }
-      );
 
-      const address = response.data.address;
-      return (
-        address.neighbourhood ||
-        address.suburb ||
-        address.village ||
-        address.city_district ||
-        " "
-      );
-    } catch (error) {
-      console.error("Error fetching place name:", error);
-      return "Nearby area";
-    }
-  };
 
   useEffect(() => {
     const fetchDogs = async () => {
@@ -197,11 +172,6 @@ const MapView = () => {
           })
           .filter((dog) => dog !== null);
         setDogs(dogsWithLocation);
-        const names = {};
-        for (const dog of dogsWithLocation) {
-          names[dog._id] = (await getPlaceName(dog.lat, dog.lng)) || " ";
-        }
-        setPlaceNames(names);
       } catch (error) {
         console.error("Error fetching dogs:", error);
         setNotificationMessage("Bad internet");
@@ -391,10 +361,6 @@ const MapView = () => {
                 icon={dogIcon}>
                 <Popup>
                   <div className="relative max-h-[380px] duration-100 w-64 max-w-[260px] rounded-2xl overflow-hidden">
-                    {/* <div
-                      className="absolute inset-0 bg-gradient-to-r from-violet-400 via-violet-500 to-violet-600 
-                    animate-gradient-x blur-4xl opacity-40"
-                    /> */}
 
                     <div className="relative z-10   backdrop-blur-lg rounded-lg shadow-2xl space-y-4 text-gray-800">
                       <div

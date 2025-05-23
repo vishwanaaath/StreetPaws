@@ -149,7 +149,7 @@ const DogDetailModal = ({
 
               <div
                 className={`w-full ${
-                  isTallImage ? "h-[80vh]" : "h-auto"
+                  isTallImage ? "h-[60vh]" : "h-auto"
                 } relative bg-gray-100`}>
                 <motion.img
                   key={currentDog._id}
