@@ -227,7 +227,7 @@ const Explore = () => {
   };
 
   return (
-    <div className="p-2 sm:p-4">
+    <div className="p-2 sm:p-4" {...handlers}>
       {/* Error Message Toast */}
       {errorMessage && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg z-50">
@@ -239,8 +239,7 @@ const Explore = () => {
       <div className="sticky top-0 z-20 bg-white pb-2 sm:pb-4">
         <div
           ref={containerRef}
-          className="relative flex space-x-4 overflow-x-auto hide-scrollbar swipe-container"
-          {...handlers}>
+          className="relative flex space-x-4 overflow-x-auto hide-scrollbar swipe-container">
           {colorFilters.map((color) => (
             <button
               key={color}
