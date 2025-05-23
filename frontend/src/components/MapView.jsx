@@ -180,8 +180,7 @@ const MapView = () => {
         setIsLoadingDogs(false);
       }
     };
-
-    setInterval(() => {
+ 
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const userLocation = [pos.coords.latitude, pos.coords.longitude];
@@ -193,8 +192,7 @@ const MapView = () => {
           console.error("Geolocation error:", error);
           setNotificationMessage("Could not get your location. ");
         }
-      );
-    }, 1000);
+      ); 
 
     fetchDogs();
   }, []);
@@ -303,7 +301,7 @@ const MapView = () => {
         setUserDataLoaded={setUserDataLoaded}
       />
 
-      {location ? (
+      {/* {location ? ( */}
         <MapContainer
           center={viewDogLocation || location}
           zoom={16}
@@ -491,9 +489,9 @@ const MapView = () => {
             </div>
           )}
         </MapContainer>
-      ) : (
-        <MapViewLoader message={loadingMessage} />
-      )}
+      {/* // ) : (
+      //   <MapViewLoader message={loadingMessage} />
+      // )} */}
     </div>
   );
 };
