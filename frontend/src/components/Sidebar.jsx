@@ -98,7 +98,7 @@ const Sidebar = ({
   };
 
   // 👇 Prevent sidebar from rendering at all until auth is ready
-  if (!authReady) return null;
+  // if (!authReady) return null;
 
   return (
     <div
