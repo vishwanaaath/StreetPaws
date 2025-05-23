@@ -97,7 +97,7 @@ const Sidebar = ({
     navigate("/list-dog", { state: { user: userData } });
   };
 
-  // 👇 Prevent sidebar from rendering at all until auth is ready
+  // Prevent sidebar from rendering at all until auth is ready
   if (!authReady) return null;
 
   return (
@@ -107,111 +107,83 @@ const Sidebar = ({
       }`}
       onMouseEnter={() => setSidebarVisible(true)}
       onMouseLeave={handleSidebarLeave}>
+      {/* Profile Section - Only show when authenticated and userData is available */}
       <div className="h-[calc(100%-200px)] overflow-y-auto pb-4">
-        {isLoading || (isAuthenticated && !userData) ? (
-          <>
-            {/* Profile loader */}
-            <div className="flex w-full p-3 animate-pulse">
-              <div className="flex w-full items-start gap-4">
-                <div className="flex-shrink-0">
-                  <div className="w-15 h-15 rounded-full bg-violet-200" />
-                </div>
-                <div className="flex flex-col mt-2.5 justify-center flex-1 space-y-2">
-                  <div className="h-4 bg-violet-200 rounded w-3/4" />
-                  <div className="h-3 bg-violet-200 rounded w-1/2" />
-                </div>
-              </div>
-            </div>
-
-            {/* Explore button loader - larger size */}
-            <div className="px-2 sm:hidden animate-pulse">
-              <div className="h-[50px] rounded-lg bg-violet-200 w-full mb-2" />
-            </div>
-
-            {/* Bottom buttons loader - different widths */}
-            <div className="absolute bottom-16 left-0 right-0 px-4 space-y-2 animate-pulse">
-              <div className="h-[42px] rounded-lg bg-violet-200 w-4/5" />
-              <div className="h-[42px] rounded-lg bg-violet-200 w-3/4" />
-            </div>
-          </>
-        ) : isAuthenticated && userData ? (
-          <>
-            <Link
-              to="/profile"
-              state={{ user: userData }}
-              className="flex w-full p-3 transition-colors hover:bg-violet-50">
-              <div className="flex w-full items-start gap-4">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 rounded-full overflow-hidden">
-                    <img
-                      src={userData.dp_url || auth0User.picture}
-                      alt="Profile"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col mt-2.5 justify-center flex-1">
-                  <p className="text-[16px] font-bold text-gray-800">
-                    {userData.username}
-                  </p>
-                  <p className="text-[13px] text-gray-900 mt-1">
-                    {userData.dogsListed?.length || 0}{" "}
-                    {userData.dogsListed?.length === 1
-                      ? "dog listed"
-                      : "dogs listed"}
-                  </p>
-                </div>
-              </div>
-            </Link>
-
-            <div className="px-2 sm:hidden">
-              <Link
-                to="/explore"
-                className="flex items-center gap-3 px-3 py-2 mt-2 text-lg font-semibold rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none shadow-sm">
-                <svg
-                  className="w-6 h-6"
-                  width="800px"
-                  height="800px"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill=" #7c3aed"
-                  stroke=" #7c3aed">
-                  <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+        {isAuthenticated && userData && (
+          <Link
+            to="/profile"
+            state={{ user: userData }}
+            className="flex w-full p-3 transition-colors hover:bg-violet-50">
+            <div className="flex w-full items-start gap-4">
+              <div className="flex-shrink-0">
+                <div className="w-16 h-16 rounded-full overflow-hidden">
+                  <img
+                    src={userData.dp_url || auth0User.picture}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
                   />
-
-                  <g id="SVGRepo_iconCarrier">
-                    <path
-                      fill=""
-                      d="M231.6 16.18l16.7 120.02 73.8 20.5c37.3-11.2 78.5-18.2 102.3-43.6 9.7-10.3 17.2-24.78 9.1-37.92l-75.3 2.22-14.6-31.79h-74.7c-7.7-11.71-22.8-20.46-37.3-29.43zm5.7 145.22c-46.9 19.8-110.1 146.3-111.8 276.5-34.02-58.1-24.9-122.6-2.9-202.6C55.31 287 4.732 448.4 133.1 486.9H346s-6.3-21.5-14.1-28.9c-12.7-12-48.2-20.2-48.2-20.2 27.8-39.2 33.5-71.7 38.6-103.9 4.5 59.8 40.7 126.8 57.4 153h76.5s4.6-15.9.2-21.5c-10.9-13.8-51.3-11.9-51.3-11.9-31.1-107.2-46.3-260.2-90-273.2-21.7-6.5-54.3-14.1-77.8-18.9z"
-                    />
-                  </g>
-                </svg>
-
-                <span>Explore Dogs</span>
-              </Link>
+                </div>
+              </div>
+              <div className="flex flex-col mt-2.5 justify-center flex-1">
+                <p className="text-[16px] font-bold text-gray-800">
+                  {userData.username}
+                </p>
+                <p className="text-[13px] text-gray-900 mt-1">
+                  {userData.dogsListed?.length || 0}{" "}
+                  {userData.dogsListed?.length === 1
+                    ? "dog listed"
+                    : "dogs listed"}
+                </p>
+              </div>
             </div>
-          </>
-        ) : null}
+          </Link>
+        )}
       </div>
 
       {/* Navigation Buttons */}
       <div className="absolute bottom-16 left-0 right-0 px-4 space-y-2">
         {isAuthenticated && userData && (
           <>
+            {/* Post a Dog Button */}
             <button
               onClick={handleListDog}
-              className="flex items-center gap-2 px-4 py-2 w-4/5 text-sm font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+              className="flex items-center gap-2 px-4 py-2 w-full text-sm font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
               <DiamondPlus className="w-5 h-5" />
               <span>Post a Dog</span>
             </button>
+
+            {/* Explore Dogs Button */}
+            <Link
+              to="/explore"
+              className="flex items-center gap-3 px-4 py-2 w-full text-sm font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none shadow-sm">
+              <svg
+                className="w-5 h-5"
+                width="800px"
+                height="800px"
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+                fill=" #7c3aed"
+                stroke=" #7c3aed">
+                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    fill=""
+                    d="M231.6 16.18l16.7 120.02 73.8 20.5c37.3-11.2 78.5-18.2 102.3-43.6 9.7-10.3 17.2-24.78 9.1-37.92l-75.3 2.22-14.6-31.79h-74.7c-7.7-11.71-22.8-20.46-37.3-29.43zm5.7 145.22c-46.9 19.8-110.1 146.3-111.8 276.5-34.02-58.1-24.9-122.6-2.9-202.6C55.31 287 4.732 448.4 133.1 486.9H346s-6.3-21.5-14.1-28.9c-12.7-12-48.2-20.2-48.2-20.2 27.8-39.2 33.5-71.7 38.6-103.9 4.5 59.8 40.7 126.8 57.4 153h76.5s4.6-15.9.2-21.5c-10.9-13.8-51.3-11.9-51.3-11.9-31.1-107.2-46.3-260.2-90-273.2-21.7-6.5-54.3-14.1-77.8-18.9z"
+                  />
+                </g>
+              </svg>
+              <span>Explore Dogs</span>
+            </Link>
+
+            {/* Community Button */}
             <Link
               to="/users"
-              className="flex items-center gap-2 px-4 py-2 w-3/4 text-sm font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
+              className="flex items-center gap-2 px-4 py-2 w-full text-sm font-medium rounded-lg border-2 border-violet-500 bg-white text-violet-500 hover:bg-violet-50 transition-colors duration-200 focus:ring-2 focus:ring-violet-400 focus:outline-none">
               <svg
                 className="w-5 h-5"
                 fill="none"
@@ -232,7 +204,10 @@ const Sidebar = ({
 
       {/* Auth Button */}
       <div className="absolute bottom-4 left-0 right-0 px-4">
-        {isAuthenticated ? (
+        {isLoading || (isAuthenticated && !userData) ? (
+          // Skeleton loader for auth button
+          <div className="w-full h-[42px] rounded-lg bg-violet-200 animate-pulse" />
+        ) : isAuthenticated ? (
           <button
             onClick={handleLogout}
             className="flex items-center justify-center gap-2 w-full sm:px-4 sm:py-3 px-3 py-2 bg-violet-500 text-white rounded-lg hover:bg-red-500 transition-colors duration-300 shadow-md focus:ring-2 focus:ring-red-300 focus:outline-none">
