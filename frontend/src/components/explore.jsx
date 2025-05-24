@@ -52,7 +52,8 @@ const Explore = () => {
           const sortedData = response.data.sort(
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           );
-          setDogsData(sortedData);
+          setDogsData(sortedData); 
+ 
         } else {
           throw new Error("Invalid data format received from API");
         }
@@ -70,7 +71,7 @@ const Explore = () => {
     fetchDogs();
   }, []);
 
-  // Initialize color filter button refs
+  // Initialize and update color filter button refs
   useEffect(() => {
     colorFilters.forEach((color) => {
       const button = document.querySelector(`[data-color="${color}"]`);
@@ -78,40 +79,37 @@ const Explore = () => {
         colorButtonsRef.current[color] = button;
       }
     });
+
+    // Initial underline positioning
+    updateUnderlinePosition();
   }, []);
 
-  // Update underline position function - FIXED
+  // Update underline position function
   const updateUnderlinePosition = useCallback(() => {
     const button = colorButtonsRef.current[selectedColor];
     if (button && containerRef.current) {
-      const buttonRect = button.getBoundingClientRect();
       const containerRect = containerRef.current.getBoundingClientRect();
+      const buttonRect = button.getBoundingClientRect();
 
-      // Calculate position relative to the container
-      const left = buttonRect.left - containerRect.left;
-      const width = buttonRect.width;
-
-      setUnderlineProps({ left, width });
+      setUnderlineProps({
+        left:
+          buttonRect.left -
+          containerRect.left +
+          containerRef.current.scrollLeft,
+        width: buttonRect.width,
+      });
     }
   }, [selectedColor]);
 
-  // Color filter handlers - IMPROVED
+  // Color filter handlers with improved position calculation
   const handleColorChange = useCallback(
     (newColor, direction) => {
       const currentIndex = colorFilters.indexOf(selectedColor);
       setSelectedColor(newColor);
       prevIndexRef.current = currentIndex;
 
-      // Update button refs after state change
+      // Scroll to center the selected button
       setTimeout(() => {
-        colorFilters.forEach((color) => {
-          const button = document.querySelector(`[data-color="${color}"]`);
-          if (button) {
-            colorButtonsRef.current[color] = button;
-          }
-        });
-
-        // Scroll to center the selected button
         const container = containerRef.current;
         const button = colorButtonsRef.current[newColor];
 
@@ -125,7 +123,7 @@ const Explore = () => {
           container.scrollTo({ left: scrollLeft, behavior: "smooth" });
 
           // Update underline position after scrolling
-          setTimeout(updateUnderlinePosition, 150);
+          setTimeout(updateUnderlinePosition, 300);
         }
       }, 50);
     },
@@ -134,19 +132,18 @@ const Explore = () => {
 
   // Update underline position when selected color changes
   useEffect(() => {
-    const timer = setTimeout(updateUnderlinePosition, 100);
-    return () => clearTimeout(timer);
+    updateUnderlinePosition();
   }, [selectedColor, updateUnderlinePosition]);
 
-  // Update underline position on scroll - IMPROVED
+  // Also update underline position on scroll
   useEffect(() => {
     const handleScroll = throttle(() => {
       updateUnderlinePosition();
-    }, 50);
+    }, 100);
 
     const container = containerRef.current;
     if (container) {
-      container.addEventListener("scroll", handleScroll, { passive: true });
+      container.addEventListener("scroll", handleScroll);
       return () => container.removeEventListener("scroll", handleScroll);
     }
   }, [updateUnderlinePosition]);
@@ -154,13 +151,6 @@ const Explore = () => {
   // Update underline position on window resize
   useEffect(() => {
     const handleResize = throttle(() => {
-      // Re-get button refs in case layout changed
-      colorFilters.forEach((color) => {
-        const button = document.querySelector(`[data-color="${color}"]`);
-        if (button) {
-          colorButtonsRef.current[color] = button;
-        }
-      });
       updateUnderlinePosition();
     }, 100);
 
@@ -183,7 +173,7 @@ const Explore = () => {
         handleColorChange(colorFilters[newIndex], e.dir.toLowerCase());
       }
     },
-    delta: 30,
+    delta: 30, // Lower swipe distance threshold for better sensitivity
     preventDefaultTouchmoveEvent: false,
     trackTouch: true,
     trackMouse: false,
@@ -191,11 +181,12 @@ const Explore = () => {
   });
 
   // Filter dogs based on selected color with fallback
+  
   const filteredDogs = React.useMemo(() => {
     return dogsData.filter(
       (dog) => selectedColor === "All" || dog.type === selectedColor
     );
-  }, [dogsData, selectedColor]);
+  }, [dogsData, selectedColor]); 
 
   // Handle dog click to open modal
   const handleDogClick = (dog) => {
@@ -209,6 +200,10 @@ const Explore = () => {
   };
 
   // Handle like functionality
+  // In your Explore component's handleLike function, make these changes:
+
+
+
   const handleLike = async (dogId) => {
     try {
       // Update main dogs data
@@ -267,7 +262,7 @@ const Explore = () => {
               {color}
             </button>
           ))}
-          {/* FIXED underline animation */}
+          {/* Improved underline animation */}
           <motion.div
             className="absolute bottom-0 h-1 bg-violet-600 rounded"
             initial={false}
@@ -275,12 +270,7 @@ const Explore = () => {
               left: `${underlineProps.left}px`,
               width: `${underlineProps.width}px`,
             }}
-            transition={{
-              type: "spring",
-              stiffness: 400,
-              damping: 25,
-              mass: 0.8,
-            }}
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
           />
         </div>
       </div>
@@ -341,14 +331,16 @@ const Explore = () => {
         </div>
       )}
 
-      {/* Dog Detail Modal */}
+      {/* Dog Detail Modal - FIXED: Added filteredDogs prop */}
       <DogDetailModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         dog={selectedDog}
         onLike={handleLike}
-        filteredDogs={filteredDogs}
+        filteredDogs={filteredDogs} // Pass filtered dogs to the modal
       />
     </div>
   );
 };
+
+export default Explore;
