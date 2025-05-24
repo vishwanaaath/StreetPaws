@@ -325,9 +325,9 @@ const Profile = () => {
                 <a
                   href={`mailto:${currentUser.email}`}
                   title="Send email"
-                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-2xl bg-violet-100 text-violet-700 hover:bg-violet-200 hover:text-violet-900 transition-colors shadow-sm text-sm font-medium">
-                  <Mail className="h-5 w-5" />
-                  Send Email
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-violet-100 text-violet-700 hover:bg-violet-200 hover:text-violet-900 transition-colors text-sm font-medium">
+                  <Mail className="h-4 w-4" />
+                  Email
                 </a>
               </div>
             </div>
