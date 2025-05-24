@@ -84,22 +84,21 @@
       updateUnderlinePosition();
     }, []);
 
-    // Update underline position function
     const updateUnderlinePosition = useCallback(() => {
       const button = colorButtonsRef.current[selectedColor];
       if (button && containerRef.current) {
         const containerRect = containerRef.current.getBoundingClientRect();
         const buttonRect = button.getBoundingClientRect();
-
+    
+        // Calculate the relative position of the button within the container
+        const relativeLeft = buttonRect.left - containerRect.left;
+    
         setUnderlineProps({
-          left:
-            buttonRect.left -
-            containerRect.left +
-            containerRef.current.scrollLeft,
+          left: relativeLeft,
           width: buttonRect.width,
         });
       }
-    }, [selectedColor]);
+    }, [selectedColor]); 
 
     // Color filter handlers with improved position calculation
     const handleColorChange = useCallback(
@@ -115,6 +114,8 @@
           const containerWidth = container.offsetWidth;
           const buttonLeft = button.offsetLeft;
           const buttonWidth = button.offsetWidth;
+
+          // Calculate optimal scroll position to center the button
           let scrollLeft = buttonLeft - (containerWidth / 2 - buttonWidth / 2);
 
           // Clamp scrollLeft to valid bounds
@@ -123,14 +124,17 @@
 
           container.scrollTo({ left: scrollLeft, behavior: "smooth" });
 
+          // Wait for scroll animation to complete before updating underline
           setTimeout(() => {
             updateUnderlinePosition();
-          }, 150);
+          }, 300); // Increased timeout to ensure scroll completes
+        } else {
+          // If container or button not found, update immediately
+          updateUnderlinePosition();
         }
       },
       [selectedColor, updateUnderlinePosition]
     );
-    
 
     
 
