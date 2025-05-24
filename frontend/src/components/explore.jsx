@@ -102,31 +102,35 @@
     }, [selectedColor]);
 
     // Color filter handlers with improved position calculation
-const handleColorChange = useCallback(
-  (newColor, direction) => {
-    const currentIndex = colorFilters.indexOf(selectedColor);
-    setSelectedColor(newColor);
-    prevIndexRef.current = currentIndex;
+    const handleColorChange = useCallback(
+      (newColor, direction) => {
+        const currentIndex = colorFilters.indexOf(selectedColor);
+        setSelectedColor(newColor);
+        prevIndexRef.current = currentIndex;
 
-    const container = containerRef.current;
-    const button = colorButtonsRef.current[newColor];
+        const container = containerRef.current;
+        const button = colorButtonsRef.current[newColor];
 
-    if (container && button) {
-      const containerWidth = container.offsetWidth;
-      const buttonLeft = button.offsetLeft;
-      const buttonWidth = button.offsetWidth;
-      const scrollLeft = buttonLeft - (containerWidth / 2 - buttonWidth / 2);
+        if (container && button) {
+          const containerWidth = container.offsetWidth;
+          const buttonLeft = button.offsetLeft;
+          const buttonWidth = button.offsetWidth;
+          let scrollLeft = buttonLeft - (containerWidth / 2 - buttonWidth / 2);
 
-      container.scrollTo({ left: scrollLeft, behavior: "smooth" });
+          // Clamp scrollLeft to valid bounds
+          const maxScroll = container.scrollWidth - container.offsetWidth;
+          scrollLeft = Math.max(0, Math.min(scrollLeft, maxScroll));
 
-      // Delay underline update to allow scroll animation to finish
-      setTimeout(() => {
-        updateUnderlinePosition();
-      }, 150); // 150–200ms usually works well for smooth scroll
-    }
-  },
-  [selectedColor, updateUnderlinePosition]
-);
+          container.scrollTo({ left: scrollLeft, behavior: "smooth" });
+
+          setTimeout(() => {
+            updateUnderlinePosition();
+          }, 150);
+        }
+      },
+      [selectedColor, updateUnderlinePosition]
+    );
+    
 
     
 
