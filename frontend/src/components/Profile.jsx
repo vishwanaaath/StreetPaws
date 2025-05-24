@@ -478,7 +478,7 @@ const Profile = () => {
                     />
                   </svg>
                   <p className="text-gray-600 font-medium">
-                    No dogs posted yet
+                    Fetch error
                   </p>
                   <p className="text-sm mt-1 text-gray-500">
                     Your future posts will appear here
