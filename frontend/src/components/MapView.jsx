@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Link } from "react-router-dom";
 import L from "leaflet";
 import {ChevronsLeft} from "lucide-react"
 import axios from "axios";
@@ -362,7 +363,6 @@ console.log(response);
                 icon={dogIcon}>
                 <Popup>
                   <div className="relative max-h-[380px] duration-100 w-64 max-w-[260px] rounded-2xl overflow-hidden">
-
                     <div className="relative z-10   backdrop-blur-lg rounded-lg shadow-2xl space-y-4 text-gray-800">
                       <div
                         className={`overflow-hidden rounded-xl relative bg-gray-100 ${
@@ -383,11 +383,10 @@ console.log(response);
                       <div className="flex items-center  justify-between">
                         <div className="text-gray-800 ml-2">
                           <div className="flex flex-col">
-                           
-                              <span className="text-[14px] font-semibold text-gray-600 mb-1">
-                                {dog.placeName}
-                              </span>
-                            
+                            <span className="text-[14px] font-semibold text-gray-600 mb-1">
+                              {dog.placeName}
+                            </span>
+
                             <span className="text-[12px]  text-gray-800">
                               {distance}
                             </span>
@@ -461,17 +460,19 @@ console.log(response);
                           </div>
                           <div className="relative rounded-full w-12 h-12 mr-2">
                             {dog.lister ? (
-                              <img
-                                src={
-                                  dog.lister.dp_url ||
-                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                                }
-                                className="w-full h-full rounded-full cursor-pointer object-cover"
-                                alt="Lister"
-                                onClick={() =>
-                                  handleListerProfileClick(dog.listerId)
-                                }
-                              />
+                              <Link
+                                to="/profile"
+                                state={{ user: dog.lister }}
+                                className="block w-full h-full rounded-full">
+                                <img
+                                  src={
+                                    dog.lister.dp_url ||
+                                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                  }
+                                  className="w-full h-full rounded-full cursor-pointer object-cover"
+                                  alt="Lister"
+                                />
+                              </Link>
                             ) : (
                               <div className="absolute inset-0 rounded-full bg-gray-200 animate-pulse" />
                             )}
