@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Heart, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import axios from "axios";
 
@@ -58,7 +59,7 @@ const DogDetailModal = ({
   };
 
   // In DogDetailModal component, add this useEffect:
- 
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "ArrowRight") navigateToDog("next");
@@ -117,8 +118,6 @@ const DogDetailModal = ({
       return "Nearby area";
     }
   };
-
- 
 
   if (!currentDog) return null;
 
@@ -182,16 +181,16 @@ const DogDetailModal = ({
                     role="button"
                     tabIndex={0}
                     onClick={(e) => {
-                      onClose(); 
+                      onClose();
                       e.stopPropagation();
                       navigate("/map", {
                         state: {
                           selectedDog: {
                             id: currentDog._id,
                             lat: currentDog.location.coordinates[1],
-                            lng: currentDog.location.coordinates[0], 
+                            lng: currentDog.location.coordinates[0],
                           },
-                          loadingMessage: `Takin you to ${currentDog.placeName}...`, 
+                          loadingMessage: `Takin you to ${currentDog.placeName}...`,
                         },
                       });
                     }}
@@ -219,21 +218,18 @@ const DogDetailModal = ({
 
                 {/* Right side: Like & DP */}
                 <div className="flex flex-row items-center pt-2 gap-2">
-                  {/* <button
-                    onClick={() => onLike(currentDog._id)}
-                    className="text-black hover:text-pink-500 transition">
-                    <Heart
-                      size={28}
-                      className={
-                        currentDog.isLiked ? "fill-pink-500 text-pink-500" : ""
-                      }
-                    />
-                  </button> */}
-                  <img
-                    src={currentDog.lister?.dp_url || "/default-avatar.png"}
-                    alt="Lister"
-                    className="w-11 h-11 mr-1 rounded-full object-cover"
-                  />
+                  {currentDog.lister && (
+                    <Link
+                      to="/user"
+                      state={{ user: currentDog.lister }}
+                      className="w-11 h-11 rounded-full overflow-hidden">
+                      <img
+                        src={currentDog.lister.dp_url || "/default-avatar.png"}
+                        alt="Lister"
+                        className="w-full h-full object-cover"
+                      />
+                    </Link>
+                  )}
                 </div>
               </div>
 
@@ -244,6 +240,6 @@ const DogDetailModal = ({
       )}
     </AnimatePresence>
   );
-}
+};
 
 export default DogDetailModal;

@@ -461,7 +461,7 @@ console.log(response);
                           <div className="relative rounded-full w-12 h-12 mr-2">
                             {dog.lister ? (
                               <Link
-                                to="/profile"
+                                to="/user"
                                 state={{ user: dog.lister }}
                                 className="block w-full h-full rounded-full">
                                 <img
