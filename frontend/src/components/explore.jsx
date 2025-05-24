@@ -98,6 +98,9 @@ const Explore = () => {
   // Improved swipe handlers with better sensitivity
   const handlers = useSwipeable({
     onSwiped: (e) => {
+      // Don't handle swipes when modal is open
+      if (isModalOpen) return;
+
       if (!["Left", "Right"].includes(e.dir)) return;
 
       const currentIndex = colorFilters.indexOf(selectedColor);
@@ -159,7 +162,7 @@ const Explore = () => {
   };
 
   return (
-    <div className="p-2 sm:p-4" {...(isModalOpen ? {} : handlers)}>
+    <div className="p-2 sm:p-4" {...handlers}>
       {/* Error Message Toast */}
       {errorMessage && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg z-50">
