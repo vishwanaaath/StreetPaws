@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ProfileLoader from "./ProfileLoader";
 import "./Profile.css";
+import { Mail } from "lucide-react";
 import UploadDPModal from "./UploadDPModal";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import DogDetailModal from "./DogDetailModal"; // Import the DogDetailModal
@@ -290,22 +291,23 @@ const Profile = () => {
                 />
               </div>
             </div>
+            
 
+            
             <div className="w-full md:w-auto">
               <div className="flex flex-col mt-2">
                 <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none leading-tight">
                   {currentUser.username}
                 </h1>
                 {isDeveloper ? (
-                  <p className="text-gray-500 text-base sm:text-[17px] leading-tight mt-[2px]">
+                  <p className="text-gray-500 text-base sm:text-[17px] leading-snug mt-[2px]">
                     Creator & Caretaker of{" "}
                     <span className="font-bold text-[18px] text-violet-600">
                       StreetPaws
                     </span>
-                    <br />
                   </p>
                 ) : (
-                  <p className="text-gray-500 text-base sm:text-[17px] leading-tight mt-[2px]">
+                  <p className="text-gray-500 text-base sm:text-[17px] leading-snug mt-[2px]">
                     Member since{" "}
                     <span className="text-gray-700">
                       {new Date(currentUser.createdAt).toLocaleDateString(
@@ -321,24 +323,12 @@ const Profile = () => {
               </div>
 
               {/* Email section - simplified for mobile */}
-              <div className="mt-2 md:mt-4 flex items-center gap-2">
+              <div className="mt-2 md:mt-3 flex items-center gap-2">
                 <a
                   href={`mailto:${currentUser.email}`}
                   className="text-violet-600 hover:text-violet-800 transition-colors"
                   title="Send email">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 sm:h-6 sm:w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={1.5}>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 8h18a2 2 0 002-2V6a2 2 0 00-2-2H3a2 2 0 00-2 2v8a2 2 0 002 2z"
-                    />
-                  </svg>
+                  <Mail className="h-5 w-5 sm:h-6 sm:w-6" />
                 </a>
               </div>
             </div>
