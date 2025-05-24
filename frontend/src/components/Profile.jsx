@@ -320,16 +320,7 @@ const Profile = () => {
                 )}
               </div>
 
-              {/* Email section - simplified for mobile */}
-              <div className="mt-2 md:mt-3 flex items-center">
-                <a
-                  href={`mailto:${currentUser.email}`}
-                  title="Send email"
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-violet-100 text-violet-700 hover:bg-violet-200 hover:text-violet-900 transition-colors text-sm font-medium">
-                  <Mail className="h-4 w-4" />
-                  Email
-                </a>
-              </div>
+              
             </div>
           </div>
 
