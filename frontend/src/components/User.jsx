@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
-import { Pencil } from "lucide-react";
+import { useAuth0 } from "@auth0/auth0-react"; 
+import { Mail } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ProfileLoader from "./ProfileLoader";
@@ -306,7 +306,6 @@ const User = () => {
                   </p>
                 )}
               </div>
-
               {/* Email section - simplified for mobile */}
               <div className="mt-2 md:mt-3 flex items-center">
                 <a
@@ -317,6 +316,8 @@ const User = () => {
                   Email
                 </a>
               </div>
+
+
             </div>
           </div>
 

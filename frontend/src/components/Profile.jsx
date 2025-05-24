@@ -5,7 +5,6 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ProfileLoader from "./ProfileLoader";
 import "./Profile.css";
-import { Mail } from "lucide-react";
 import UploadDPModal from "./UploadDPModal";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import DogDetailModal from "./DogDetailModal"; // Import the DogDetailModal
