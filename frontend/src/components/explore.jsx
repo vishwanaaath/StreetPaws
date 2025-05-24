@@ -102,33 +102,32 @@
     }, [selectedColor]);
 
     // Color filter handlers with improved position calculation
-    const handleColorChange = useCallback(
-      (newColor, direction) => {
-        const currentIndex = colorFilters.indexOf(selectedColor);
-        setSelectedColor(newColor);
-        prevIndexRef.current = currentIndex;
+const handleColorChange = useCallback(
+  (newColor, direction) => {
+    const currentIndex = colorFilters.indexOf(selectedColor);
+    setSelectedColor(newColor);
+    prevIndexRef.current = currentIndex;
 
-        const container = containerRef.current;
-        const button = colorButtonsRef.current[newColor];
+    const container = containerRef.current;
+    const button = colorButtonsRef.current[newColor];
 
-        if (container && button) {
-          const containerWidth = container.offsetWidth;
-          const buttonLeft = button.offsetLeft;
-          const buttonWidth = button.offsetWidth;
-          const scrollLeft =
-            buttonLeft - (containerWidth / 2 - buttonWidth / 2);
+    if (container && button) {
+      const containerWidth = container.offsetWidth;
+      const buttonLeft = button.offsetLeft;
+      const buttonWidth = button.offsetWidth;
+      const scrollLeft = buttonLeft - (containerWidth / 2 - buttonWidth / 2);
 
-          container.scrollTo({ left: scrollLeft, behavior: "smooth" });
+      container.scrollTo({ left: scrollLeft, behavior: "smooth" });
 
-          // Delay underline update to allow scroll animation to finish
-          setTimeout(() => {
-            updateUnderlinePosition();
-          }, 150); // 150–200ms usually works well for smooth scroll
-        }
-      },
-      [selectedColor, updateUnderlinePosition]
-    );
-    
+      // Delay underline update to allow scroll animation to finish
+      setTimeout(() => {
+        updateUnderlinePosition();
+      }, 150); // 150–200ms usually works well for smooth scroll
+    }
+  },
+  [selectedColor, updateUnderlinePosition]
+);
+
     
 
     // Update underline position when selected color changes
@@ -137,10 +136,10 @@
     }, [selectedColor, updateUnderlinePosition]);
 
     // Also update underline position on scroll
-    const handleScroll = throttle(() => {
-      updateUnderlinePosition();
-    }, 150);
-    
+    useEffect(() => {
+      const handleScroll = throttle(() => {
+        updateUnderlinePosition();
+      }, 100);
 
       const container = containerRef.current;
       if (container) {
