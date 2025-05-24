@@ -116,6 +116,7 @@ const MapView = () => {
         if (!Array.isArray(response.data)) {
           throw new Error("Invalid response format");
         }
+console.log(response);
 
         const dogsWithLocation = response.data
           .map((dog) => {
