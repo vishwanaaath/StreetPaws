@@ -19,9 +19,14 @@ const DogDetailModal = ({
   const [distance, setDistance] = useState(null);
   const [imageAspectRatio, setImageAspectRatio] = useState(null);
   const navigate = useNavigate();
-  const currentDog = React.useMemo(() => {
-    return filteredDogs[currentIndex] || null;
-  }, [filteredDogs, currentIndex]);
+
+  // Use the passed dog directly instead of switching between dogs
+  const currentDog = dog;
+
+  // REMOVED: Dynamic dog switching based on currentIndex
+  // const currentDog = React.useMemo(() => {
+  //   return filteredDogs[currentIndex] || null;
+  // }, [filteredDogs, currentIndex]);
 
   useEffect(() => {
     if (isOpen && dog && filteredDogs?.length) {
@@ -31,38 +36,40 @@ const DogDetailModal = ({
     }
   }, [isOpen, dog, filteredDogs]);
 
+  // DISABLED: Swipe navigation between dogs
+  // const handlers = useSwipeable({
+  //   onSwipedLeft: () => navigateToDog("next"),
+  //   onSwipedRight: () => navigateToDog("prev"),
+  //   preventDefaultTouchmoveEvent: true,
+  //   trackTouch: true,
+  //   trackMouse: true,
+  //   delta: 50,
+  //   swipeDuration: 500,
+  // });
+
+  // Empty handlers to disable swipe navigation
   const handlers = useSwipeable({
-    onSwipedLeft: () => navigateToDog("next"),
-    onSwipedRight: () => navigateToDog("prev"),
-    preventDefaultTouchmoveEvent: true,
-    trackTouch: true,
-    trackMouse: true,
-    delta: 50,
-    swipeDuration: 500,
+    preventDefaultTouchmoveEvent: false,
+    trackTouch: false,
+    trackMouse: false,
   });
 
-  useEffect(() => {
-    if (isOpen && dog && filteredDogs?.length) {
-      const index = filteredDogs.findIndex((d) => d?._id === dog?._id);
-      setCurrentIndex(index >= 0 ? index : 0);
-    }
-  }, [isOpen, dog, filteredDogs]);
-
   const navigateToDog = (direction) => {
-    setCurrentIndex((prev) => {
-      if (direction === "next")
-        return Math.min(prev + 1, filteredDogs.length - 1);
-      if (direction === "prev") return Math.max(prev - 1, 0);
-      return prev;
-    });
+    // DISABLED: Navigation between dogs
+    // setCurrentIndex((prev) => {
+    //   if (direction === "next")
+    //     return Math.min(prev + 1, filteredDogs.length - 1);
+    //   if (direction === "prev") return Math.max(prev - 1, 0);
+    //   return prev;
+    // });
   };
 
-  // In DogDetailModal component, add this useEffect:
- 
+  // DISABLED: Keyboard navigation between dogs
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === "ArrowRight") navigateToDog("next");
-      if (e.key === "ArrowLeft") navigateToDog("prev");
+      // Remove arrow key navigation
+      // if (e.key === "ArrowRight") navigateToDog("next");
+      // if (e.key === "ArrowLeft") navigateToDog("prev");
       if (e.key === "Escape") onClose();
     };
 
@@ -118,8 +125,6 @@ const DogDetailModal = ({
     }
   };
 
- 
-
   if (!currentDog) return null;
 
   // Determine if image is tall (aspect ratio < 1 means height > width)
@@ -146,7 +151,6 @@ const DogDetailModal = ({
 
             <div className="w-full">
               {/* Image Section */}
-
               <div
                 className={`w-full ${
                   isTallImage ? "h-[60vh]" : "h-auto"
@@ -182,16 +186,16 @@ const DogDetailModal = ({
                     role="button"
                     tabIndex={0}
                     onClick={(e) => {
-                      onClose(); 
+                      onClose();
                       e.stopPropagation();
                       navigate("/map", {
                         state: {
                           selectedDog: {
                             id: currentDog._id,
                             lat: currentDog.location.coordinates[1],
-                            lng: currentDog.location.coordinates[0], 
+                            lng: currentDog.location.coordinates[0],
                           },
-                          loadingMessage: `Takin you to ${currentDog.placeName}...`, 
+                          loadingMessage: `Takin you to ${currentDog.placeName}...`,
                         },
                       });
                     }}
@@ -244,6 +248,6 @@ const DogDetailModal = ({
       )}
     </AnimatePresence>
   );
-}
+};
 
 export default DogDetailModal;
