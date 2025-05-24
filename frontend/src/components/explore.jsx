@@ -44,6 +44,8 @@ const Explore = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/dogs/`
         );
+        console.log(response);
+        
 
         if (response.data && Array.isArray(response.data)) {
           const sortedData = response.data.sort(
