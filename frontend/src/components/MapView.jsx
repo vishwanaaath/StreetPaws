@@ -171,6 +171,8 @@ const MapView = () => {
             };
           })
           .filter((dog) => dog !== null);
+          console.log(dogsWithLocation);
+          
         setDogs(dogsWithLocation);
       } catch (error) {
         console.error("Error fetching dogs:", error);
