@@ -84,39 +84,77 @@ router.post("/", async (req, res) => {
 });
 
 
-router.get("/", async (req, res) => {
-  try {
-    const dogs = await Dog.find()
-      .populate({
-        path: "listerId",
-        select: "username email dp_url",
-        model: "User", 
-      })
-      .lean();
+// router.get("/", async (req, res) => {
+//   try {
+//     const dogs = await Dog.find()
+//       .populate({
+//         path: "listerId",
+//         select: "username email dp_url",
+//         model: "User", 
+//       })
+//       .lean();
  
-    const formattedDogs = dogs.map((dog) => ({
-      ...dog,
-      _id: dog._id.toString(),
-      listerId: dog.listerId?._id.toString(),
-      lister: dog.listerId
-        ? {
-            username: dog.listerId.username,
-            email: dog.listerId.email,
-            dp_url: dog.listerId.dp_url,
-          }
-        : null,
-    }));
+//     const formattedDogs = dogs.map((dog) => ({
+//       ...dog,
+//       _id: dog._id.toString(),
+//       listerId: dog.listerId?._id.toString(),
+//       lister: dog.listerId
+//         ? {
+//             username: dog.listerId.username,
+//             email: dog.listerId.email,
+//             dp_url: dog.listerId.dp_url,
+//           }
+//         : null,
+//     }));
 
-    res.json(formattedDogs);
-  } catch (error) {
-    console.error("Error fetching dogs:", error);
-    res.status(500).json({
-      message: "Server error",
-      error: error.message,
-      stack: process.env.NODE_ENV === "development" ? error.stack : undefined,
-    });
-  }
-});
+//     res.json(formattedDogs);
+//   } catch (error) {
+//     console.error("Error fetching dogs:", error);
+//     res.status(500).json({
+//       message: "Server error",
+//       error: error.message,
+//       stack: process.env.NODE_ENV === "development" ? error.stack : undefined,
+//     });
+//   }
+// });
+
+// router.get("/", async (req, res) => {
+//   try {
+//     const dogs = await Dog.find()
+//       .populate({
+//         path: "listerId",
+//         select: "username email dp_url createdAt dogsListed",
+//         model: "User",
+//       })
+//       .lean();
+
+//     const formattedDogs = dogs.map((dog) => ({
+//       ...dog,
+//       _id: dog._id.toString(),
+//       listerId: dog.listerId?._id.toString(),
+//       lister: dog.listerId
+//         ? {
+//             _id: dog.listerId._id.toString(),
+//             username: dog.listerId.username,
+//             email: dog.listerId.email,
+//             dp_url: dog.listerId.dp_url,
+//             createdAt: dog.listerId.createdAt,
+//             dogsListed: dog.listerId.dogsListed.map((id) => id.toString()),
+//           }
+//         : null,
+//     }));
+
+//     res.json(formattedDogs);
+//   } catch (error) {
+//     console.error("Error fetching dogs:", error);
+//     res.status(500).json({
+//       message: "Server error",
+//       error: error.message,
+//       stack: process.env.NODE_ENV === "development" ? error.stack : undefined,
+//     });
+//   }
+// });
+
 
 router.get("/", async (req, res) => {
   try {
@@ -139,7 +177,9 @@ router.get("/", async (req, res) => {
             email: dog.listerId.email,
             dp_url: dog.listerId.dp_url,
             createdAt: dog.listerId.createdAt,
-            dogsListed: dog.listerId.dogsListed.map((id) => id.toString()),
+            dogsListed: Array.isArray(dog.listerId.dogsListed)
+              ? dog.listerId.dogsListed.map((id) => id.toString())
+              : [],
           }
         : null,
     }));
@@ -154,6 +194,7 @@ router.get("/", async (req, res) => {
     });
   }
 });
+
 
 
 router.delete("/:dogId", async (req, res) => {
