@@ -124,7 +124,7 @@ const DogDetailModal = ({
 
   // Determine if image is tall (aspect ratio < 1 means height > width)
   // Update the aspect ratio check
-  const isTallImage = imageAspectRatio !== null && imageAspectRatio <= 0.5; // 9:16 aspect ratio (0.5625)
+  const isTallImage = imageAspectRatio !== null && imageAspectRatio <= 0.7; // 9:16 aspect ratio (0.5625)
 
   // This will only apply 70vh height to images that are 9:16 or taller
   return (
