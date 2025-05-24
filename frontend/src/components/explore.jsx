@@ -87,19 +87,13 @@
     const updateUnderlinePosition = useCallback(() => {
       const button = colorButtonsRef.current[selectedColor];
       if (button && containerRef.current) {
-        const containerRect = containerRef.current.getBoundingClientRect();
-        const buttonRect = button.getBoundingClientRect();
-    
-        // Calculate the relative position of the button within the container
-        const relativeLeft = buttonRect.left - containerRect.left;
-    
         setUnderlineProps({
-          left: relativeLeft,
-          width: buttonRect.width,
+          left: button.offsetLeft,
+          width: button.offsetWidth,
         });
       }
-    }, [selectedColor]); 
-
+    }, [selectedColor]);
+    
     // Color filter handlers with improved position calculation
     const handleColorChange = useCallback(
       (newColor, direction) => {
