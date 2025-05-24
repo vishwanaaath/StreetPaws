@@ -120,13 +120,15 @@
 
           container.scrollTo({ left: scrollLeft, behavior: "smooth" });
 
-          requestAnimationFrame(() => {
-            updateUnderlinePosition(); // More accurate than timeout
-          });
+          // Delay underline update to allow scroll animation to finish
+          setTimeout(() => {
+            updateUnderlinePosition();
+          }, 150); // 150–200ms usually works well for smooth scroll
         }
       },
       [selectedColor, updateUnderlinePosition]
     );
+    
     
 
     // Update underline position when selected color changes
@@ -135,10 +137,10 @@
     }, [selectedColor, updateUnderlinePosition]);
 
     // Also update underline position on scroll
-    useEffect(() => {
-      const handleScroll = throttle(() => {
-        updateUnderlinePosition();
-      }, 100);
+    const handleScroll = throttle(() => {
+      updateUnderlinePosition();
+    }, 150);
+    
 
       const container = containerRef.current;
       if (container) {
