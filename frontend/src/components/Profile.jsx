@@ -291,9 +291,7 @@ const Profile = () => {
                 />
               </div>
             </div>
-            
 
-            
             <div className="w-full md:w-auto">
               <div className="flex flex-col mt-2">
                 <h1 className="text-2xl font-bold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px] sm:max-w-none leading-tight">
@@ -323,12 +321,13 @@ const Profile = () => {
               </div>
 
               {/* Email section - simplified for mobile */}
-              <div className="mt-2 md:mt-3 flex items-center gap-2">
+              <div className="mt-2 md:mt-3 flex items-center">
                 <a
                   href={`mailto:${currentUser.email}`}
-                  className="text-violet-600 hover:text-violet-800 transition-colors"
-                  title="Send email">
-                  <Mail className="h-5 w-5 sm:h-6 sm:w-6" />
+                  title="Send email"
+                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-2xl bg-violet-100 text-violet-700 hover:bg-violet-200 hover:text-violet-900 transition-colors shadow-sm text-sm font-medium">
+                  <Mail className="h-5 w-5" />
+                  Send Email
                 </a>
               </div>
             </div>
